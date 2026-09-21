@@ -1,0 +1,1012 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>AgentForge Platform</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-container-high": "#e2e7ff",
+        "secondary-container": "#8a4cfc",
+        "on-tertiary-fixed": "#00201c",
+        "on-error": "#ffffff",
+        "secondary-fixed": "#eaddff",
+        "on-secondary-fixed": "#25005a",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "secondary-fixed-dim": "#d2bbff",
+        "surface-container-lowest": "#ffffff",
+        "surface-variant": "#dae2fd",
+        "surface-bright": "#faf8ff",
+        "surface-dim": "#d2d9f4",
+        "on-secondary-container": "#fffbff",
+        "on-tertiary": "#ffffff",
+        "on-secondary": "#ffffff",
+        "inverse-primary": "#c3c0ff",
+        "surface-tint": "#4d44e3",
+        "secondary": "#712ae2",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#71f8e4",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#283044",
+        "primary-container": "#4f46e5",
+        "on-primary-fixed": "#0f0069",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-primary-container": "#dad7ff",
+        "on-surface": "#131b2e",
+        "primary": "#3525cd",
+        "outline": "#777587",
+        "surface": "#faf8ff",
+        "error": "#ba1a1a",
+        "on-primary": "#ffffff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "on-primary-fixed-variant": "#3323cc",
+        "surface-container": "#eaedff",
+        "outline-variant": "#c7c4d8",
+        "inverse-on-surface": "#eef0ff",
+        "error-container": "#ffdad6",
+        "primary-fixed": "#e2dfff",
+        "on-tertiary-container": "#69f1de",
+        "tertiary": "#00534a",
+        "on-surface-variant": "#464555",
+        "tertiary-container": "#006d62",
+        "surface-container-highest": "#dae2fd",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-container-low": "#f2f3ff",
+        "background": "#faf8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xs": "0.25rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "space-lg": "1.5rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "display-hero": [
+          "Geist"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "headline-sm": [
+          "Geist"
+        ],
+        "display-hero-mobile": [
+          "Geist"
+        ],
+        "code-base": [
+          "JetBrains Mono"
+        ],
+        "headline-md": [
+          "Geist"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "headline-lg": [
+          "Geist"
+        ],
+        "headline-lg-mobile": [
+          "Geist"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "label-ui": [
+          "Inter"
+        ]
+      },
+      "fontSize": {
+        "display-hero": [
+          "64px",
+          {
+            "lineHeight": "72px",
+            "letterSpacing": "-0.035em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "15px",
+          {
+            "lineHeight": "24px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-sm": [
+          "20px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "display-hero-mobile": [
+          "40px",
+          {
+            "lineHeight": "46px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "700"
+          }
+        ],
+        "code-base": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "28px",
+          {
+            "lineHeight": "36px",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "11px",
+          {
+            "lineHeight": "16px",
+            "letterSpacing": "0.06em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-lg": [
+          "44px",
+          {
+            "lineHeight": "52px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg-mobile": [
+          "32px",
+          {
+            "lineHeight": "38px",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "18px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "0em",
+            "fontWeight": "400"
+          }
+        ],
+        "label-ui": [
+          "13px",
+          {
+            "lineHeight": "18px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ]
+      }
+    }
+  }
+};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(15,23,42,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin-sm md:px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="home" href="#"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">AgentForge</span></a><div class="hidden xl:flex items-center gap-space-xs py-space-xs px-space-sm rounded-full bg-surface-container border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-caps text-label-caps text-on-surface-variant font-medium">BOC 2.0 SCENARIO 5</span></div></div><nav class="hidden lg:flex items-center gap-1 xl:gap-2" data-active-classes="bg-surface-container text-primary font-semibold"><a aria-current="page" class="px-space-sm py-space-xs rounded-lg transition-colors bg-surface-container text-primary font-semibold" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pillars" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pricing" href="#">Pricing &amp; Economics</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="console" href="#">Launch Console</a></nav><div class="flex items-center gap-space-sm shrink-0"><a class="hidden md:inline-flex items-center px-3 py-1.5 rounded-lg border border-outline-variant/50 bg-surface-container-lowest font-label-ui text-label-ui text-on-surface hover:bg-surface-container-low transition-all" href="https://github.com" rel="noreferrer" target="_blank">View on GitHub</a><a class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all" data-path="console" href="#">Launch Console</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Glow Canvas Decorator -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[1100px] h-[480px] bg-gradient-to-b from-primary/10 via-secondary/5 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-80 right-0 w-96 h-96 bg-tertiary/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- Header & Hero Context -->
+<section class="max-w-7xl mx-auto w-full px-margin-sm md:px-margin pt-10 pb-8">
+<!-- Breadcrumb & Status Telemetry -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-6">
+<div class="flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant">
+<span class="hover:text-primary transition-colors cursor-pointer">Platform</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Architecture</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">5-Layer Engine</span>
+</div>
+<div class="flex items-center gap-space-xs px-3 py-1 rounded-full bg-surface-container-lowest shadow-sm">
+<span class="inline-block w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-code-base text-code-base text-tertiary font-medium">us-central1 (Iowa) Multi-Zone Verified</span>
+</div>
+</div>
+<!-- Main Headline and Subtitle -->
+<div class="max-w-4xl flex flex-col gap-space-sm">
+<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface tracking-tight">
+          Inside the 5-Layer Autonomous Agent Engine
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+          Cloud-native, zero-trust request orchestration deployed exclusively across managed Google Cloud infrastructure. Built for enterprise SLA determinism, cryptographic multi-tenant isolation, and sub-second reasoning spans.
+        </p>
+</div>
+<!-- Architectural Telemetry Bar -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-space-sm mt-8">
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">P50 Latency</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">speed</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">542 ms</span>
+<span class="font-code-base text-[11px] text-tertiary mt-1">End-to-end traversal</span>
+</div>
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Managed Services</span>
+<span class="material-symbols-outlined text-primary text-[18px]">cloud</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">11 GCP Native</span>
+<span class="font-code-base text-[11px] text-on-surface-variant mt-1">Zero self-managed VMs</span>
+</div>
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Vector Boundary</span>
+<span class="material-symbols-outlined text-secondary text-[18px]">lock</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Isolated RAG</span>
+<span class="font-code-base text-[11px] text-secondary mt-1">Per-tenant SHA-256 namespace</span>
+</div>
+<div class="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Operational Lift</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">engineering</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Zero DIY Infra</span>
+<span class="font-code-base text-[11px] text-tertiary mt-1">100% Serverless Autonomic</span>
+</div>
+<div class="col-span-2 sm:col-span-1 flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Specification</span>
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">BOC 2.0 #5</span>
+<span class="font-code-base text-[11px] text-on-surface-variant mt-1">Production Agent Scale</span>
+</div>
+</div>
+</section>
+<!-- SECTION 1: Interactive 5-Layer End-to-End Visual Pipeline -->
+<section class="max-w-7xl mx-auto w-full px-margin-sm md:px-margin py-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-space-sm">
+<div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed mb-2 font-label-caps text-label-caps uppercase tracking-wider font-semibold">
+            Execution Flow
+          </div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
+            The Interactive 5-Layer Request Pipeline
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Select any pipeline stage to inspect real-time GCP components, protocol parameters, and latency budgets.
+          </p>
+</div>
+<!-- Flow State / Dynamic Controls -->
+<div class="flex items-center gap-space-xs bg-surface-container p-1 rounded-xl shadow-inner">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold shadow-sm transition-all flex items-center gap-1.5" id="btn-flow-live" onclick="setPipelineFlow('live')">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Nominal Flow
+          </button>
+<button class="px-3 py-1.5 rounded-lg text-on-surface-variant font-label-ui text-label-ui font-medium hover:text-on-surface transition-all flex items-center gap-1.5" id="btn-flow-failover" onclick="setPipelineFlow('failover')">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Fallback Circuit (Claude 3.5)
+          </button>
+</div>
+</div>
+<!-- Pipeline Visual Flow Diagram - Horizontal Step Flow with Live Interactivity -->
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-space-md mb-8">
+<!-- STEP 1 -->
+<div class="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l1" onclick="selectLayer(1)">
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-code-base text-label-caps text-primary font-bold tracking-wider">01 // EDGE</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">HTTPS / mTLS</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Ingress &amp; Perimeter</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Apigee Gateway token authorization &amp; Cloud Armor DDoS scrub.</p>
+<div class="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
+<span>Quota Check</span>
+<span class="font-bold">~14ms</span>
+</div>
+</div>
+<!-- STEP 2 -->
+<div class="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l2" onclick="selectLayer(2)">
+<div class="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-code-base text-label-caps text-primary font-bold tracking-wider">02 // RUNTIME</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">gRPC / Redis</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Agent Orchestration</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Cloud Run container instances, context window assembler, semantic cache.</p>
+<div class="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
+<span>Cache Lookup</span>
+<span class="font-bold">~4ms</span>
+</div>
+</div>
+<!-- STEP 3 -->
+<div class="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l3" onclick="selectLayer(3)">
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary to-primary"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-code-base text-label-caps text-secondary font-bold tracking-wider">03 // COGNITIVE</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">SSE Stream</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Cognitive &amp; RAG</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Vertex AI Gemini 1.5 Pro inference with Vector Search tenant namespaces.</p>
+<div class="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
+<span>HNSW Retrieval</span>
+<span class="font-bold">~380ms</span>
+</div>
+</div>
+<!-- STEP 4 -->
+<div class="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l4" onclick="selectLayer(4)">
+<div class="absolute top-0 left-0 right-0 h-1 bg-tertiary"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-code-base text-label-caps text-tertiary font-bold tracking-wider">04 // SANDBOX</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">gRPC Sandbox</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Execution &amp; Safety</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">3-layer guardrail scan, schema validation, Cloud Run ephemeral tools.</p>
+<div class="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
+<span>Guardrail Scan</span>
+<span class="font-bold">~85ms</span>
+</div>
+</div>
+<!-- STEP 5 -->
+<div class="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l5" onclick="selectLayer(5)">
+<div class="absolute top-0 left-0 right-0 h-1 bg-surface-tint"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-code-base text-label-caps text-on-surface-variant font-bold tracking-wider">05 // AUDIT</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">BigQuery Sync</span>
+</div>
+<h3 class="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Telemetry &amp; Audit</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Cloud Trace distributed spans, partitioned BigQuery immutable log stream.</p>
+<div class="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
+<span>Async Buffer</span>
+<span class="font-bold">&lt; 1ms</span>
+</div>
+</div>
+</div>
+<!-- Dynamic Layer Detail Inspector Panel -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-lg shadow-md transition-all" id="layer-inspector">
+<!-- Injected via JavaScript -->
+</div>
+</section>
+<!-- Visual Architecture Interstitial Graphic (SVG Dataflow Pipeline) -->
+<div class="max-w-7xl mx-auto w-full px-margin-sm md:px-margin my-4">
+<div class="rounded-2xl bg-surface-container-low p-space-lg shadow-sm">
+<div class="flex flex-col md:flex-row items-center justify-between gap-space-md mb-6">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase font-bold tracking-widest">Protocol &amp; Transit Flow</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Asynchronous Ingestion &amp; Failover Topography</h3>
+</div>
+<div class="flex items-center gap-space-sm font-code-base text-code-base text-on-surface-variant">
+<span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-primary rounded"></span> Active Ingress</span>
+<span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-secondary rounded"></span> Dynamic Circuit</span>
+<span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-tertiary rounded"></span> Pub/Sub Escalation</span>
+</div>
+</div>
+<!-- Inline Visual Topology SVG Chart -->
+<div class="w-full overflow-x-auto">
+<svg class="w-full min-w-[760px] h-48" fill="none" viewBox="0 0 960 180" xmlns="http://www.w3.org/2000/svg">
+<!-- Background Grids & Guidelines -->
+<line class="text-on-surface" stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.06" x1="0" x2="960" y1="45" y2="45"></line>
+<line class="text-on-surface" stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.06" x1="0" x2="960" y1="90" y2="90"></line>
+<line class="text-on-surface" stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.06" x1="0" x2="960" y1="135" y2="135"></line>
+<!-- Primary Data Bus Cable -->
+<path class="text-primary-container" d="M 60 90 L 240 90 L 440 90 L 660 90 L 880 90" stroke="currentColor" stroke-linecap="round" stroke-opacity="0.2" stroke-width="4"></path>
+<path d="M 60 90 L 240 90 L 440 90 L 660 90 L 880 90" stroke="#4F46E5" stroke-dasharray="12 12" stroke-linecap="round" stroke-width="2">
+<animate attributeName="stroke-dashoffset" dur="2s" from="48" repeatCount="indefinite" to="0"></animate>
+</path>
+<!-- Failover Pathway: Cognitive (440) to Bedrock/Anthropic (660, 30) -->
+<path d="M 440 90 C 480 90, 500 35, 560 35 L 680 35" stroke="#712AE2" stroke-dasharray="6 4" stroke-linecap="round" stroke-width="2"></path>
+<!-- Pub/Sub Async Escalation: Tool Execution (660) to Dead Letter / Human Queue (780, 145) -->
+<path d="M 660 90 C 700 90, 710 145, 760 145 L 860 145" stroke="#006D62" stroke-dasharray="4 4" stroke-linecap="round" stroke-width="2"></path>
+<!-- Node 1: Client Gateway -->
+<g transform="translate(60, 90)">
+<circle fill="#FFFFFF" r="22" stroke="#4F46E5" stroke-width="2"></circle>
+<circle fill="#4F46E5" r="8"></circle>
+<text class="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">Client Edge</text>
+<text class="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">Apigee / Armor</text>
+</g>
+<!-- Node 2: Orchestration Controller -->
+<g transform="translate(240, 90)">
+<circle fill="#FFFFFF" r="20" stroke="#4F46E5" stroke-width="2"></circle>
+<circle fill="#4F46E5" r="6"></circle>
+<text class="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">Cloud Run Core</text>
+<text class="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">Memorystore Hits</text>
+</g>
+<!-- Node 3: Vertex Engine Primary -->
+<g transform="translate(440, 90)">
+<circle fill="#FFFFFF" r="24" stroke="#3525CD" stroke-width="2"></circle>
+<circle fill="#3525CD" r="9"></circle>
+<text class="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="40">Vertex AI Gemini</text>
+<text class="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="54">Vector Search 1.5</text>
+</g>
+<!-- Failover Node: Claude 3.5 Fallback -->
+<g transform="translate(680, 35)">
+<rect fill="#FFFFFF" height="28" rx="6" stroke="#712AE2" stroke-width="1.5" width="90" x="-45" y="-14"></rect>
+<text class="font-code-base text-[10px] fill-current text-secondary font-bold" text-anchor="middle" x="0" y="4">Fallback Model</text>
+<text class="font-label-caps text-[8px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="24">Anthropic Claude</text>
+</g>
+<!-- Node 4: Sandboxed Executors -->
+<g transform="translate(660, 90)">
+<circle fill="#FFFFFF" r="20" stroke="#00534A" stroke-width="2"></circle>
+<circle fill="#00534A" r="6"></circle>
+<text class="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">Sandbox Execution</text>
+<text class="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">gVisor Sandbox</text>
+</g>
+<!-- PubSub Esc Queue -->
+<g transform="translate(860, 145)">
+<rect fill="#FFFFFF" height="24" rx="4" stroke="#006D62" stroke-width="1.5" width="80" x="-40" y="-12"></rect>
+<text class="font-code-base text-[10px] fill-current text-tertiary font-bold" text-anchor="middle" x="0" y="4">Pub/Sub Queue</text>
+<text class="font-label-caps text-[8px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="22">Human-in-Loop</text>
+</g>
+<!-- Node 5: BigQuery Lakehouse -->
+<g transform="translate(880, 90)">
+<circle fill="#FFFFFF" r="20" stroke="#4D44E3" stroke-width="2"></circle>
+<circle fill="#4D44E3" r="6"></circle>
+<text class="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">BigQuery Stream</text>
+<text class="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">Immutable Audit</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+<!-- SECTION 2: GCP Managed Infrastructure Topology -->
+<section class="max-w-7xl mx-auto w-full px-margin-sm md:px-margin py-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-space-sm">
+<div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed mb-2 font-label-caps text-label-caps uppercase tracking-wider font-semibold">
+            Infrastructure Grid
+          </div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
+            GCP Managed Topology &amp; Service Mapping
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Every architectural building block is native, enterprise-managed Google Cloud infrastructure with no custom daemons or unmanaged VMs.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Filter Focus:</span>
+<button class="topo-btn px-2.5 py-1 rounded bg-primary text-on-primary font-label-caps text-label-caps font-medium" onclick="filterTopology('all')">All (6)</button>
+<button class="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onclick="filterTopology('compute')">Compute</button>
+<button class="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onclick="filterTopology('data')">Data &amp; AI</button>
+<button class="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onclick="filterTopology('security')">Security</button>
+</div>
+</div>
+<!-- 6-Grid Topology Array -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<!-- CARD 1: Compute / Cloud Run -->
+<div class="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="compute">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">developer_board</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">Compute Tier</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Cloud Run Microservices</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+              Serverless container runtime managing autonomous loop executors. Scales to 0 on idle; dynamically bursts to 1,000 instances with concurrency fixed at 80 requests/container.
+            </p>
+</div>
+<div class="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Cold Start Penalty</span>
+<span class="text-tertiary font-semibold">&lt; 320ms (Min-instances: 2)</span>
+</div>
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">VPC Egress</span>
+<span class="text-on-surface font-semibold">Direct VPC Connector</span>
+</div>
+</div>
+</div>
+<!-- CARD 2: Routing / Apigee -->
+<div class="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="compute">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">alt_route</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">Edge Proxy</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Apigee API Gateway</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+              Enterprise policy enforcement layer verifying tenant OAuth2/JWT signatures, enforcing dynamic per-seat rate limits, and metering raw token consumption before ingress.
+            </p>
+</div>
+<div class="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Policy Execution</span>
+<span class="text-tertiary font-semibold">~14ms P95</span>
+</div>
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">DDoS Shield</span>
+<span class="text-on-surface font-semibold">Cloud Armor Tier-1</span>
+</div>
+</div>
+</div>
+<!-- CARD 3: State / Firestore & Memorystore -->
+<div class="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="data">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">database</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">State &amp; Cache</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Firestore &amp; Memorystore</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+              Dual-layer storage topology: ACID-compliant Firestore manages session graphs &amp; tenant configs; Memorystore Redis maintains sub-5ms semantic embedding caches.
+            </p>
+</div>
+<div class="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Semantic Cache Hit Rate</span>
+<span class="text-tertiary font-semibold">38.4% Average</span>
+</div>
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Consistency Model</span>
+<span class="text-on-surface font-semibold">Strong Global (Firestore)</span>
+</div>
+</div>
+</div>
+<!-- CARD 4: AI & Vector / Vertex AI Studio -->
+<div class="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="data">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">psychology</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">Cognitive Layer</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Vertex AI &amp; Vector Search</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+              Gemini 1.5 Pro multimodal reasoning coupled with billion-scale Vertex Vector Search. Employs ScaNN &amp; HNSW indexing partitioned into cryptographically unique tenant namespaces.
+            </p>
+</div>
+<div class="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Recall Rate</span>
+<span class="text-tertiary font-semibold">&gt; 98.6% @ Top-10</span>
+</div>
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Model Fallback</span>
+<span class="text-on-surface font-semibold">Cloud Function Circuit</span>
+</div>
+</div>
+</div>
+<!-- CARD 5: Security / Secret Manager & IAM -->
+<div class="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="security">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">vpn_key</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">KMS &amp; Auth</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Secret Manager &amp; Workload IAM</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+              Tenant tool API keys and downstream enterprise credentials reside in Google Cloud Secret Manager with per-call automated rotation and customer-managed encryption keys (CMEK).
+            </p>
+</div>
+<div class="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Encryption Standard</span>
+<span class="text-tertiary font-semibold">AES-256 GCM Hardware</span>
+</div>
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Service Access</span>
+<span class="text-on-surface font-semibold">Workload Identity Fed.</span>
+</div>
+</div>
+</div>
+<!-- CARD 6: Telemetry / BigQuery & Trace -->
+<div class="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="data">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">analytics</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">Lakehouse &amp; SRE</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">BigQuery Stream &amp; Cloud Trace</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+              Every token, model evaluation score, tool execution parameter, and latency span is continuously streamed into day-partitioned BigQuery tables for immutable audit and cost ledgering.
+            </p>
+</div>
+<div class="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Write Latency</span>
+<span class="text-tertiary font-semibold">&lt; 100ms Ingestion SLA</span>
+</div>
+<div class="flex items-center justify-between font-code-base text-[11px]">
+<span class="text-on-surface-variant">Trace Propagation</span>
+<span class="text-on-surface font-semibold">W3C TraceContext</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: High Availability & Multi-Tenant Isolation Model -->
+<section class="max-w-7xl mx-auto w-full px-margin-sm md:px-margin py-12">
+<div class="mb-10">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed mb-2 font-label-caps text-label-caps uppercase tracking-wider font-semibold">
+          Enterprise Assurance
+        </div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
+          High Availability &amp; Multi-Tenant Isolation
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 max-w-3xl">
+          Architectural boundaries guarantee that cross-tenant contamination is mathematically impossible while meeting 99.9% uptime enterprise requirements.
+        </p>
+</div>
+<!-- 3-Column Comparative Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Pillar A: Vector Namespace Isolation -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[28px]">shield_lock</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-3">
+              Cryptographic Namespace Partitioning
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Tenant documents are tagged with immutable SHA-256 HMAC prefixes inside Vertex Vector Search. At query time, filters enforce hard tenancy at the ANN indexing layer.
+            </p>
+<ul class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant mb-6">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Zero cross-tenant vector contamination</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Tenant-scoped KMS encryption keys</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Strict row-level security in BigQuery analytics</span>
+</li>
+</ul>
+</div>
+<div class="p-space-sm bg-surface-container rounded-xl font-code-base text-[11px] text-on-surface">
+<span class="text-primary font-semibold">filter:</span> <code>tenant_id == hmac_sha256(sub)</code>
+</div>
+</div>
+<!-- Pillar B: Rate Limiting & Token Budgeting -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined text-[28px]">tune</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-3">
+              Adaptive Token Budgeting
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Token allocation engines run via Apigee spike arrest algorithms. Tenants enjoy guaranteed burst thresholds alongside hard monthly financial safeguards against runaways.
+            </p>
+<ul class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant mb-6">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Dynamic sliding-window rate limits</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Loop detection &amp; execution depth aborts</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Real-time budget alert hooks via Pub/Sub</span>
+</li>
+</ul>
+</div>
+<div class="p-space-sm bg-surface-container rounded-xl font-code-base text-[11px] text-on-surface">
+<span class="text-secondary font-semibold">threshold:</span> <code>max_recursion_depth: 8 | 150k tok</code>
+</div>
+</div>
+<!-- Pillar C: Multi-AZ & Circuit Breakers -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined text-[28px]">cloud_sync</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mb-3">
+              Multi-AZ 99.9% Failover
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Cloud Run and Vertex AI replicas span 3 availability zones in us-central1. Should Gemini encounter 503 or latency degradation, circuit breakers invoke Anthropic Claude in &lt;180ms.
+            </p>
+<ul class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant mb-6">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Automated health check trippers</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>State continuity via Memorystore session store</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Active-active Cloud Run multi-region expansion</span>
+</li>
+</ul>
+</div>
+<div class="p-space-sm bg-surface-container rounded-xl font-code-base text-[11px] text-on-surface">
+<span class="text-tertiary font-semibold">circuit:</span> <code>status: CLOSED | p99_sla: 99.95%</code>
+</div>
+</div>
+</div>
+</section>
+<!-- Real-World Architecture Benchmark / Deep Spec Accordion -->
+<section class="max-w-7xl mx-auto w-full px-margin-sm md:px-margin pt-6 pb-20">
+<div class="rounded-3xl bg-surface-container-low p-space-lg md:p-space-xl shadow-sm">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Technical Reference Checklist</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Verification parameters for enterprise security evaluations and cloud review boards.</p>
+</div>
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow hover:opacity-95 transition-all" data-path="console" href="#">
+<span>Explore Runtime Telemetry</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md font-code-base text-code-base">
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex items-center justify-between">
+<span class="text-on-surface">Zero Trust Ingress Auth</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-bold text-[11px]">RS256 JWT Signed</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex items-center justify-between">
+<span class="text-on-surface">Orchestration Scaling Rule</span>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[11px]">0 to 1,000 instances</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex items-center justify-between">
+<span class="text-on-surface">Data Transit Encryption</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-bold text-[11px]">TLS 1.3 / mTLS Mesh</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex items-center justify-between">
+<span class="text-on-surface">Sandboxing Technology</span>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary font-bold text-[11px]">gVisor / Ephemeral Run</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex items-center justify-between">
+<span class="text-on-surface">Disaster Recovery RPO / RTO</span>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-bold text-[11px]">RPO: 0s | RTO: &lt; 30s</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex items-center justify-between">
+<span class="text-on-surface">Compliance Certifications</span>
+<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary font-bold text-[11px]">SOC2 Type II, HIPAA, ISO27001</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Interactive Client Scripts for Pipeline Exploration & Filtering -->
+<script>
+  // Layer details dataset
+  const layerData = {
+    1: {
+      layer: "Layer 1: Ingress & Edge Protection",
+      tag: "PERIMETER SHIELD",
+      badgeColor: "text-primary bg-primary/10",
+      description: "Apigee API Gateway acts as the zero-trust front door. All requests undergo cryptographically validated tenant JWT authorization, dynamic IP reputation assessment via Google Cloud Armor, and microsecond quota validation.",
+      latency: "14ms (P50)",
+      gcpService: "Apigee Gateway + Cloud Armor",
+      protocol: "HTTPS / mTLS / HTTP/2",
+      guardrail: "Strict token rate limits, automated DDoS scrubbing",
+      cliSnippet: "curl -X POST https://api.agentforge.cloud/v2/orchestrate \\\n  -H 'Authorization: Bearer <tenant_jwt>' \\\n  -H 'X-Agent-Protocol: gRPC-Web' \\\n  -d '{\"agent_id\": \"boc-scenario-5\", \"prompt\": \"Plan migration\"}'"
+    },
+    2: {
+      layer: "Layer 2: Agent Orchestration Engine",
+      tag: "RUNTIME CORE",
+      badgeColor: "text-primary bg-primary/10",
+      description: "Built on serverless Google Cloud Run microservices. Assembles multi-turn context windows, initiates the multi-step Task Planner graph, and intercepts duplicate prompt tokens via Memorystore Redis semantic cache (Cosine similarity >= 0.94).",
+      latency: "4ms (Cache Hit) / 38ms (Miss)",
+      gcpService: "Cloud Run + Memorystore (Redis)",
+      protocol: "gRPC & Direct VPC Transit",
+      guardrail: "Context window truncation, recursion loop breaker",
+      cliSnippet: "// Memorystore Semantic Cache Interceptor\nconst cacheHit = await redis.searchSemanticEmbedding({\n  vector: promptVector,\n  threshold: 0.94,\n  tenantId: ctx.tenant\n});\nif (cacheHit) return cacheHit.resolvedPlan;"
+    },
+    3: {
+      layer: "Layer 3: Cognitive & Knowledge Tier",
+      tag: "VERTEX REASONING",
+      badgeColor: "text-secondary bg-secondary/10",
+      description: "Leverages Vertex AI Gemini 1.5 Pro with native 1M+ token context. Queries Vertex Vector Search via ScaNN / HNSW index spaces isolated strictly to tenant IDs. Incorporates dynamic cross-chunk re-ranking before prompt synthesis.",
+      latency: "380ms (First Token)",
+      gcpService: "Vertex AI Studio + Vertex Vector Search",
+      protocol: "Server-Sent Events (SSE) Streaming",
+      guardrail: "HNSW isolated tenant namespaces, hallucination verifier",
+      cliSnippet: "vertex_ai.preview.rag.retrieval_query(\n  index_endpoint='projects/agentforge/locations/us-central1/indexEndpoints/49102',\n  deployed_index_id='tenant_vector_partition_prod',\n  queries=[query_vector],\n  filter='tenant_id == \"corp_alpha_92\"'\n)"
+    },
+    4: {
+      layer: "Layer 4: Sandboxed Tool Execution & Guardrails",
+      tag: "ZERO-TRUST SANDBOX",
+      badgeColor: "text-tertiary bg-tertiary/10",
+      description: "Every tool invocation executes inside an isolated, short-lived Cloud Run container enclosed by gVisor kernel sandboxing. Outbound requests pass through a 3-layer security scanner: Prompt Injection Detector, Schema Verifier, and Cloud Pub/Sub human authorization escalation.",
+      latency: "85ms execution overhead",
+      gcpService: "Cloud Run Sandboxes + Cloud Pub/Sub",
+      protocol: "Internal VPC gRPC with mTLS",
+      guardrail: "gVisor isolation, human-in-the-loop escalation topic",
+      cliSnippet: "# Ephemeral Sandboxed Tool Dispatch\nexecution_job = run_v2.JobsClient().run_job(\n  name='projects/agentforge/locations/us-central1/jobs/tool-sandbox-executor',\n  overrides={'container_overrides': [{'args': ['--sandbox', tool_payload]}]}\n)"
+    },
+    5: {
+      layer: "Layer 5: Immutable Observability & Audit Trail",
+      tag: "ENTERPRISE COMPLIANCE",
+      badgeColor: "text-primary bg-primary/10",
+      description: "Complete trace and span lineage is captured synchronously via Google Cloud Trace (W3C standard). State snapshots, model reasoning tokens, and tool execution logs stream directly into BigQuery for automated billing, cost tracking, and SOC2 auditability.",
+      latency: "< 1ms non-blocking async",
+      gcpService: "BigQuery Stream + Cloud Trace + Cloud Logging",
+      protocol: "BigQuery Storage Write API (gRPC)",
+      guardrail: "Append-only immutable partitioned ledger, PII redaction",
+      cliSnippet: "SELECT timestamp, tenant_id, agent_id, total_tokens, execution_time_ms, cost_usd\nFROM `agentforge-core.telemetry.agent_executions_2025`\nWHERE tenant_id = @tenantId\nORDER BY timestamp DESC LIMIT 50;"
+    }
+  };
+
+  let activeLayer = 1;
+
+  function renderInspector(id) {
+    const data = layerData[id];
+    const container = document.getElementById("layer-inspector");
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="flex flex-col lg:flex-row gap-space-lg items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-space-sm mb-3">
+            <span class="px-2.5 py-0.5 rounded-full font-code-base text-[11px] font-bold ${data.badgeColor}">${data.tag}</span>
+            <span class="font-code-base text-[12px] text-on-surface-variant font-medium">${data.protocol}</span>
+          </div>
+          <h3 class="font-headline-md text-headline-md font-bold text-on-surface mb-3">${data.layer}</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">${data.description}</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm mb-4">
+            <div class="p-space-sm bg-surface-container-low rounded-xl">
+              <span class="font-label-caps text-label-caps text-on-surface-variant uppercase block mb-0.5">Target GCP Service</span>
+              <span class="font-code-base text-[13px] text-primary font-bold">${data.gcpService}</span>
+            </div>
+            <div class="p-space-sm bg-surface-container-low rounded-xl">
+              <span class="font-label-caps text-label-caps text-on-surface-variant uppercase block mb-0.5">Latency Target</span>
+              <span class="font-code-base text-[13px] text-tertiary font-bold">${data.latency}</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+            <span class="material-symbols-outlined text-tertiary text-[18px]">verified_user</span>
+            <span><strong>Guardrail:</strong> ${data.guardrail}</span>
+          </div>
+        </div>
+
+        <div class="w-full lg:w-[460px] shrink-0">
+          <div class="rounded-xl bg-inverse-surface text-inverse-on-surface p-space-md shadow-inner overflow-hidden">
+            <div class="flex items-center justify-between pb-2 mb-3 border-b border-outline/20">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-error/70"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim"></span>
+                <span class="font-code-base text-[11px] text-inverse-on-surface/60 ml-2">runtime_spec.ts</span>
+              </div>
+              <span class="font-code-base text-[11px] text-inverse-primary">gcp-orchestration</span>
+            </div>
+            <pre class="font-code-base text-[12px] leading-relaxed text-inverse-on-surface overflow-x-auto"><code>${escapeHtml(data.cliSnippet)}</code></pre>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Highlight selected card visually
+    for (let i = 1; i <= 5; i++) {
+      const card = document.getElementById(`card-l${i}`);
+      if (card) {
+        if (i === id) {
+          card.classList.add("ring-2", "ring-primary", "bg-surface-container-low");
+          card.classList.remove("bg-surface-container-lowest");
+        } else {
+          card.classList.remove("ring-2", "ring-primary", "bg-surface-container-low");
+          card.classList.add("bg-surface-container-lowest");
+        }
+      }
+    }
+  }
+
+  function selectLayer(id) {
+    activeLayer = id;
+    renderInspector(id);
+  }
+
+  function setPipelineFlow(type) {
+    const liveBtn = document.getElementById("btn-flow-live");
+    const failoverBtn = document.getElementById("btn-flow-failover");
+    if (type === 'live') {
+      liveBtn.className = "px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold shadow-sm transition-all flex items-center gap-1.5";
+      failoverBtn.className = "px-3 py-1.5 rounded-lg text-on-surface-variant font-label-ui text-label-ui font-medium hover:text-on-surface transition-all flex items-center gap-1.5";
+      selectLayer(3);
+    } else {
+      failoverBtn.className = "px-3 py-1.5 rounded-lg bg-surface-container-lowest text-secondary font-label-ui text-label-ui font-semibold shadow-sm transition-all flex items-center gap-1.5";
+      liveBtn.className = "px-3 py-1.5 rounded-lg text-on-surface-variant font-label-ui text-label-ui font-medium hover:text-on-surface transition-all flex items-center gap-1.5";
+      // Update Inspector specifically for Fallback mode
+      const container = document.getElementById("layer-inspector");
+      if (container) {
+        container.innerHTML = `
+          <div class="flex flex-col lg:flex-row gap-space-lg items-start justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-space-sm mb-3">
+                <span class="px-2.5 py-0.5 rounded-full font-code-base text-[11px] font-bold text-secondary bg-secondary/10">CIRCUIT BREAKER ENGAGED</span>
+                <span class="font-code-base text-[12px] text-on-surface-variant font-medium">Auto Failover Fallback</span>
+              </div>
+              <h3 class="font-headline-md text-headline-md font-bold text-on-surface mb-3">Layer 3: Cognitive Resiliency Fallback</h3>
+              <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                Google Cloud Function circuit breaker detects Vertex AI Gemini rate-exceeded (HTTP 429) or latency spike (&gt;2000ms). Execution reroutes via direct Anthropic Claude 3.5 Sonnet connector while keeping tenant state &amp; vector context consistent.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm mb-4">
+                <div class="p-space-sm bg-surface-container-low rounded-xl">
+                  <span class="font-label-caps text-label-caps text-on-surface-variant uppercase block mb-0.5">Fallback Provider</span>
+                  <span class="font-code-base text-[13px] text-secondary font-bold">Claude 3.5 Sonnet via Vertex</span>
+                </div>
+                <div class="p-space-sm bg-surface-container-low rounded-xl">
+                  <span class="font-label-caps text-label-caps text-on-surface-variant uppercase block mb-0.5">Switch Latency</span>
+                  <span class="font-code-base text-[13px] text-tertiary font-bold">&lt; 140ms Circuit Flip</span>
+                </div>
+              </div>
+            </div>
+            <div class="w-full lg:w-[460px] shrink-0">
+              <div class="rounded-xl bg-inverse-surface text-inverse-on-surface p-space-md shadow-inner">
+                <div class="flex items-center justify-between pb-2 mb-3 border-b border-outline/20">
+                  <span class="font-code-base text-[11px] text-inverse-primary">circuit_trip.log</span>
+                  <span class="font-code-base text-[11px] text-secondary">ACTIVE_FALLBACK</span>
+                </div>
+                <pre class="font-code-base text-[12px] text-inverse-on-surface overflow-x-auto"><code>[WARN] 2025-05-18T10:41:02Z Vertex AI P99 &gt; 1800ms
+[INFO] Tripping circuit breaker to Claude 3.5 Sonnet
+[INFO] Model input payload redirected with preserved HMAC tenant token
+[SUCCESS] Fallback token stream resolved in 340ms</code></pre>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function filterTopology(category) {
+    const cards = document.querySelectorAll(".topo-card");
+    const buttons = document.querySelectorAll(".topo-btn");
+    
+    buttons.forEach(btn => {
+      btn.classList.remove("bg-primary", "text-on-primary");
+      btn.classList.add("bg-surface-container", "text-on-surface");
+    });
+    event.target.classList.add("bg-primary", "text-on-primary");
+    event.target.classList.remove("bg-surface-container", "text-on-surface");
+
+    cards.forEach(card => {
+      if (category === "all" || card.getAttribute("data-category") === category) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // Initialize view
+  renderInspector(1);
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-xl"><div class="max-w-7xl mx-auto px-margin-sm md:px-margin flex flex-col gap-space-lg"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md"><div class="flex items-center gap-space-sm"><div class="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary"><span class="material-symbols-outlined text-[14px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentForge</span><span class="font-code-base text-code-base text-on-surface-variant ml-space-xs">v2.4.0-rc</span></div><div class="flex items-center gap-space-sm font-code-base text-code-base text-on-surface-variant bg-surface-container-low px-space-sm py-1 rounded-md border border-outline-variant/20"><span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span><span>GCP Cloud Run Services: Operational</span></div></div><div class="flex flex-wrap items-center justify-between gap-space-md border-t border-outline-variant/20 pt-space-lg"><div class="flex flex-wrap items-center gap-space-md font-body-sm text-body-sm text-on-surface-variant"><a class="hover:text-on-surface transition-colors" data-path="architecture" href="#">Autonomic Topology</a><a class="hover:text-on-surface transition-colors" data-path="pillars" href="#">Security &amp; Governance</a><a class="hover:text-on-surface transition-colors" data-path="demo" href="#">Runtime Stream</a><a class="hover:text-on-surface transition-colors" data-path="pricing" href="#">Tier Economics</a></div><p class="font-body-sm text-body-sm text-on-surface-variant">Crafted for BOC 2.0 Challenge — Autonomous Agent Infrastructure.</p></div></div></footer></body></html>

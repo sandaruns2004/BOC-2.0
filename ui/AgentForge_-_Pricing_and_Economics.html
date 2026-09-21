@@ -1,0 +1,830 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>AgentForge Platform</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-container-high": "#e2e7ff",
+        "secondary-container": "#8a4cfc",
+        "on-tertiary-fixed": "#00201c",
+        "on-error": "#ffffff",
+        "secondary-fixed": "#eaddff",
+        "on-secondary-fixed": "#25005a",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "secondary-fixed-dim": "#d2bbff",
+        "surface-container-lowest": "#ffffff",
+        "surface-variant": "#dae2fd",
+        "surface-bright": "#faf8ff",
+        "surface-dim": "#d2d9f4",
+        "on-secondary-container": "#fffbff",
+        "on-tertiary": "#ffffff",
+        "on-secondary": "#ffffff",
+        "inverse-primary": "#c3c0ff",
+        "surface-tint": "#4d44e3",
+        "secondary": "#712ae2",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#71f8e4",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#283044",
+        "primary-container": "#4f46e5",
+        "on-primary-fixed": "#0f0069",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-primary-container": "#dad7ff",
+        "on-surface": "#131b2e",
+        "primary": "#3525cd",
+        "outline": "#777587",
+        "surface": "#faf8ff",
+        "error": "#ba1a1a",
+        "on-primary": "#ffffff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "on-primary-fixed-variant": "#3323cc",
+        "surface-container": "#eaedff",
+        "outline-variant": "#c7c4d8",
+        "inverse-on-surface": "#eef0ff",
+        "error-container": "#ffdad6",
+        "primary-fixed": "#e2dfff",
+        "on-tertiary-container": "#69f1de",
+        "tertiary": "#00534a",
+        "on-surface-variant": "#464555",
+        "tertiary-container": "#006d62",
+        "surface-container-highest": "#dae2fd",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-container-low": "#f2f3ff",
+        "background": "#faf8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xs": "0.25rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "space-lg": "1.5rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "display-hero": [
+          "Geist"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "headline-sm": [
+          "Geist"
+        ],
+        "display-hero-mobile": [
+          "Geist"
+        ],
+        "code-base": [
+          "JetBrains Mono"
+        ],
+        "headline-md": [
+          "Geist"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "headline-lg": [
+          "Geist"
+        ],
+        "headline-lg-mobile": [
+          "Geist"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "label-ui": [
+          "Inter"
+        ]
+      },
+      "fontSize": {
+        "display-hero": [
+          "64px",
+          {
+            "lineHeight": "72px",
+            "letterSpacing": "-0.035em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "15px",
+          {
+            "lineHeight": "24px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-sm": [
+          "20px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "display-hero-mobile": [
+          "40px",
+          {
+            "lineHeight": "46px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "700"
+          }
+        ],
+        "code-base": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "28px",
+          {
+            "lineHeight": "36px",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "11px",
+          {
+            "lineHeight": "16px",
+            "letterSpacing": "0.06em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-lg": [
+          "44px",
+          {
+            "lineHeight": "52px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg-mobile": [
+          "32px",
+          {
+            "lineHeight": "38px",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "18px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "0em",
+            "fontWeight": "400"
+          }
+        ],
+        "label-ui": [
+          "13px",
+          {
+            "lineHeight": "18px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ]
+      }
+    }
+  }
+};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(15,23,42,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin-sm md:px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="home" href="#"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">AgentForge</span></a><div class="hidden xl:flex items-center gap-space-xs py-space-xs px-space-sm rounded-full bg-surface-container border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-caps text-label-caps text-on-surface-variant font-medium">BOC 2.0 SCENARIO 5</span></div></div><nav class="hidden lg:flex items-center gap-1 xl:gap-2" data-active-classes="bg-surface-container text-primary font-semibold"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pillars" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="demo" href="#">Live Flow Demo</a><a aria-current="page" class="px-space-sm py-space-xs rounded-lg transition-colors bg-surface-container text-primary font-semibold" data-path="pricing" href="#">Pricing &amp; Economics</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="console" href="#">Launch Console</a></nav><div class="flex items-center gap-space-sm shrink-0"><a class="hidden md:inline-flex items-center px-3 py-1.5 rounded-lg border border-outline-variant/50 bg-surface-container-lowest font-label-ui text-label-ui text-on-surface hover:bg-surface-container-low transition-all" href="https://github.com" rel="noreferrer" target="_blank">View on GitHub</a><a class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all" data-path="console" href="#">Launch Console</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Top Halo -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[980px] h-[460px] bg-gradient-to-b from-primary/10 via-secondary/5 to-transparent blur-3xl pointer-events-none -z-10"></div>
+<!-- Header Section -->
+<section class="max-w-7xl mx-auto px-margin-sm md:px-margin pt-space-xl pb-space-lg text-center flex flex-col items-center">
+<div class="inline-flex items-center gap-space-xs py-1 px-3.5 rounded-full bg-surface-container border-none shadow-sm mb-space-md">
+<span class="material-symbols-outlined text-[15px] text-primary" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+<span class="font-label-caps text-label-caps text-primary tracking-wider uppercase font-semibold">Transparent Cloud Economics</span>
+</div>
+<h1 class="font-display-hero text-headline-lg-mobile md:text-display-hero text-on-surface max-w-4xl tracking-tight leading-[1.08] mb-space-md">
+        Predictable Multi-Tenant Pricing. <br class="hidden sm:inline">
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary-container">Zero Hidden Fees.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl text-center leading-relaxed">
+        Billed on actual GCP consumption plus simple platform tiers. From pilot validation to 1,000+ enterprise tenants without architectural lock-in.
+      </p>
+<!-- Currency / Billing Toggle Indicator -->
+<div class="mt-space-lg flex items-center gap-3 bg-surface-container-low p-1.5 rounded-full shadow-inner">
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest font-label-ui text-label-ui text-primary font-medium shadow-sm transition-all" id="billing-monthly">Monthly GCP Pass-Through</button>
+<button class="px-4 py-1.5 rounded-full font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-all flex items-center gap-1.5" id="billing-annual">
+<span>Committed Use (Annual)</span>
+<span class="text-[10px] uppercase font-label-caps bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 rounded-full font-semibold">Save 22%</span>
+</button>
+</div>
+</section>
+<!-- Section 1: Tiered Pricing Cards -->
+<section class="max-w-7xl mx-auto px-margin-sm md:px-margin py-space-lg">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg items-stretch">
+<!-- Tier 1: Developer / Pilot -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">BOC 2.0 Evaluation</span>
+<span class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant material-symbols-outlined text-[20px]">terminal</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Developer / Pilot</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-6">Ideal for BOC 2.0 evaluation, POC validation, and sandboxes up to 10 isolated tenants.</p>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="font-display-hero text-headline-lg text-on-surface font-bold tracking-tight tier-price-pilot">$158</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ month</span>
+</div>
+<div class="space-y-3 pt-6 bg-surface-container-low/40 rounded-lg p-4 mb-6">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface"><strong>15,000</strong> conversations / mo included</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface"><strong>3-Layer Guardrails</strong> (PII, Prompt Injection, Toxicity)</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Tenant-isolated RAG (Vertex AI Vector Search)</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Cloud Run autoscaling serverless compute</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Community support &amp; GitHub starter scaffolds</span>
+</div>
+</div>
+</div>
+<a class="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="#">
+            Deploy 10-Tenant Pilot
+          </a>
+</div>
+<!-- Tier 2: Growth / Mid-Market (Highlighted) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-xl relative flex flex-col justify-between -mt-2 lg:-mt-4 relative overflow-hidden">
+<!-- Ambient Card Halo -->
+<div class="absolute -top-24 -right-24 w-60 h-60 bg-gradient-to-bl from-primary/20 via-secondary/15 to-transparent blur-2xl pointer-events-none"></div>
+<div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-secondary to-primary-container"></div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="inline-flex items-center gap-1 py-0.5 px-2.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps text-label-caps font-semibold uppercase">
+                Most Popular
+              </span>
+<span class="p-2 rounded-lg bg-primary-fixed text-primary material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Growth / Mid-Market</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-6">Built for fast-scaling multi-brand applications and B2B SaaS platforms handling production spikes.</p>
+<div class="flex items-baseline gap-1 mb-1">
+<span class="font-display-hero text-headline-lg text-on-surface font-bold tracking-tight tier-price-growth">$790</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ month</span>
+</div>
+<p class="font-code-base text-[11px] text-on-surface-variant mb-6">+ $15/mo per tenant beyond 50 active instances</p>
+<div class="space-y-3 pt-6 bg-surface-container-low/60 rounded-lg p-4 mb-6">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Up to <strong>50 tenants</strong> included natively</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified</span>
+<span class="font-body-sm text-body-sm text-on-surface"><strong>100,000</strong> conversations / mo included</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified</span>
+<span class="font-body-sm text-body-sm text-on-surface">Dedicated Redis semantic cache instance</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified</span>
+<span class="font-body-sm text-body-sm text-on-surface">Custom Guardrail policies &amp; Human Escalation</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified</span>
+<span class="font-body-sm text-body-sm text-on-surface"><strong>99.9% Uptime SLA</strong> with 2h ticket turnaround</span>
+</div>
+</div>
+</div>
+<a class="w-full text-center py-3.5 px-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-md hover:brightness-105 active:scale-98 transition-all" href="#">
+            Start 14-Day Free Trial
+          </a>
+</div>
+<!-- Tier 3: Enterprise Platform -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Custom Topology</span>
+<span class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant material-symbols-outlined text-[20px]">shield</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Enterprise Platform</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-6">Designed for global scale, strict fintech/healthcare governance, and VPC multi-region mesh.</p>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="font-headline-sm text-headline-md text-on-surface font-bold tracking-tight">Custom</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">from $2,400/mo</span>
+</div>
+<div class="space-y-3 pt-6 bg-surface-container-low/40 rounded-lg p-4 mb-6">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface"><strong>Unlimited tenants</strong> with VPC Service Controls</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Dedicated Apigee Gateway Org &amp; Custom Envoy</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Customer-Managed Encryption Keys (CMEK)</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface"><strong>99.99% Multi-Region SLA</strong> with 15-min Sev-1 response</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Dedicated Google Cloud Architect &amp; SOC2 Type II audit packs</span>
+</div>
+</div>
+</div>
+<a class="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="#">
+            Talk to Platform Engineers
+          </a>
+</div>
+</div>
+</section>
+<!-- Section 2: Real-World 10-Tenant Pilot Cost Breakdown -->
+<section class="max-w-7xl mx-auto px-margin-sm md:px-margin py-space-xl">
+<div class="bg-surface-container-low rounded-xl p-space-lg md:p-space-xl shadow-sm">
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md mb-space-lg">
+<div>
+<div class="inline-flex items-center gap-1.5 py-0.5 px-3 rounded-full bg-surface-container font-label-caps text-label-caps text-tertiary font-semibold mb-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+              BENCHMARK SPECIFICATION
+            </div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Real-World 10-Tenant Pilot Cost Breakdown</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
+              Exact GCP line-item telemetry derived from BOC 2.0 Scenario 5 running 15,000 aggregate multi-agent turns with semantic caching.
+            </p>
+</div>
+<div class="bg-surface-container-lowest px-5 py-3.5 rounded-xl shadow-sm shrink-0 flex items-center gap-4">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">MONTHLY RUN-RATE</div>
+<div class="font-headline-md text-headline-md text-primary font-bold tracking-tight">$158.41</div>
+</div>
+<div class="w-px h-8 bg-outline-variant/30"></div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">COST PER CONVERSATION</div>
+<div class="font-code-base text-code-base font-semibold text-tertiary">$0.0106 / conv</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<!-- Donut Graphic Visualizer -->
+<div class="lg:col-span-5 flex flex-col items-center justify-center p-space-md bg-surface-container-lowest rounded-xl shadow-sm">
+<div class="relative w-56 h-56 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+<!-- Total Circumference = 2 * PI * 40 = 251.32 -->
+<!-- Vertex AI: 78.7% -> 197.8 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#eaedff" stroke-width="12"></circle>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#3525cd" stroke-dasharray="197.8 251.32" stroke-dashoffset="0" stroke-width="12"></circle>
+<!-- Cloud Run: 12.6% -> 31.6 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#712ae2" stroke-dasharray="31.6 251.32" stroke-dashoffset="-197.8" stroke-width="12"></circle>
+<!-- Redis: 7.4% -> 18.6 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#006d62" stroke-dasharray="18.6 251.32" stroke-dashoffset="-229.4" stroke-width="12"></circle>
+<!-- Other: 1.3% -> 3.3 -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#777587" stroke-dasharray="3.3 251.32" stroke-dashoffset="-248" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-code-base text-code-base text-on-surface-variant font-medium">Vertex Flash</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">78.7%</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Inference</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4 w-full pt-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Vertex Gemini: $124.71</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Cloud Run: $20.00</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-tertiary shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Memorystore: $11.68</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-outline shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Gateway/Log: $2.02</span>
+</div>
+</div>
+</div>
+<!-- Interactive Line Items Table -->
+<div class="lg:col-span-7 overflow-x-auto bg-surface-container-lowest rounded-xl shadow-sm p-2">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/60 rounded-lg">
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">GCP Service Component</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">Monthly Unit Volume</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold text-right">Cost (USD)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm text-body-sm">
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-3.5 px-4 font-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+                    Vertex AI Gemini 1.5 Flash
+                  </td>
+<td class="py-3.5 px-4 text-on-surface-variant font-code-base">15k turns (~27M total tokens)</td>
+<td class="py-3.5 px-4 text-right font-code-base font-semibold text-on-surface">$124.71</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-3.5 px-4 font-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">memory</span>
+                    Cloud Run Serverless Orchestrator
+                  </td>
+<td class="py-3.5 px-4 text-on-surface-variant font-code-base">1.2M vCPU-seconds (concurrency 80)</td>
+<td class="py-3.5 px-4 text-right font-code-base font-semibold text-on-surface">$20.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-3.5 px-4 font-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">cached</span>
+                    Memorystore Redis Semantic Cache
+                  </td>
+<td class="py-3.5 px-4 text-on-surface-variant font-code-base">1GB Basic Tier Instance (us-central1)</td>
+<td class="py-3.5 px-4 text-right font-code-base font-semibold text-on-surface">$11.68</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-3.5 px-4 font-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">database</span>
+                    Firestore &amp; Cloud Storage (RAG vectors)
+                  </td>
+<td class="py-3.5 px-4 text-on-surface-variant font-code-base">120k read/writes + 18GB embedding state</td>
+<td class="py-3.5 px-4 text-right font-code-base font-semibold text-on-surface">$1.42</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-3.5 px-4 font-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">query_stats</span>
+                    Apigee Routing &amp; BigQuery Telemetry
+                  </td>
+<td class="py-3.5 px-4 text-on-surface-variant font-code-base">30k API calls, 4GB streaming export</td>
+<td class="py-3.5 px-4 text-right font-code-base font-semibold text-on-surface">$0.60</td>
+</tr>
+<tr class="bg-surface-container-high/40 font-semibold">
+<td class="py-3.5 px-4 text-on-surface font-headline-sm text-[16px]">Total Real-World Pilot Outlay</td>
+<td class="py-3.5 px-4 text-on-surface-variant font-code-base">10 isolated tenants</td>
+<td class="py-3.5 px-4 text-right font-code-base text-primary text-[16px]">$158.41</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Interactive ROI & Token Savings Calculator -->
+<section class="max-w-7xl mx-auto px-margin-sm md:px-margin py-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<!-- Left: Interactive Sliders -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-primary uppercase font-semibold tracking-wider">Semantic Efficiency Engine</span>
+<span class="text-xs bg-tertiary-fixed text-on-tertiary-fixed font-code-base px-2 py-0.5 rounded-full font-medium">Real-time Model</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Interactive ROI &amp; Token Savings Calculator</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg">
+              Adjust parameters below to model how AgentForge's semantic cache and multi-tenant batch routing minimize expensive frontier model invocations.
+            </p>
+<div class="space-y-6">
+<!-- Slider 1 -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-ui text-label-ui text-on-surface font-medium flex items-center gap-1.5" for="slider-conv">
+                    Monthly Conversations
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-help" title="Total multi-tenant chat or agentic workflow turns across your application">info</span>
+</label>
+<span class="font-code-base text-code-base font-semibold text-primary" id="display-conv">50,000</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary" id="slider-conv" max="500000" min="10000" step="5000" type="range" value="50000">
+<div class="flex justify-between text-[11px] font-code-base text-on-surface-variant mt-1">
+<span>10,000</span>
+<span>250,000</span>
+<span>500,000</span>
+</div>
+</div>
+<!-- Slider 2 -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-ui text-label-ui text-on-surface font-medium flex items-center gap-1.5" for="slider-cache">
+                    Semantic Cache Hit Rate
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-help" title="Percentage of queries resolved directly from Redis semantic vector memory">info</span>
+</label>
+<span class="font-code-base text-code-base font-semibold text-secondary" id="display-cache">35%</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-secondary" id="slider-cache" max="75" min="5" step="1" type="range" value="35">
+<div class="flex justify-between text-[11px] font-code-base text-on-surface-variant mt-1">
+<span>5% (Conservative)</span>
+<span>35% (Average)</span>
+<span>75% (Structured FAQ)</span>
+</div>
+</div>
+<!-- Slider 3 -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-ui text-label-ui text-on-surface font-medium flex items-center gap-1.5" for="slider-tokens">
+                    Average LLM Tokens per Turn
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-help" title="Aggregate context prompt + generated response tokens per interaction">info</span>
+</label>
+<span class="font-code-base text-code-base font-semibold text-on-surface" id="display-tokens">1,800 tokens</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-on-surface" id="slider-tokens" max="8000" min="500" step="100" type="range" value="1800">
+<div class="flex justify-between text-[11px] font-code-base text-on-surface-variant mt-1">
+<span>500 (Quick chat)</span>
+<span>1,800 (RAG prompt)</span>
+<span>8,000 (Deep context)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Model rates based on Gemini 1.5 Flash input/output mix</span>
+</div>
+<button class="font-label-ui text-label-ui text-primary hover:underline" id="reset-calc">Reset Defaults</button>
+</div>
+</div>
+<!-- Right: Live Computation Output Cards -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Cost Comparison Card -->
+<div class="bg-surface-container rounded-xl p-space-lg shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant font-semibold uppercase tracking-wider">Estimated Monthly LLM Spend</span>
+<span class="font-label-caps text-label-caps px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-bold" id="savings-badge">
+                SAVES 35%
+              </span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs text-on-surface-variant font-medium mb-1">
+<span>Uncached Baseline Spend</span>
+<span class="font-code-base font-bold text-on-surface" id="cost-raw">$162.00</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-outline w-full opacity-60"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs text-primary font-medium mb-1">
+<span>With AgentForge Semantic Caching</span>
+<span class="font-code-base font-bold text-primary" id="cost-forge">$105.30</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[65%] transition-all duration-300" id="bar-forge"></div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/30 flex justify-between items-baseline">
+<span class="font-label-ui text-label-ui text-on-surface-variant">Projected Monthly Savings</span>
+<div class="text-right">
+<span class="font-headline-md text-headline-md text-tertiary font-bold" id="cost-savings">$56.70</span>
+<div class="font-code-base text-[11px] text-on-surface-variant">pure cloud compute reduction</div>
+</div>
+</div>
+</div>
+<!-- Developer Velocity & Infra Saved Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">engineering</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md font-bold text-on-surface" id="eng-hours">520</span>
+<span class="font-label-ui text-label-ui text-on-surface-variant">Engineering Hours Saved</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Zero multi-tenant namespace isolation plumbing, automated RAG indexing, and pre-audited Guardrail pipelines ready in minutes.
+              </p>
+<div class="mt-3 inline-flex items-center gap-1 font-label-caps text-label-caps text-secondary font-semibold">
+<span>Equivalent to ~$52,000 upfront dev cost</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Enterprise SLA & Security Commitments Grid -->
+<section class="max-w-7xl mx-auto px-margin-sm md:px-margin pt-space-lg pb-space-xl">
+<div class="text-center max-w-2xl mx-auto mb-space-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold tracking-wider">Guaranteed Reliability</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Enterprise SLA &amp; Security Commitments</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+          Engineered for mission-critical deployments with bank-grade tenant isolation and contractual performance thresholds.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Commitment 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-3">
+<span class="material-symbols-outlined text-[22px]">timer</span>
+</div>
+<h4 class="font-headline-sm text-[17px] font-semibold text-on-surface">99.9% Uptime SLA</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Backed by financial credits. High-availability multi-zone Cloud Run workers and automated cluster failover.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Contractual SLA</span>
+<span class="font-code-base font-bold text-tertiary">99.9% / 99.99%</span>
+</div>
+</div>
+<!-- Commitment 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary mb-3">
+<span class="material-symbols-outlined text-[22px]">phonelink_lock</span>
+</div>
+<h4 class="font-headline-sm text-[17px] font-semibold text-on-surface">Zero Data Retention</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Customer payloads are never used to train foundation models. Strict zero-day ephemeral processing across Vertex AI endpoints.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Model Governance</span>
+<span class="font-code-base font-bold text-secondary">Zero Training</span>
+</div>
+</div>
+<!-- Commitment 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-tertiary mb-3">
+<span class="material-symbols-outlined text-[22px]">view_in_ar</span>
+</div>
+<h4 class="font-headline-sm text-[17px] font-semibold text-on-surface">Single-Tenant Namespaces</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Cryptographically separated vector indexes in Vertex Vector Search and partitioned Redis keys for each tenant ID.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Isolation Layer</span>
+<span class="font-code-base font-bold text-tertiary">Hard Sharding</span>
+</div>
+</div>
+<!-- Commitment 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary mb-3">
+<span class="material-symbols-outlined text-[22px]">policy</span>
+</div>
+<h4 class="font-headline-sm text-[17px] font-semibold text-on-surface">SOC2 &amp; HIPAA Ready</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+              Pre-configured terraform blue-prints with immutable Cloud Logging, CMEK encryption, and real-time PII anonymization.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Compliance Standard</span>
+<span class="font-code-base font-bold text-primary">SOC2 + HIPAA</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Bottom Visual Call to Action -->
+<section class="max-w-7xl mx-auto px-margin-sm md:px-margin pb-space-xl">
+<div class="bg-gradient-to-r from-primary-container via-primary to-secondary rounded-2xl p-space-lg md:p-space-xl text-on-primary flex flex-col md:flex-row items-center justify-between gap-space-lg shadow-xl relative overflow-hidden">
+<!-- Subtle Glow Overlay -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)] pointer-events-none"></div>
+<div class="max-w-2xl relative z-10">
+<span class="font-label-caps text-label-caps text-on-primary-container uppercase tracking-wider font-semibold">Immediate Deployment</span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-primary font-bold mt-1 tracking-tight leading-tight">
+            Ready to test BOC 2.0 multi-tenant performance?
+          </h3>
+<p class="font-body-md text-body-md text-on-primary/90 mt-2 max-w-xl">
+            Spin up the complete Google Cloud architecture with our Terraform module in under 8 minutes. No credit card required for sandbox evaluation.
+          </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-3 shrink-0 relative z-10 w-full md:w-auto">
+<a class="px-6 py-3.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold text-center hover:bg-surface-container-low transition-all shadow-md" href="#">
+            Deploy via Cloud Shell
+          </a>
+<a class="px-5 py-3.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-on-primary font-label-ui text-label-ui font-medium text-center transition-all" href="#">
+            Schedule Architecture Review
+          </a>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  (function() {
+    // Dynamic Calculator Elements
+    const sliderConv = document.getElementById('slider-conv');
+    const sliderCache = document.getElementById('slider-cache');
+    const sliderTokens = document.getElementById('slider-tokens');
+
+    const displayConv = document.getElementById('display-conv');
+    const displayCache = document.getElementById('display-cache');
+    const displayTokens = document.getElementById('display-tokens');
+
+    const costRawElem = document.getElementById('cost-raw');
+    const costForgeElem = document.getElementById('cost-forge');
+    const costSavingsElem = document.getElementById('cost-savings');
+    const savingsBadge = document.getElementById('savings-badge');
+    const barForge = document.getElementById('bar-forge');
+    const engHours = document.getElementById('eng-hours');
+    const resetBtn = document.getElementById('reset-calc');
+
+    // Rates: Gemini 1.5 Flash approx: $0.075 per 1M input tokens, $0.30 per 1M output tokens
+    // Blended rate ~ $0.0018 per 1,000 tokens including safety guardrail checks
+    const COST_PER_TOKEN = 0.0000018;
+
+    function updateCalculations() {
+      const conv = parseInt(sliderConv.value, 10);
+      const hitRate = parseInt(sliderCache.value, 10) / 100;
+      const tokens = parseInt(sliderTokens.value, 10);
+
+      // UI Labels
+      displayConv.innerText = conv.toLocaleString();
+      displayCache.innerText = Math.round(hitRate * 100) + '%';
+      displayTokens.innerText = tokens.toLocaleString() + ' tokens';
+
+      // Spend Math
+      const totalTokens = conv * tokens;
+      const rawCost = totalTokens * COST_PER_TOKEN;
+      
+      // With Semantic Cache: hits cost virtually zero in token fees (Redis pass-through is negligible)
+      const cachedCalls = conv * hitRate;
+      const llmCalls = conv - cachedCalls;
+      const forgeCost = (llmCalls * tokens * COST_PER_TOKEN) + 12; // +12 for Redis & Cloud Run slice
+      
+      const netSavings = Math.max(0, rawCost - forgeCost);
+      const savingsPct = Math.min(95, Math.round((netSavings / rawCost) * 100));
+
+      // Hours Saved dynamically scales with scale
+      const estimatedHours = Math.round(380 + (conv / 2500));
+
+      costRawElem.innerText = '$' + rawCost.toFixed(2);
+      costForgeElem.innerText = '$' + forgeCost.toFixed(2);
+      costSavingsElem.innerText = '$' + netSavings.toFixed(2);
+      savingsBadge.innerText = 'SAVES ' + (savingsPct > 0 ? savingsPct : 0) + '%';
+      
+      const widthPct = Math.max(10, Math.min(100, Math.round((forgeCost / rawCost) * 100)));
+      barForge.style.width = widthPct + '%';
+      engHours.innerText = estimatedHours.toString();
+    }
+
+    if(sliderConv && sliderCache && sliderTokens) {
+      sliderConv.addEventListener('input', updateCalculations);
+      sliderCache.addEventListener('input', updateCalculations);
+      sliderTokens.addEventListener('input', updateCalculations);
+
+      resetBtn.addEventListener('click', function() {
+        sliderConv.value = 50000;
+        sliderCache.value = 35;
+        sliderTokens.value = 1800;
+        updateCalculations();
+      });
+      
+      updateCalculations();
+    }
+
+    // Billing Period Switcher Simulation
+    const billingMonthly = document.getElementById('billing-monthly');
+    const billingAnnual = document.getElementById('billing-annual');
+    const pilotPrice = document.querySelector('.tier-price-pilot');
+    const growthPrice = document.querySelector('.tier-price-growth');
+
+    if(billingMonthly && billingAnnual) {
+      billingMonthly.addEventListener('click', function() {
+        billingMonthly.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        billingMonthly.classList.remove('text-on-surface-variant');
+        billingAnnual.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        billingAnnual.classList.add('text-on-surface-variant');
+        if (pilotPrice) pilotPrice.innerText = '$158';
+        if (growthPrice) growthPrice.innerText = '$790';
+      });
+
+      billingAnnual.addEventListener('click', function() {
+        billingAnnual.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        billingAnnual.classList.remove('text-on-surface-variant');
+        billingMonthly.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        billingMonthly.classList.add('text-on-surface-variant');
+        if (pilotPrice) pilotPrice.innerText = '$123';
+        if (growthPrice) growthPrice.innerText = '$616';
+      });
+    }
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-xl"><div class="max-w-7xl mx-auto px-margin-sm md:px-margin flex flex-col gap-space-lg"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md"><div class="flex items-center gap-space-sm"><div class="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary"><span class="material-symbols-outlined text-[14px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentForge</span><span class="font-code-base text-code-base text-on-surface-variant ml-space-xs">v2.4.0-rc</span></div><div class="flex items-center gap-space-sm font-code-base text-code-base text-on-surface-variant bg-surface-container-low px-space-sm py-1 rounded-md border border-outline-variant/20"><span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span><span>GCP Cloud Run Services: Operational</span></div></div><div class="flex flex-wrap items-center justify-between gap-space-md border-t border-outline-variant/20 pt-space-lg"><div class="flex flex-wrap items-center gap-space-md font-body-sm text-body-sm text-on-surface-variant"><a class="hover:text-on-surface transition-colors" data-path="architecture" href="#">Autonomic Topology</a><a class="hover:text-on-surface transition-colors" data-path="pillars" href="#">Security &amp; Governance</a><a class="hover:text-on-surface transition-colors" data-path="demo" href="#">Runtime Stream</a><a class="hover:text-on-surface transition-colors" data-path="pricing" href="#">Tier Economics</a></div><p class="font-body-sm text-body-sm text-on-surface-variant">Crafted for BOC 2.0 Challenge — Autonomous Agent Infrastructure.</p></div></div></footer></body></html>

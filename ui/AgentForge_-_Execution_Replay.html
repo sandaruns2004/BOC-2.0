@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary-container": "#4f46e5", "primary": "#3525cd", "tertiary-container": "#006d62", "tertiary": "#00534a", "secondary-fixed": "#eaddff", "on-surface": "#131b2e", "background": "#faf8ff", "inverse-surface": "#283044", "primary-fixed-dim": "#c3c0ff", "surface-container-highest": "#dae2fd", "inverse-on-surface": "#eef0ff", "on-background": "#131b2e", "outline": "#777587", "error-container": "#ffdad6", "surface": "#faf8ff", "on-tertiary-container": "#69f1de", "tertiary-fixed-dim": "#4fdbc8", "on-primary-container": "#dad7ff", "tertiary-fixed": "#71f8e4", "on-surface-variant": "#464555", "on-secondary-fixed-variant": "#5a00c6", "on-tertiary-fixed": "#00201c", "on-secondary-fixed": "#25005a", "secondary-container": "#8a4cfc", "error": "#ba1a1a", "primary-fixed": "#e2dfff", "inverse-primary": "#c3c0ff", "surface-tint": "#4d44e3", "on-secondary-container": "#fffbff", "surface-container": "#eaedff", "surface-bright": "#faf8ff", "on-error-container": "#93000a", "on-primary": "#ffffff", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-container-high": "#e2e7ff", "secondary": "#712ae2", "outline-variant": "#c7c4d8", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#005048", "secondary-fixed-dim": "#d2bbff", "on-primary-fixed": "#0f0069", "on-error": "#ffffff", "surface-container-low": "#f2f3ff", "surface-dim": "#d2d9f4", "surface-variant": "#dae2fd", "on-primary-fixed-variant": "#3323cc" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-sm": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "margin-sm": "1rem", "space-xl": "2.5rem", "space-md": "1rem", "margin": "2rem", "gutter": "1.5rem" }, "fontFamily": { "body-lg": ["Inter"], "headline-lg-mobile": ["Geist"], "body-md": ["Inter"], "headline-md": ["Geist"], "headline-sm": ["Geist"], "code-base": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"], "headline-lg": ["Geist"], "label-ui": ["Inter"], "display-hero-mobile": ["Geist"], "body-sm": ["Inter"], "display-hero": ["Geist"] }, "fontSize": { "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "code-base": ["13px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "500" }], "headline-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "600" }], "label-ui": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "500" }], "display-hero-mobile": ["40px", { "lineHeight": "46px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "display-hero": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.035em", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between py-6 px-4 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-6"><div class="flex items-center gap-3 px-3"><div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">A</div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">AgentForge</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Developer v2.4</span></div></div><div class="px-3"><div class="flex items-center justify-between px-2.5 py-1.5 rounded-full bg-surface-container-high"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span><span class="font-label-caps text-label-caps text-tertiary font-medium">CLUSTER ONLINE</span></div><span class="font-label-caps text-label-caps text-on-surface-variant">US-EAST</span></div></div><nav class="flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary font-medium rounded-lg"><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="console-trace" href="#"><span class="material-symbols-outlined text-[20px]">terminal</span><span class="font-label-ui text-label-ui">Console Trace</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="execution-replay" href="#"><span class="material-symbols-outlined text-[20px]">replay</span><span class="font-label-ui text-label-ui">Execution Replay</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="agent-studio-and-knowledge-base" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="font-label-ui text-label-ui">Agent Studio &amp; KB</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="secops-and-blast-radius" href="#"><span class="material-symbols-outlined text-[20px]">security</span><span class="font-label-ui text-label-ui">SecOps &amp; Blast Radius</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="architecture" href="#"><span class="material-symbols-outlined text-[20px]">hub</span><span class="font-label-ui text-label-ui">Architecture</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="pillars-and-security" href="#"><span class="material-symbols-outlined text-[20px]">shield</span><span class="font-label-ui text-label-ui">Pillars &amp; Security</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="live-flow-demo" href="#"><span class="material-symbols-outlined text-[20px]">account_tree</span><span class="font-label-ui text-label-ui">Live Flow Demo</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="pricing-and-economics" href="#"><span class="material-symbols-outlined text-[20px]">payments</span><span class="font-label-ui text-label-ui">Pricing &amp; Economics</span></a></nav></div><div class="flex flex-col gap-3 px-2"><div class="p-3 rounded-lg bg-surface-container flex flex-col gap-2"><div class="flex items-center justify-between"><span class="font-label-caps text-label-caps text-on-surface-variant">QUOTA USAGE</span><span class="font-label-caps text-label-caps text-primary font-bold">84%</span></div><div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden"><div class="bg-primary-container h-full w-[84%]"></div></div><span class="font-code-base text-code-base text-on-surface-variant">1.2M / 1.5M tokens</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-8"><nav class="hidden xl:flex items-center gap-6" data-active-classes="text-primary font-medium"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="console-trace" href="#">Console Trace</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="agent-studio-and-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="secops-and-blast-radius" href="#">SecOps &amp; Blast Radius</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="pillars-and-security" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" data-path="pricing-and-economics" href="#">Pricing &amp; Economics</a></nav><div class="flex items-center gap-4 ml-auto"><button class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-ui text-label-ui hover:bg-primary transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">rocket_launch</span><span>Launch Console</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full px-8 bg-surface min-h-screen"><div class="flex flex-col w-full pb-16">
+<!-- Top Command & Header Band -->
+<section class="flex flex-col gap-6 pt-6">
+<!-- Breadcrumb / Trace Metadata -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-label-caps tracking-wider text-on-surface-variant uppercase px-2.5 py-1 rounded-md bg-surface-container font-semibold">
+          TRACE #tr-8f3a9bc2 // REGRESSION STUDIO
+        </span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/60 text-error font-label-caps text-label-caps font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+          Step 3 Diverged
+        </span>
+<span class="font-code-base text-code-base text-on-surface-variant hidden md:inline">
+          Seed: 0x94ef41 · Replay runtime: 410ms
+        </span>
+</div>
+<!-- Quick Session Controls -->
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-ui text-label-ui transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+          Export Trace
+        </button>
+<button class="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-ui text-label-ui hover:bg-primary transition-all shadow-sm">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+          Promote Candidate v1.5
+        </button>
+</div>
+</div>
+<!-- Title & Replay Navigation Bar -->
+<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-6 pb-2">
+<div class="flex flex-col gap-1.5 max-w-3xl">
+<h1 class="font-headline-lg text-headline-lg tracking-tight text-on-surface font-semibold">
+          Execution Replay &amp; Drift Analyzer
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Comparing <span class="font-medium text-on-surface">Prod v1.4 (Gemini 1.5 Flash)</span> with candidate model <span class="font-medium text-primary">Staging v1.5 (Gemini 1.5 Pro)</span> on historical production session <code class="font-code-base text-code-base text-on-surface-variant bg-surface-container px-1 py-0.5 rounded">tr-8f3a9bc2</code>.
+        </p>
+</div>
+<!-- Playback Console -->
+<div class="flex flex-wrap items-center gap-2.5 p-1.5 rounded-xl bg-surface-container-low shadow-sm self-start xl:self-auto">
+<!-- Model Selectors -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest shadow-sm">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">BASELINE:</span>
+<span class="font-label-ui text-label-ui text-on-surface font-medium">Prod v1.4</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">arrow_forward</span>
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest shadow-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-caps text-label-caps text-primary">CANDIDATE:</span>
+<span class="font-label-ui text-label-ui text-on-surface font-semibold">Staging v1.5</span>
+</div>
+<div class="w-px h-6 bg-surface-container-high mx-1 hidden sm:block"></div>
+<!-- Stepper Controls -->
+<div class="flex items-center gap-1">
+<button aria-label="Step back" class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-lowest hover:bg-surface-container text-on-surface transition-colors shadow-sm" id="btn-step-prev">
+<span class="material-symbols-outlined text-[18px]">skip_previous</span>
+</button>
+<button aria-label="Play Replay" class="flex items-center gap-1.5 px-3 h-8 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-primary font-label-ui text-label-ui transition-colors shadow-sm font-semibold" id="btn-playback">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Continuous</span>
+</button>
+<button aria-label="Step forward" class="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-container-lowest hover:bg-surface-container text-on-surface transition-colors shadow-sm" id="btn-step-next">
+<span class="material-symbols-outlined text-[18px]">skip_next</span>
+</button>
+<span class="px-2 py-1 rounded bg-surface-container font-label-caps text-label-caps text-on-surface-variant font-medium">
+            1.0x
+          </span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Summary Metric Row (4 Minimal Cards) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+<!-- Metric 1: Accuracy -->
+<div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Semantic Accuracy</span>
+<span class="material-symbols-outlined text-outline text-[18px]">check_circle</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">99.2%</span>
+<span class="font-label-caps text-label-caps text-tertiary font-medium">Optimal</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Strict intent parity match (±0.0%)</p>
+</div>
+</div>
+<!-- Metric 2: Policy Adherence -->
+<div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Policy Adherence</span>
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">verified_user</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">100%</span>
+<span class="font-label-caps text-label-caps text-tertiary font-medium">Enforced</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">0 violations · SOC2 Type II &amp; HIPAA</p>
+</div>
+</div>
+<!-- Metric 3: Latency Delta -->
+<div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Execution Latency</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">speed</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-tertiary font-semibold tracking-tight">-132ms</span>
+<span class="font-label-caps text-label-caps text-tertiary font-bold">24.3% FASTER</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">410ms candidate vs 542ms baseline</p>
+</div>
+</div>
+<!-- Metric 4: Cost Delta -->
+<div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Inference Cost Delta</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">savings</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-tertiary font-semibold tracking-tight">-$0.0053</span>
+<span class="font-label-caps text-label-caps text-tertiary font-bold">-63.1%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Prompt cache hit on 12.8k prefix tokens</p>
+</div>
+</div>
+</section>
+<!-- 3. Main Canvas: Collapsible Execution Timeline -->
+<section class="mt-10 flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+          Execution DAG Pipeline Replay
+        </h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-all-steps">
+          Expand All Steps
+        </button>
+<span class="text-outline-variant">·</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">4 NODES EVALUATED</span>
+</div>
+</div>
+<!-- Stepper Container -->
+<div class="flex flex-col gap-3">
+<!-- STEP 1: Ingress Input (Collapsed) -->
+<div class="timeline-step rounded-xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="step-toggle w-full p-5 flex items-center justify-between text-left gap-4" data-target="step-1-content" type="button">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center font-label-caps text-label-caps text-on-surface font-bold">
+              01
+            </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+<span class="font-label-caps text-label-caps text-tertiary font-semibold">22ms</span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
+<span class="font-label-ui text-label-ui text-on-surface font-semibold truncate">Ingress Payload &amp; Intent Classification</span>
+<span class="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">“Cancel my subscription immediately” — Apigee DLP sanitized</span>
+</div>
+</div>
+<div class="flex items-center gap-3 flex-shrink-0">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface font-medium hidden sm:inline">
+              Parity 100%
+            </span>
+<span class="chevron material-symbols-outlined text-outline text-[20px] transition-transform duration-200">expand_more</span>
+</div>
+</button>
+<div class="hidden px-5 pb-5 pt-1" id="step-1-content">
+<div class="p-4 rounded-lg bg-surface-container-low font-code-base text-code-base text-on-surface-variant flex flex-col gap-2">
+<div class="flex justify-between items-center text-on-surface">
+<span class="font-bold">Sanitized Customer Ingress:</span>
+<span class="text-tertiary font-label-caps text-label-caps">Deterministic Hash Match</span>
+</div>
+<p class="text-on-surface">payload = { "user_id": "usr_99342", "session": "s_live_29", "text": "Cancel my subscription immediately, I have switched providers.", "channel": "mobile_app" }</p>
+<p class="text-outline">Guard evaluation: PII Masked (0 exposures) · Latency skew: +1ms</p>
+</div>
+</div>
+</div>
+<!-- STEP 2: RAG Vector Retrieval (Collapsed) -->
+<div class="timeline-step rounded-xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="step-toggle w-full p-5 flex items-center justify-between text-left gap-4" data-target="step-2-content" type="button">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center font-label-caps text-label-caps text-on-surface font-bold">
+              02
+            </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+<span class="font-label-caps text-label-caps text-tertiary font-semibold">112ms</span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
+<span class="font-label-ui text-label-ui text-on-surface font-semibold truncate">RAG Knowledge Base &amp; Context Enrichment</span>
+<span class="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">vs-tenant-2091 · 4 chunks retrieved (Cosine: 0.94)</span>
+</div>
+</div>
+<div class="flex items-center gap-3 flex-shrink-0">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface font-medium hidden sm:inline">
+              Parity Verified
+            </span>
+<span class="chevron material-symbols-outlined text-outline text-[20px] transition-transform duration-200">expand_more</span>
+</div>
+</button>
+<div class="hidden px-5 pb-5 pt-1" id="step-2-content">
+<div class="p-4 rounded-lg bg-surface-container-low font-code-base text-code-base text-on-surface-variant flex flex-col gap-2">
+<div class="flex justify-between items-center text-on-surface">
+<span class="font-bold">Retrieved Context Vectors:</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">HNSW Index Top-K: 4</span>
+</div>
+<p class="text-on-surface">[Chunk #1082] Policy: "Customers on Annual Tier eligible for retention discounts before terminal cancellation."</p>
+<p class="text-on-surface">[Chunk #4419] User profile: Tier = Enterprise Solo, Tenure = 9 months, MRR = $120.</p>
+</div>
+</div>
+</div>
+<!-- STEP 3: LLM Inference & Action Selection (DIVERGENCE DETECTED - EXPANDED BY DEFAULT) -->
+<div class="timeline-step rounded-xl bg-surface-container-lowest shadow-md transition-all duration-200 overflow-hidden relative">
+<!-- Prominent Left Amber Accent Indicator -->
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary-container"></div>
+<button aria-expanded="true" class="step-toggle w-full p-6 pl-8 flex items-center justify-between text-left gap-4" data-target="step-3-content" type="button">
+<div class="flex items-start md:items-center gap-4 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center font-label-caps text-label-caps text-on-secondary-fixed font-bold flex-shrink-0">
+              03
+            </div>
+<div class="flex flex-col gap-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary font-label-caps text-label-caps font-bold">
+                  DIVERGENCE DETECTED
+                </span>
+<span class="font-label-ui text-label-ui text-on-surface font-semibold">
+                  LLM Inference &amp; Tool Invocation
+                </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hidden sm:inline">
+                  (Latency: 224ms vs 285ms)
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Strategic divergence: Candidate model altered tool invocation strategy to prevent immediate customer churn.
+              </p>
+</div>
+</div>
+<div class="flex items-center gap-3 flex-shrink-0 self-start md:self-center">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high font-label-caps text-label-caps text-primary font-semibold hidden lg:inline">
+              Delta: Action Re-route
+            </span>
+<span class="chevron material-symbols-outlined text-outline text-[20px] transition-transform duration-200 rotate-180">expand_more</span>
+</div>
+</button>
+<!-- Step 3 Expanded Body: A/B Comparison Cards -->
+<div class="px-6 pl-8 pb-6 flex flex-col gap-5" id="step-3-content">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Baseline Prod Model -->
+<div class="p-5 rounded-xl bg-surface-container-low flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-bold tracking-wider">BASELINE OUTCOME (PROD v1.4)</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Gemini 1.5 Flash</span>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Selected Tool:</span>
+<span class="px-2.5 py-1 rounded-md bg-error-container text-error font-code-base text-code-base font-semibold">
+                    cancel_subscription
+                  </span>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container-lowest font-code-base text-code-base text-on-surface">
+<span class="text-on-surface-variant">// Arguments</span><br/>
+                  subscription_id: <span class="text-primary font-semibold">"sub_9921"</span><br/>
+                  immediate: <span class="text-error font-semibold">true</span><br/>
+                  reason: <span class="text-on-surface-variant">"user requested immediate cancellation"</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+                  Initiated irrevocable cancellation immediately without checking account lifetime value or offering available discount perks.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-label-caps text-label-caps text-outline">EXECUTION TIME: 285ms</span>
+<button class="font-label-ui text-label-ui text-primary hover:underline flex items-center gap-1">
+<span>View Raw JSON</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</button>
+</div>
+</div>
+<!-- Candidate Model -->
+<div class="p-5 rounded-xl bg-surface-container flex flex-col justify-between gap-4">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-label-caps text-label-caps text-primary font-bold tracking-wider">OPTIMIZED CANDIDATE (STAGING v1.5)</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps font-bold">
+                    Confidence: 0.96
+                  </span>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Selected Tool:</span>
+<span class="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed-variant font-code-base text-code-base font-semibold">
+                    inquire_retention_discount
+                  </span>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container-lowest font-code-base text-code-base text-on-surface">
+<span class="text-on-surface-variant">// Arguments</span><br/>
+                  offer_id: <span class="text-primary font-semibold">"SAVE20_Q3"</span><br/>
+                  tone: <span class="text-primary font-semibold">"empathic"</span><br/>
+                  max_discount_percentage: <span class="text-tertiary font-semibold">20</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+                  Identified high-LTV account (&gt;6mo history) and scheduled proactive retention inquiry prior to destructive lifecycle updates.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-label-caps text-label-caps text-tertiary font-bold">EXECUTION TIME: 224ms (-61ms)</span>
+<button class="font-label-ui text-label-ui text-primary hover:underline flex items-center gap-1">
+<span>View Raw JSON</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Divergence Insight Banner -->
+<div class="p-4 rounded-xl bg-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[22px]">lightbulb</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<span class="font-semibold text-primary">Retention Safe-Path Activated:</span>
+                Candidate avoided premature termination. Estimated churn mitigation impact: <span class="font-bold text-on-surface">+$1,200 ARR retention</span> per affected account.
+              </p>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-label-ui hover:bg-surface-container-low transition-colors shadow-sm font-medium">
+                Approve As Target Behavior
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- STEP 4: Guardrail Evaluation (Collapsed) -->
+<div class="timeline-step rounded-xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+<button aria-expanded="false" class="step-toggle w-full p-5 flex items-center justify-between text-left gap-4" data-target="step-4-content" type="button">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center font-label-caps text-label-caps text-on-surface font-bold">
+              04
+            </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+<span class="font-label-caps text-label-caps text-tertiary font-semibold">52ms</span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
+<span class="font-label-ui text-label-ui text-on-surface font-semibold truncate">Layer 3 Safety &amp; Financial Guardrail Evaluation</span>
+<span class="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">Low-risk autonomous pass · 0 human escalation overhead</span>
+</div>
+</div>
+<div class="flex items-center gap-3 flex-shrink-0">
+<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface font-medium hidden sm:inline">
+              Autonomous Pass
+            </span>
+<span class="chevron material-symbols-outlined text-outline text-[20px] transition-transform duration-200">expand_more</span>
+</div>
+</button>
+<div class="hidden px-5 pb-5 pt-1" id="step-4-content">
+<div class="p-4 rounded-lg bg-surface-container-low font-code-base text-code-base text-on-surface-variant flex flex-col gap-2">
+<div class="flex justify-between items-center text-on-surface">
+<span class="font-bold">Guardrail Checklist:</span>
+<span class="text-tertiary font-label-caps text-label-caps font-semibold">All 7 Rules Passed</span>
+</div>
+<p class="text-on-surface">• Max discount allowance check: 20% ≤ 25% policy max (PASS)</p>
+<p class="text-on-surface">• Anti-hallucination fact verification: 1.0 (PASS)</p>
+<p class="text-on-surface">• Irreversible state change approval check: DEFERRED (PASS)</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Visual Timeline Bar & Replay Graph -->
+<section class="mt-8 p-6 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col gap-6">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">Session Execution Anatomy</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Latency Distribution &amp; Token Budget</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-outline"></span>
+<span class="font-label-ui text-label-ui text-on-surface-variant">Prod Baseline (542ms)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-primary-container"></span>
+<span class="font-label-ui text-label-ui text-on-surface font-medium">Candidate Staging (410ms)</span>
+</div>
+</div>
+</div>
+<!-- Inline SVG Comparison Chart -->
+<div class="w-full overflow-x-auto">
+<div class="min-w-[640px] flex flex-col gap-3">
+<!-- Prod Bar -->
+<div class="flex items-center gap-4">
+<span class="font-code-base text-code-base text-on-surface-variant w-28 text-right">Prod v1.4</span>
+<div class="flex-1 h-8 bg-surface-container-low rounded-lg overflow-hidden flex shadow-inner">
+<div class="bg-outline/40 flex items-center justify-center text-[10px] text-on-surface font-mono" style="width: 5%;" title="Ingress 24ms">24m</div>
+<div class="bg-outline/60 flex items-center justify-center text-[10px] text-on-surface font-mono" style="width: 21%;" title="RAG 114ms">114m</div>
+<div class="bg-outline flex items-center justify-center text-[10px] text-surface font-mono font-bold" style="width: 53%;" title="LLM 285ms">285ms LLM</div>
+<div class="bg-outline-variant flex items-center justify-center text-[10px] text-on-surface font-mono" style="width: 21%;" title="Guard 119ms">119m</div>
+</div>
+<span class="font-code-base text-code-base text-on-surface w-16 text-right font-semibold">542ms</span>
+</div>
+<!-- Candidate Bar -->
+<div class="flex items-center gap-4">
+<span class="font-code-base text-code-base text-primary font-semibold w-28 text-right">Candidate v1.5</span>
+<div class="flex-1 h-8 bg-surface-container-low rounded-lg overflow-hidden flex shadow-inner">
+<div class="bg-primary-container/40 flex items-center justify-center text-[10px] text-on-surface font-mono" style="width: 4%;" title="Ingress 22ms">22m</div>
+<div class="bg-primary-container/70 flex items-center justify-center text-[10px] text-on-primary font-mono" style="width: 21%;" title="RAG 112ms">112m</div>
+<div class="bg-primary-container flex items-center justify-center text-[10px] text-on-primary font-mono font-bold" style="width: 41%;" title="LLM 224ms">224ms LLM</div>
+<div class="bg-tertiary flex items-center justify-center text-[10px] text-on-tertiary font-mono" style="width: 10%;" title="Guard 52ms">52m</div>
+<div class="bg-transparent" style="width: 24%;"></div>
+</div>
+<span class="font-code-base text-code-base text-tertiary w-16 text-right font-bold">410ms</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Script for accordion and stepper micro-interactions -->
+<script>
+    (function() {
+      const toggles = document.querySelectorAll('.step-toggle');
+      toggles.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const content = document.getElementById(targetId);
+          const chevron = btn.querySelector('.chevron');
+          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+          if (isExpanded) {
+            content.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+            chevron.classList.remove('rotate-180');
+          } else {
+            content.classList.remove('hidden');
+            btn.setAttribute('aria-expanded', 'true');
+            chevron.classList.add('rotate-180');
+          }
+        });
+      });
+
+      const toggleAllBtn = document.getElementById('toggle-all-steps');
+      let allExpanded = false;
+      if (toggleAllBtn) {
+        toggleAllBtn.addEventListener('click', () => {
+          allExpanded = !allExpanded;
+          toggles.forEach(btn => {
+            const targetId = btn.getAttribute('data-target');
+            const content = document.getElementById(targetId);
+            const chevron = btn.querySelector('.chevron');
+            if (allExpanded) {
+              content.classList.remove('hidden');
+              btn.setAttribute('aria-expanded', 'true');
+              chevron.classList.add('rotate-180');
+            } else {
+              content.classList.add('hidden');
+              btn.setAttribute('aria-expanded', 'false');
+              chevron.classList.remove('rotate-180');
+            }
+          });
+          toggleAllBtn.textContent = allExpanded ? 'Collapse All Steps' : 'Expand All Steps';
+        });
+      }
+
+      // Continuous Playback button indicator
+      const playBtn = document.getElementById('btn-playback');
+      let isPlaying = false;
+      if (playBtn) {
+        playBtn.addEventListener('click', () => {
+          isPlaying = !isPlaying;
+          if (isPlaying) {
+            playBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">pause</span><span>Playing...</span>';
+            playBtn.classList.add('bg-primary', 'text-on-primary');
+          } else {
+            playBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">play_arrow</span><span>Continuous</span>';
+            playBtn.classList.remove('bg-primary', 'text-on-primary');
+          }
+        });
+      }
+    })();
+  </script>
+</div></main></div></body></html>

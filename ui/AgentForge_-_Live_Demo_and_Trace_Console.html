@@ -1,0 +1,786 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>AgentForge Platform</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-container-high": "#e2e7ff",
+        "secondary-container": "#8a4cfc",
+        "on-tertiary-fixed": "#00201c",
+        "on-error": "#ffffff",
+        "secondary-fixed": "#eaddff",
+        "on-secondary-fixed": "#25005a",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "secondary-fixed-dim": "#d2bbff",
+        "surface-container-lowest": "#ffffff",
+        "surface-variant": "#dae2fd",
+        "surface-bright": "#faf8ff",
+        "surface-dim": "#d2d9f4",
+        "on-secondary-container": "#fffbff",
+        "on-tertiary": "#ffffff",
+        "on-secondary": "#ffffff",
+        "inverse-primary": "#c3c0ff",
+        "surface-tint": "#4d44e3",
+        "secondary": "#712ae2",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#71f8e4",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#283044",
+        "primary-container": "#4f46e5",
+        "on-primary-fixed": "#0f0069",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-primary-container": "#dad7ff",
+        "on-surface": "#131b2e",
+        "primary": "#3525cd",
+        "outline": "#777587",
+        "surface": "#faf8ff",
+        "error": "#ba1a1a",
+        "on-primary": "#ffffff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "on-primary-fixed-variant": "#3323cc",
+        "surface-container": "#eaedff",
+        "outline-variant": "#c7c4d8",
+        "inverse-on-surface": "#eef0ff",
+        "error-container": "#ffdad6",
+        "primary-fixed": "#e2dfff",
+        "on-tertiary-container": "#69f1de",
+        "tertiary": "#00534a",
+        "on-surface-variant": "#464555",
+        "tertiary-container": "#006d62",
+        "surface-container-highest": "#dae2fd",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-container-low": "#f2f3ff",
+        "background": "#faf8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xs": "0.25rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "space-lg": "1.5rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "display-hero": [
+          "Geist"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "headline-sm": [
+          "Geist"
+        ],
+        "display-hero-mobile": [
+          "Geist"
+        ],
+        "code-base": [
+          "JetBrains Mono"
+        ],
+        "headline-md": [
+          "Geist"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "headline-lg": [
+          "Geist"
+        ],
+        "headline-lg-mobile": [
+          "Geist"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "label-ui": [
+          "Inter"
+        ]
+      },
+      "fontSize": {
+        "display-hero": [
+          "64px",
+          {
+            "lineHeight": "72px",
+            "letterSpacing": "-0.035em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "15px",
+          {
+            "lineHeight": "24px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-sm": [
+          "20px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "display-hero-mobile": [
+          "40px",
+          {
+            "lineHeight": "46px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "700"
+          }
+        ],
+        "code-base": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "28px",
+          {
+            "lineHeight": "36px",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "11px",
+          {
+            "lineHeight": "16px",
+            "letterSpacing": "0.06em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-lg": [
+          "44px",
+          {
+            "lineHeight": "52px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg-mobile": [
+          "32px",
+          {
+            "lineHeight": "38px",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "18px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "0em",
+            "fontWeight": "400"
+          }
+        ],
+        "label-ui": [
+          "13px",
+          {
+            "lineHeight": "18px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ]
+      }
+    }
+  }
+};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(15,23,42,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin-sm md:px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="home" href="#"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">AgentForge</span></a><div class="hidden xl:flex items-center gap-space-xs py-space-xs px-space-sm rounded-full bg-surface-container border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-caps text-label-caps text-on-surface-variant font-medium">BOC 2.0 SCENARIO 5</span></div></div><nav class="hidden lg:flex items-center gap-1 xl:gap-2" data-active-classes="bg-surface-container text-primary font-semibold"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pillars" href="#">Pillars &amp; Security</a><a aria-current="page" class="px-space-sm py-space-xs rounded-lg transition-colors bg-surface-container text-primary font-semibold" data-path="demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pricing" href="#">Pricing &amp; Economics</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="console" href="#">Launch Console</a></nav><div class="flex items-center gap-space-sm shrink-0"><a class="hidden md:inline-flex items-center px-3 py-1.5 rounded-lg border border-outline-variant/50 bg-surface-container-lowest font-label-ui text-label-ui text-on-surface hover:bg-surface-container-low transition-all" href="https://github.com" rel="noreferrer" target="_blank">View on GitHub</a><a class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all" data-path="console" href="#">Launch Console</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full">
+<!-- Command Header / Real-time Status Deck -->
+<div class="w-full bg-surface-container-low px-margin-sm md:px-margin py-space-md shadow-sm">
+<div class="max-w-7xl mx-auto flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<!-- Left: Tenant + Context Identification -->
+<div class="flex flex-wrap items-center gap-space-md min-w-0">
+<div class="relative flex items-center bg-surface-container-lowest rounded-lg px-3 py-1.5 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px] mr-2">corporate_fare</span>
+<select class="bg-transparent font-label-ui text-label-ui text-on-surface font-semibold focus:outline-none cursor-pointer pr-4">
+<option>Acme Corp (Enterprise Tenant #1042)</option>
+<option>Fintech Global AG (Tenant #8812)</option>
+<option>OmniLogistics LLC (Tenant #4401)</option>
+</select>
+</div>
+<div class="flex items-center gap-space-xs font-code-base text-code-base text-on-surface-variant bg-surface-container px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-tertiary">fingerprint</span>
+<span class="font-medium text-on-surface">ses_99f2b8a7c</span>
+<span class="text-outline-variant font-light mx-1">/</span>
+<span>Gemini 1.5 Flash</span>
+<span class="text-outline-variant font-light mx-1">/</span>
+<span class="inline-flex items-center text-tertiary font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1 animate-pulse"></span>
+            Strict Guardrails
+          </span>
+</div>
+</div>
+<!-- Right: Real-time Metrics & Execution Status -->
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-space-sm bg-surface-container-lowest px-3 py-1.5 rounded-lg shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">E2E LATENCY</span>
+<span class="font-code-base text-code-base text-on-surface font-semibold">492ms</span>
+</div>
+<div class="w-px h-6 bg-surface-container"></div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">INFERENCE COST</span>
+<span class="font-code-base text-code-base text-on-surface font-semibold">$0.0084</span>
+</div>
+<div class="w-px h-6 bg-surface-container"></div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>VERIFIED &amp; COMPLETED</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-ui text-label-ui hover:bg-surface-container-high transition-all" id="replayBtn">
+<span class="material-symbols-outlined text-[16px]">replay</span>
+            Replay Trace
+          </button>
+<button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+            Invoke Step
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Split Workbench (Two-Panel Layout) -->
+<div class="w-full max-w-7xl mx-auto px-margin-sm md:px-margin py-space-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- LEFT PANEL: Live Agent Chat & Invocation Sandbox (45% -> 5 cols desktop) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Interactive Sandbox Frame -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm bg-surface-container-low px-3 py-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">terminal</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Agent Execution Console</span>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">SANDBOX v2.4</span>
+</div>
+<!-- Pre-seeded Scenarios Prompt Selector -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">bolt</span> FAST SCENARIO TEMPLATES
+            </label>
+<div class="flex flex-col gap-2">
+<button class="scenario-btn text-left p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-start gap-2.5 group" data-prompt="Query customer order #88392 and process refund if under $50">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5 shrink-0">shopping_bag</span>
+<div class="min-w-0 flex-1">
+<div class="font-label-ui text-label-ui font-semibold text-on-surface flex items-center justify-between">
+<span>Order #88392 Dynamic Refund</span>
+<span class="font-code-base text-code-base text-primary opacity-0 group-hover:opacity-100 transition-opacity">Select →</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Query CRM order details and trigger autonomous micro-refund policy</p>
+</div>
+</button>
+<button class="scenario-btn text-left p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-start gap-2.5 group" data-prompt="Check inventory for SKU-4991 and trigger warehouse re-stock email">
+<span class="material-symbols-outlined text-secondary text-[18px] mt-0.5 shrink-0">inventory_2</span>
+<div class="min-w-0 flex-1">
+<div class="font-label-ui text-label-ui font-semibold text-on-surface flex items-center justify-between">
+<span>Restock SKU-4991 Pipeline</span>
+<span class="font-code-base text-code-base text-secondary opacity-0 group-hover:opacity-100 transition-opacity">Select →</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Scan logistics telemetry and notify fulfillment warehouse operator</p>
+</div>
+</button>
+</div>
+</div>
+<!-- Prompt Input Formulation -->
+<div class="relative flex flex-col gap-2">
+<div class="relative bg-surface rounded-lg p-2.5 shadow-inner">
+<textarea class="w-full bg-transparent font-body-md text-body-md text-on-surface focus:outline-none resize-none placeholder:text-outline" id="promptInput" placeholder="Enter autonomous agent instruction or select a preset template above..." rows="3">Query customer order #88392 and process refund if under $50</textarea>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2 font-code-base text-code-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px]">security</span>
+<span>Eval mode: Strict SOC2</span>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium flex items-center gap-1 hover:opacity-90 active:scale-95 transition-all">
+<span>Transmit</span>
+<span class="material-symbols-outlined text-[14px]">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Interactive Chat & Invocation Transcript Stream -->
+<div class="flex flex-col gap-space-md pt-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TRANSACTION AUDIT LOG FEED</span>
+<span class="font-code-base text-code-base text-tertiary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+                Connected Live
+              </span>
+</div>
+<div class="flex flex-col gap-3 font-body-sm text-body-sm">
+<!-- User Bubble -->
+<div class="flex items-start gap-2.5 self-end max-w-[90%]">
+<div class="bg-primary text-on-primary p-3 rounded-2xl rounded-tr-none shadow-sm">
+<p class="font-body-md text-body-md">Query customer order #88392 and process refund if under $50</p>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[15px]">person</span>
+</div>
+</div>
+<!-- Guardrail Verification Pills -->
+<div class="flex flex-wrap items-center gap-2 ml-9">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-caps text-label-caps shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[14px]">verified_user</span>
+<span>Injection Check: <strong class="text-tertiary">Clean</strong></span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-caps text-label-caps shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[14px]">shield</span>
+<span>PII Scan: <strong class="text-tertiary">Zero Detected</strong></span>
+</div>
+</div>
+<!-- Agent Reasoning Bubble -->
+<div class="flex items-start gap-2.5 self-start max-w-[95%]">
+<div class="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">smart_toy</span>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-2xl rounded-tl-none shadow-sm flex flex-col gap-3 w-full">
+<!-- Reasoning Phase -->
+<div class="flex items-center justify-between pb-2">
+<span class="font-code-base text-code-base text-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] animate-spin">sync</span>
+                      Reasoning with Gemini 1.5 Flash (280ms)
+                    </span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">TEMP: 0.1</span>
+</div>
+<p class="text-on-surface leading-relaxed">
+                    User requests retrieval of order metadata <code class="bg-surface-container px-1.5 py-0.5 rounded font-code-base text-code-base text-primary">#88392</code> to determine refund eligibility. Checking authorized autonomous tool registries.
+                  </p>
+<!-- Tool Invocation Nested Card -->
+<div class="bg-surface-container-lowest rounded-xl p-3 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 font-code-base text-code-base text-on-surface font-medium">
+<span class="material-symbols-outlined text-secondary text-[16px]">data_object</span>
+<span>crm_fetch_order(order_id: 88392)</span>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-semibold">200 OK (84ms)</span>
+</div>
+<!-- Parsed JSON Output Preview -->
+<div class="bg-surface-container-high rounded-lg p-2.5 font-code-base text-code-base overflow-x-auto text-on-surface">
+<pre class="leading-tight text-[12px]">{
+  "order_id": 88392,
+  "customer": "K. Vang",
+  "item": "Magnetic Swivel Stand",
+  "status": "Delivered",
+  "subtotal": 42.50,
+  "payment_processor": "stripe_ch_902j"
+}</pre>
+</div>
+</div>
+<!-- Human Escalation / Policy Threshold Check Callout -->
+<div class="flex items-center gap-2.5 p-2.5 rounded-lg bg-tertiary/10 text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-[20px] shrink-0">policy</span>
+<div class="flex flex-col">
+<span class="font-label-ui text-label-ui font-semibold text-tertiary">Policy Rule #POL-404 Satisfied</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Refund amount ($42.50) auto-approved under tenant threshold ($50.00).</span>
+</div>
+</div>
+<!-- Final Synthesized Output -->
+<div class="pt-2">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">AGENT RESPONSE</div>
+<p class="text-on-surface leading-relaxed font-body-md text-body-md font-normal">
+                      Order <strong>#88392</strong> for <em>Magnetic Swivel Stand</em> was successfully fetched. Because the total amount is <strong>$42.50</strong>, which falls safely below your autonomous limit of $50.00, the refund has been processed back to payment intent <code class="bg-surface-container px-1 rounded font-code-base text-code-base">stripe_ch_902j</code> without requiring manual manager escalation.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Guardrail Status Matrix -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-3">
+<span class="font-headline-sm text-headline-sm text-on-surface">Layered Defense Telemetry</span>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PROMPT INTEGRITY</span>
+<span class="font-body-lg text-body-lg text-tertiary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">verified</span> 99.98%
+              </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">0 injection vectors spotted</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant">DATA PRIVACY (PII)</span>
+<span class="font-body-lg text-body-lg text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">lock</span> Masked
+              </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Deterministic token salt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: Multi-Stage Telemetry & Step-by-Step Trace (55% -> 7 cols desktop) -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- 10-Step Sequential Flow Timeline (Waterfall Chart) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-space-sm bg-surface-container-low px-3.5 py-2.5 rounded-lg">
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Execution Span Waterfall</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">10 Sequential micro-phases logged to OpenTelemetry Collector</p>
+</div>
+<div class="flex items-center gap-2 self-start sm:self-center">
+<span class="font-label-caps text-label-caps px-2.5 py-1 rounded bg-surface text-on-surface font-semibold shadow-sm">492ms Total</span>
+</div>
+</div>
+<!-- Trace Steps Container -->
+<div class="flex flex-col gap-2 relative">
+<!-- Step 1 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="1">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">1</span>
+<span class="font-semibold text-on-surface truncate">Ingress Authentication (Apigee Enterprise)</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-tertiary/10 text-tertiary rounded">mTLS OK</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">18ms</span>
+</div>
+<!-- Waterfall bar -->
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-primary rounded-full" style="left: 0%; width: 4%;"></div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="2">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">2</span>
+<span class="font-semibold text-on-surface truncate">Semantic Cache Lookup (Memorystore Redis)</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-secondary/10 text-secondary rounded">CACHE MISS</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">4ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-secondary rounded-full" style="left: 4%; width: 1.5%;"></div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="3">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">3</span>
+<span class="font-semibold text-on-surface truncate">Tenant RAG Vector Search (Vertex AI Matching Engine)</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-primary/10 text-primary rounded">3 Chunks · Sim 0.91</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">42ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-primary-container rounded-full" style="left: 5.5%; width: 9%;"></div>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="4">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">4</span>
+<span class="font-semibold text-on-surface truncate">Layer-1 Guardrail: Prompt Injection &amp; Jailbreak Scan</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-tertiary/10 text-tertiary rounded">PASSED</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">24ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-tertiary rounded-full" style="left: 14.5%; width: 5%;"></div>
+</div>
+</div>
+<!-- Step 5 (Dominant Phase) -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg bg-surface-container-low shadow-sm cursor-pointer" data-step="5">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center font-code-base text-code-base font-semibold text-[11px]">5</span>
+<span class="font-semibold text-primary truncate">LLM Reasoning &amp; Tool Formulation (Gemini 1.5 Flash)</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-primary text-on-primary rounded">ACTIVE CALL</span>
+</div>
+<span class="font-code-base text-code-base text-primary font-bold shrink-0">280ms</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-primary rounded-full" style="left: 19.5%; width: 57%;"></div>
+</div>
+</div>
+<!-- Step 6 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="6">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">6</span>
+<span class="font-semibold text-on-surface truncate">Layer-2 Guardrail: JSON Schema &amp; Policy Validation</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-tertiary/10 text-tertiary rounded">VALIDATED</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">12ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-tertiary rounded-full" style="left: 76.5%; width: 2.5%;"></div>
+</div>
+</div>
+<!-- Step 7 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="7">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">7</span>
+<span class="font-semibold text-on-surface truncate">Human-in-the-Loop Threshold Check (Autonomic Policy)</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-tertiary/10 text-tertiary rounded">AUTO-APPROVED</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">6ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-tertiary-container rounded-full" style="left: 79%; width: 1.5%;"></div>
+</div>
+</div>
+<!-- Step 8 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="8">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">8</span>
+<span class="font-semibold text-on-surface truncate">Tool Execution in gVisor Micro-Sandbox (Cloud Run)</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-secondary/10 text-secondary rounded">CRM API 200 OK</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">84ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-secondary rounded-full" style="left: 80.5%; width: 17%;"></div>
+</div>
+</div>
+<!-- Step 9 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="9">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">9</span>
+<span class="font-semibold text-on-surface truncate">Final Response Synthesis &amp; SSE Client Stream</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-primary/10 text-primary rounded">COMPLETED</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">14ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-primary rounded-full" style="left: 97.5%; width: 2.5%;"></div>
+</div>
+</div>
+<!-- Step 10 -->
+<div class="trace-row flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" data-step="10">
+<div class="flex items-center justify-between font-label-ui text-label-ui">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">10</span>
+<span class="font-semibold text-on-surface truncate">BigQuery Immutable Audit Log &amp; Trace Flush</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.2 bg-surface-container text-on-surface-variant rounded">ASYNC DISPATCH</span>
+</div>
+<span class="font-code-base text-code-base text-on-surface font-medium shrink-0">8ms</span>
+</div>
+<div class="w-full bg-surface-container-low rounded-full h-2 relative overflow-hidden">
+<div class="absolute top-0 bottom-0 bg-outline rounded-full" style="left: 98.4%; width: 1.6%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry & JSON Inspector Tabs -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<!-- Tab Headers -->
+<div class="flex items-center justify-between border-b-0 bg-surface-container-low p-1 rounded-lg">
+<div class="flex items-center gap-1">
+<button class="json-tab active px-3 py-1.5 rounded-md font-label-ui text-label-ui font-semibold bg-surface-container-lowest text-primary shadow-sm" data-tab="raw">
+                Trace Raw JSON (OTel)
+              </button>
+<button class="json-tab px-3 py-1.5 rounded-md font-label-ui text-label-ui font-medium text-on-surface-variant hover:text-on-surface" data-tab="guardrail">
+                Guardrail Telemetry
+              </button>
+<button class="json-tab px-3 py-1.5 rounded-md font-label-ui text-label-ui font-medium text-on-surface-variant hover:text-on-surface" data-tab="vector">
+                Vector Embeddings Context
+              </button>
+</div>
+<button class="flex items-center gap-1 font-code-base text-code-base text-on-surface-variant hover:text-primary px-2 py-1 rounded transition-colors" id="copyJsonBtn">
+<span class="material-symbols-outlined text-[15px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<!-- Code / Content Inspector Display -->
+<div class="relative bg-surface-container-high rounded-xl p-space-md overflow-hidden">
+<!-- Raw JSON View -->
+<div class="tab-pane font-code-base text-code-base text-on-surface overflow-x-auto max-h-72" id="tabContentRaw">
+<pre class="leading-relaxed">{
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "parent_span_id": "00f067aa0ba902b7",
+  "service_name": "agentforge-runtime-gateway",
+  "attributes": {
+    "tenant.id": "1042",
+    "tenant.tier": "Enterprise",
+    "llm.model": "gemini-1.5-flash",
+    "llm.temperature": 0.1,
+    "llm.prompt_tokens": 142,
+    "llm.completion_tokens": 86,
+    "guardrail.injection_scan": "CLEAN",
+    "guardrail.pii_redacted": false,
+    "policy.approval_status": "AUTO_APPROVED",
+    "policy.max_threshold": 50.00,
+    "policy.executed_value": 42.50
+  },
+  "events": [
+    {
+      "name": "crm_fetch_order_dispatched",
+      "timestamp": "2025-02-23T14:32:01.402Z",
+      "status": "HTTP_200_OK"
+    }
+  ]
+}</pre>
+</div>
+<!-- Guardrail Telemetry View -->
+<div class="tab-pane hidden font-code-base text-code-base text-on-surface overflow-x-auto max-h-72" id="tabContentGuardrail">
+<pre class="leading-relaxed">{
+  "guardrail_evaluations": {
+    "prompt_injection_heuristic": {
+      "model": "text-moderation-007",
+      "confidence_clean": 0.9998,
+      "verdict": "ALLOW"
+    },
+    "tenant_boundary_check": {
+      "isolated_vpc": "vpc-tenant-1042-prod",
+      "cross_tenant_leakage": false
+    },
+    "pii_scanner": {
+      "regex_matches": 0,
+      "ner_entities_redacted": []
+    },
+    "human_threshold_governor": {
+      "requires_human_approval": false,
+      "reason": "Total order $42.50 &lt;= Policy cap $50.00"
+    }
+  }
+}</pre>
+</div>
+<!-- Vector Context View -->
+<div class="tab-pane hidden font-code-base text-code-base text-on-surface overflow-x-auto max-h-72" id="tabContentVector">
+<pre class="leading-relaxed">{
+  "vector_search": {
+    "index_endpoint": "projects/agentforge-prod/locations/us-central1/indexEndpoints/19823091",
+    "embedding_model": "text-embedding-004",
+    "query_dimensions": 768,
+    "retrieved_neighbors": [
+      {
+        "id": "policy_refund_tier1",
+        "distance_score": 0.9124,
+        "content_snippet": "Autonomous agents may authorize refund disbursements under $50.00 for verified damaged or lost standard packages without supervisor escalation."
+      },
+      {
+        "id": "crm_order_schema_v2",
+        "distance_score": 0.8841,
+        "content_snippet": "CRM API definition for customer orders: GET /v2/orders/:id returns item, customer_id, tracking, subtotal, and stripe_id."
+      }
+    ]
+  }
+}</pre>
+</div>
+</div>
+<!-- Bottom Telemetry Badges -->
+<div class="flex flex-wrap items-center justify-between text-body-sm text-on-surface-variant pt-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>OpenTelemetry OTLP/gRPC Exporter Synchronized</span>
+</div>
+<span class="font-code-base text-code-base text-outline">Trace Span #99f2b8a7c-01</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Scenario prompt selector micro-interaction
+    const buttons = document.querySelectorAll('.scenario-btn');
+    const promptInput = document.getElementById('promptInput');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const promptText = btn.getAttribute('data-prompt');
+        if (promptInput && promptText) {
+          promptInput.value = promptText;
+          promptInput.focus();
+        }
+      });
+    });
+
+    // Inspector Tab Switching
+    const tabs = document.querySelectorAll('.json-tab');
+    const panes = {
+      raw: document.getElementById('tabContentRaw'),
+      guardrail: document.getElementById('tabContentGuardrail'),
+      vector: document.getElementById('tabContentVector')
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm', 'font-semibold');
+          t.classList.add('text-on-surface-variant', 'font-medium');
+        });
+        tab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm', 'font-semibold');
+        tab.classList.remove('text-on-surface-variant', 'font-medium');
+
+        const target = tab.getAttribute('data-tab');
+        Object.keys(panes).forEach(k => {
+          if (panes[k]) {
+            if (k === target) {
+              panes[k].classList.remove('hidden');
+            } else {
+              panes[k].classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
+
+    // Trace row highlighting interaction
+    const traceRows = document.querySelectorAll('.trace-row');
+    traceRows.forEach(row => {
+      row.addEventListener('click', () => {
+        traceRows.forEach(r => r.classList.remove('ring-2', 'ring-primary/20'));
+        row.classList.add('ring-2', 'ring-primary/20');
+      });
+    });
+
+    // Copy to clipboard mock toast
+    const copyBtn = document.getElementById('copyJsonBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const label = copyBtn.querySelector('span:last-child');
+        if (label) {
+          const original = label.textContent;
+          label.textContent = 'Copied!';
+          setTimeout(() => {
+            label.textContent = original;
+          }, 1600);
+        }
+      });
+    }
+
+    // Trace Replay micro-animation
+    const replayBtn = document.getElementById('replayBtn');
+    if (replayBtn) {
+      replayBtn.addEventListener('click', () => {
+        const icon = replayBtn.querySelector('.material-symbols-outlined');
+        if (icon) {
+          icon.classList.add('animate-spin');
+          setTimeout(() => {
+            icon.classList.remove('animate-spin');
+          }, 800);
+        }
+      });
+    }
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-xl"><div class="max-w-7xl mx-auto px-margin-sm md:px-margin flex flex-col gap-space-lg"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md"><div class="flex items-center gap-space-sm"><div class="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary"><span class="material-symbols-outlined text-[14px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentForge</span><span class="font-code-base text-code-base text-on-surface-variant ml-space-xs">v2.4.0-rc</span></div><div class="flex items-center gap-space-sm font-code-base text-code-base text-on-surface-variant bg-surface-container-low px-space-sm py-1 rounded-md border border-outline-variant/20"><span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span><span>GCP Cloud Run Services: Operational</span></div></div><div class="flex flex-wrap items-center justify-between gap-space-md border-t border-outline-variant/20 pt-space-lg"><div class="flex flex-wrap items-center gap-space-md font-body-sm text-body-sm text-on-surface-variant"><a class="hover:text-on-surface transition-colors" data-path="architecture" href="#">Autonomic Topology</a><a class="hover:text-on-surface transition-colors" data-path="pillars" href="#">Security &amp; Governance</a><a class="hover:text-on-surface transition-colors" data-path="demo" href="#">Runtime Stream</a><a class="hover:text-on-surface transition-colors" data-path="pricing" href="#">Tier Economics</a></div><p class="font-body-sm text-body-sm text-on-surface-variant">Crafted for BOC 2.0 Challenge — Autonomous Agent Infrastructure.</p></div></div></footer></body></html>

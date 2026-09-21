@@ -1,0 +1,1936 @@
+<!DOCTYPE html><html lang="en" style=""><head></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>AgentForge Platform</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-container-high": "#e2e7ff",
+        "secondary-container": "#8a4cfc",
+        "on-tertiary-fixed": "#00201c",
+        "on-error": "#ffffff",
+        "secondary-fixed": "#eaddff",
+        "on-secondary-fixed": "#25005a",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "secondary-fixed-dim": "#d2bbff",
+        "surface-container-lowest": "#ffffff",
+        "surface-variant": "#dae2fd",
+        "surface-bright": "#faf8ff",
+        "surface-dim": "#d2d9f4",
+        "on-secondary-container": "#fffbff",
+        "on-tertiary": "#ffffff",
+        "on-secondary": "#ffffff",
+        "inverse-primary": "#c3c0ff",
+        "surface-tint": "#4d44e3",
+        "secondary": "#712ae2",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#71f8e4",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#283044",
+        "primary-container": "#4f46e5",
+        "on-primary-fixed": "#0f0069",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-primary-container": "#dad7ff",
+        "on-surface": "#131b2e",
+        "primary": "#3525cd",
+        "outline": "#777587",
+        "surface": "#faf8ff",
+        "error": "#ba1a1a",
+        "on-primary": "#ffffff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "on-primary-fixed-variant": "#3323cc",
+        "surface-container": "#eaedff",
+        "outline-variant": "#c7c4d8",
+        "inverse-on-surface": "#eef0ff",
+        "error-container": "#ffdad6",
+        "primary-fixed": "#e2dfff",
+        "on-tertiary-container": "#69f1de",
+        "tertiary": "#00534a",
+        "on-surface-variant": "#464555",
+        "tertiary-container": "#006d62",
+        "surface-container-highest": "#dae2fd",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-container-low": "#f2f3ff",
+        "background": "#faf8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xs": "0.25rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "space-lg": "1.5rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "display-hero": [
+          "Geist"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "headline-sm": [
+          "Geist"
+        ],
+        "display-hero-mobile": [
+          "Geist"
+        ],
+        "code-base": [
+          "JetBrains Mono"
+        ],
+        "headline-md": [
+          "Geist"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "headline-lg": [
+          "Geist"
+        ],
+        "headline-lg-mobile": [
+          "Geist"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "label-ui": [
+          "Inter"
+        ]
+      },
+      "fontSize": {
+        "display-hero": [
+          "64px",
+          {
+            "lineHeight": "72px",
+            "letterSpacing": "-0.035em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "15px",
+          {
+            "lineHeight": "24px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-sm": [
+          "20px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "display-hero-mobile": [
+          "40px",
+          {
+            "lineHeight": "46px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "700"
+          }
+        ],
+        "code-base": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "28px",
+          {
+            "lineHeight": "36px",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "11px",
+          {
+            "lineHeight": "16px",
+            "letterSpacing": "0.06em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-lg": [
+          "44px",
+          {
+            "lineHeight": "52px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg-mobile": [
+          "32px",
+          {
+            "lineHeight": "38px",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "18px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "0em",
+            "fontWeight": "400"
+          }
+        ],
+        "label-ui": [
+          "13px",
+          {
+            "lineHeight": "18px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ]
+      }
+    }
+  }
+};</script><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>AgentForge Platform</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-container-high": "#e2e7ff",
+        "secondary-container": "#8a4cfc",
+        "on-tertiary-fixed": "#00201c",
+        "on-error": "#ffffff",
+        "secondary-fixed": "#eaddff",
+        "on-secondary-fixed": "#25005a",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "secondary-fixed-dim": "#d2bbff",
+        "surface-container-lowest": "#ffffff",
+        "surface-variant": "#dae2fd",
+        "surface-bright": "#faf8ff",
+        "surface-dim": "#d2d9f4",
+        "on-secondary-container": "#fffbff",
+        "on-tertiary": "#ffffff",
+        "on-secondary": "#ffffff",
+        "inverse-primary": "#c3c0ff",
+        "surface-tint": "#4d44e3",
+        "secondary": "#712ae2",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#71f8e4",
+        "on-error-container": "#93000a",
+        "inverse-surface": "#283044",
+        "primary-container": "#4f46e5",
+        "on-primary-fixed": "#0f0069",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-primary-container": "#dad7ff",
+        "on-surface": "#131b2e",
+        "primary": "#3525cd",
+        "outline": "#777587",
+        "surface": "#faf8ff",
+        "error": "#ba1a1a",
+        "on-primary": "#ffffff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "on-primary-fixed-variant": "#3323cc",
+        "surface-container": "#eaedff",
+        "outline-variant": "#c7c4d8",
+        "inverse-on-surface": "#eef0ff",
+        "error-container": "#ffdad6",
+        "primary-fixed": "#e2dfff",
+        "on-tertiary-container": "#69f1de",
+        "tertiary": "#00534a",
+        "on-surface-variant": "#464555",
+        "tertiary-container": "#006d62",
+        "surface-container-highest": "#dae2fd",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-container-low": "#f2f3ff",
+        "background": "#faf8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xs": "0.25rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "space-lg": "1.5rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "display-hero": [
+          "Geist"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "headline-sm": [
+          "Geist"
+        ],
+        "display-hero-mobile": [
+          "Geist"
+        ],
+        "code-base": [
+          "JetBrains Mono"
+        ],
+        "headline-md": [
+          "Geist"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "headline-lg": [
+          "Geist"
+        ],
+        "headline-lg-mobile": [
+          "Geist"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "label-ui": [
+          "Inter"
+        ]
+      },
+      "fontSize": {
+        "display-hero": [
+          "64px",
+          {
+            "lineHeight": "72px",
+            "letterSpacing": "-0.035em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "15px",
+          {
+            "lineHeight": "24px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-sm": [
+          "20px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "display-hero-mobile": [
+          "40px",
+          {
+            "lineHeight": "46px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "700"
+          }
+        ],
+        "code-base": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "28px",
+          {
+            "lineHeight": "36px",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "11px",
+          {
+            "lineHeight": "16px",
+            "letterSpacing": "0.06em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-lg": [
+          "44px",
+          {
+            "lineHeight": "52px",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg-mobile": [
+          "32px",
+          {
+            "lineHeight": "38px",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "18px",
+          {
+            "lineHeight": "28px",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "13px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "0em",
+            "fontWeight": "400"
+          }
+        ],
+        "label-ui": [
+          "13px",
+          {
+            "lineHeight": "18px",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ]
+      }
+    }
+  }
+};</script><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(15,23,42,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin-sm md:px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="home" href="#"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">AgentForge</span></a><div class="hidden xl:flex items-center gap-space-xs py-space-xs px-space-sm rounded-full bg-surface-container border border-outline-variant/40"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-caps text-label-caps text-on-surface-variant font-medium">BOC 2.0 SCENARIO 5</span></div></div><nav class="hidden lg:flex items-center gap-1 xl:gap-2" data-active-classes="bg-surface-container text-primary font-semibold"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="problem" href="#">Problem</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="personas" href="#">Personas</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pillars" href="#">Pillars</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="tech-stack" href="#">Tech Stack</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="demo" href="#">Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pricing" href="#">Pricing</a></nav><div class="flex items-center gap-space-sm shrink-0"><a class="hidden sm:inline-flex items-center font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 transition-colors" data-path="docs" href="#">Explore Docs</a><a class="hidden md:inline-flex items-center px-3 py-1.5 rounded-lg border border-outline-variant/50 bg-surface-container-lowest font-label-ui text-label-ui text-on-surface hover:bg-surface-container-low transition-all" href="https://github.com" rel="noreferrer" target="_blank">View on GitHub</a><a class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all" data-path="console" href="#">Launch Console</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full">
+<div class="relative w-full overflow-hidden bg-surface">
+<!-- Atmospheric Radial Glows -->
+<div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] rounded-full bg-gradient-to-b from-primary/10 via-secondary/5 to-transparent blur-3xl -z-10"></div>
+<div class="pointer-events-none absolute top-[1400px] -left-40 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-secondary-container/10 to-transparent blur-3xl -z-10"></div>
+<div class="pointer-events-none absolute top-[2800px] -right-40 w-[700px] h-[700px] rounded-full bg-gradient-to-bl from-tertiary-fixed-dim/15 to-transparent blur-3xl -z-10"></div>
+<!-- ================================================================= -->
+<!-- SECTION 1: HERO                                                   -->
+<!-- ================================================================= -->
+<section class="relative overflow-hidden w-full pt-12 pb-24 md:pt-16 md:pb-32 px-margin-sm md:px-margin max-w-7xl mx-auto">
+<!-- STITCH_SHADER_START:ANIMATION_20 class="absolute inset-0 w-full h-full pointer-events-none opacity-80" -->
+<div class="absolute inset-0 w-full h-full pointer-events-none opacity-80" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_20" style="display:block;width:100%;height:100%" width="1280" height="1144"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_20');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+// Simplex noise / smooth gradient generator
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+float snoise(vec2 v) {
+  const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
+                      0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+                     -0.577350269189626,  // -1.0 + 2.0 * C.x
+                      0.024390243902439); // 1.0 / 41.0
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1;
+  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod289(i);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+        + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    
+    // Subtly drifting coordinates
+    float t = u_time * 0.15;
+    
+    // Clean, modern tech aesthetic matching white surface #faf8ff and brand indigo #4f46e5 / light violet / sky
+    vec2 p1 = uv * 2.5 + vec2(sin(t * 0.7) * 0.3, cos(t * 0.5) * 0.3);
+    vec2 p2 = uv * 1.8 - vec2(cos(t * 0.4) * 0.35, sin(t * 0.6) * 0.3);
+    
+    float n1 = snoise(p1) * 0.5 + 0.5;
+    float n2 = snoise(p2 + n1 * 0.8) * 0.5 + 0.5;
+    
+    // Mouse subtle influence
+    vec2 mouseNorm = u_mouse / u_resolution;
+    float mouseDist = length(uv - mouseNorm);
+    float mouseGlow = exp(-mouseDist * 3.5) * 0.2;
+    
+    // Palette:
+    // Base white/subtle lavender surface: #faf8ff (0.98, 0.97, 1.0)
+    // Soft glowing indigo aurora: #4f46e5 (0.31, 0.27, 0.90)
+    // Soft violet/blue accent: #818cf8 (0.50, 0.55, 0.97)
+    // Cyan/electric highlight: #38bdf8 (0.22, 0.74, 0.97)
+    
+    vec3 colBase = vec3(0.98, 0.972, 1.0);
+    vec3 colIndigo = vec3(0.31, 0.27, 0.89);
+    vec3 colViolet = vec3(0.55, 0.45, 0.96);
+    vec3 colCyan = vec3(0.25, 0.72, 0.96);
+    
+    // Blend organic wave ribbons
+    float wave1 = smoothstep(0.35, 0.75, n2);
+    float wave2 = smoothstep(0.45, 0.85, n1);
+    
+    // Mix colors with low opacity for clean white SaaS readability
+    vec3 gradient = mix(colBase, mix(colViolet, colIndigo, wave1), wave1 * 0.18);
+    gradient = mix(gradient, colCyan, wave2 * 0.12);
+    gradient += colIndigo * mouseGlow;
+    
+    // Gentle vignette towards borders so hero text & UI cards pop crisply
+    float centerDist = length(uv - vec2(0.5, 0.45));
+    float vignette = smoothstep(0.8, 0.2, centerDist);
+    
+    // Soft luminous mesh glow
+    gl_FragColor = vec4(gradient, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_20 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<!-- Pill Badge -->
+<div class="inline-flex items-center gap-space-xs px-3.5 py-1.5 rounded-full bg-surface-container-low shadow-sm border border-outline-variant/50 hover:border-primary/40 transition-all duration-300">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider uppercase">BOC 2.0 • Scenario 5 Execution</span>
+<span class="text-outline-variant font-body-sm">•</span>
+<span class="font-code-base text-code-base text-primary font-medium">GCP Cloud Native</span>
+</div>
+<!-- Main H1 -->
+<h1 class="mt-6 max-w-4xl font-display-hero text-display-hero tracking-tight text-on-surface">
+          Deploy <span class="bg-gradient-to-r from-primary via-secondary to-secondary-container bg-clip-text text-transparent">Intelligent Agents</span>.<br class="hidden sm:inline">
+          Own the Results.
+        </h1>
+<!-- Subtitle -->
+<p class="mt-6 max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+          AgentForge is a cloud-native, multi-tenant AI Agent Platform that lets businesses deploy autonomous AI agents with memory, tool-calling, and guardrails — without building any infrastructure.
+        </p>
+<!-- CTAs -->
+<div class="mt-8 flex flex-wrap items-center justify-center gap-space-md">
+<a class="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:brightness-105 active:scale-[0.98] transition-all" href="#architecture">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span class="">Explore Architecture</span>
+</a>
+<a class="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-label-ui font-medium shadow-sm hover:bg-surface-container-low hover:text-primary transition-all" href="#live-demo">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+<span class="">Inspect Live Demo</span>
+</a>
+<a class="inline-flex items-center gap-space-xs px-5 py-3 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui transition-all" href="https://github.com" rel="noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="">View on GitHub</span>
+</a>
+</div>
+<!-- Floating 3D Isometric Rack & Micro-Panels Stage -->
+<div class="mt-16 relative w-full max-w-5xl h-[460px] md:h-[500px] flex items-center justify-center overflow-visible">
+<!-- Background Grid Matrix Canvas -->
+<div class="absolute inset-0 rounded-2xl bg-surface-container-lowest shadow-xl shadow-surface-tint/5 flex items-center justify-center overflow-hidden">
+<svg class="absolute inset-0 w-full h-full opacity-40" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="32" id="hero-grid" patternUnits="userSpaceOnUse" width="32">
+<path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(19, 27, 46, 0.04)" stroke-width="1"></path>
+</pattern>
+<linearGradient id="flow-stroke" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#3525cd"></stop>
+<stop offset="50%" stop-color="#712ae2"></stop>
+<stop offset="100%" stop-color="#71f8e4"></stop>
+</linearGradient>
+</defs>
+<rect fill="url(#hero-grid)" height="100%" width="100%"></rect>
+<!-- Pulsing Circuit Pathways -->
+<path class="animate-pulse" d="M 120 400 C 250 400, 300 260, 512 260 S 760 380, 920 200" fill="none" stroke="url(#flow-stroke)" stroke-dasharray="6 6" stroke-width="1.5"></path>
+<path d="M 180 120 C 350 140, 420 240, 512 250 S 700 160, 880 340" fill="none" stroke="rgba(79, 70, 229, 0.2)" stroke-dasharray="4 8" stroke-width="1.2"></path>
+</svg>
+</div>
+<!-- Central Isometric Server Cluster / Engine Hub -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="relative w-48 h-48 md:w-56 md:h-56 rounded-3xl bg-gradient-to-br from-surface-container-lowest via-surface-container-low to-surface-container p-4 shadow-2xl shadow-primary/20 flex flex-col items-center justify-center transform hover:rotate-1 hover:scale-105 transition-all duration-500">
+<div class="relative w-24 h-24 rounded-2xl border border-outline-variant/40 flex items-center justify-center shadow-xl shadow-primary/25 animate-bounce bg-surface-container-lowest" style="animation-duration: 4s;">
+  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA0g1WleGgo_7rTv2Grn4VDYUVgWsVa2neWxp95q1DZnqZ7I7cVD3y0OaXxqLElJpTgRqqWPyAZbAe1Cu_iuXAfCCbXNV-9Bx2x1Q59Mv8e3kpZF-5LEMMnMUGSLts8j7lgfTaF1E-ovwWDKrtXHM5-9R33R8Ek1N_LxfwUPo79_4a2jQfmXJxfZyu-vEvNi1iZnVlvWrLpz5K46jix4702VQCcy7gXu3UK9vAPXDNAsCWjOAzBp7l" alt="AgentForge Autonomous Core Neural Mesh" class="w-full h-full object-contain filter drop-shadow-[0_0_25px_rgba(99,102,241,0.5)] rounded-2xl p-1">
+</div>
+<div class="mt-3 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-caps text-label-caps text-on-surface font-semibold">AGENT CORE ENGINE</span>
+</div>
+<span class="font-code-base text-[11px] text-on-surface-variant">Cloud Run • 24 vCPU Mesh</span>
+<div class="mt-2 flex gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container-high text-primary font-medium">Tenant Isolated</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-code-base bg-tertiary-fixed text-on-tertiary-fixed font-medium">99.9% SLO</span>
+</div>
+</div>
+</div>
+<!-- Mini Floating Card 1: Chat Stream (Top Left) -->
+<div class="absolute -top-4 left-4 md:left-12 z-20 w-72 p-3.5 rounded-xl bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant/40 shadow-lg shadow-on-surface/5 transition-all duration-300">
+  <div class="flex items-center justify-between gap-2">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+        <span class="material-symbols-outlined text-[15px]">smart_toy</span>
+      </div>
+      <div>
+        <div class="font-label-ui text-[12px] font-semibold text-on-surface leading-none">Auto-Orchestrator</div>
+        <div class="flex items-center gap-1 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+          <span class="font-label-caps text-[9px] text-tertiary font-medium tracking-wide uppercase">Active Mesh</span>
+        </div>
+      </div>
+    </div>
+    <span class="font-code-base text-[10px] font-medium px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30 shrink-0">18ms TTFT</span>
+  </div>
+  <div class="mt-2.5 p-2 rounded-lg bg-surface-container-low/80 border border-outline-variant/20 font-code-base text-[11px]">
+    <div class="flex items-center justify-between mb-1">
+      <span class="text-[9px] uppercase tracking-wider font-semibold text-on-surface-variant opacity-80">Policy Synthesis</span>
+      <span class="text-[9px] text-primary font-medium">tenant-alpha</span>
+    </div>
+    <div class="flex items-start gap-1.5 text-on-surface text-[11px] leading-relaxed">
+      <span class="material-symbols-outlined text-tertiary text-[13px] shrink-0 mt-0.5">check_circle</span>
+      <span class="truncate font-code-base">Synthesized policy &amp; scheduled webhook #082</span>
+    </div>
+  </div>
+</div>
+<!-- Mini Floating Card 2: Cost Telemetry Donut (Bottom Left) -->
+<div class="absolute bottom-6 left-6 md:left-16 z-20 p-3.5 rounded-xl bg-surface-container-lowest/90 backdrop-blur-md shadow-lg shadow-on-surface/5 flex items-center gap-3">
+<div class="relative w-12 h-12">
+<svg class="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
+<path class="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-tertiary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="72, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center text-[10px] font-code-base font-bold text-on-surface">72%</span>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">Semantic Cache</div>
+<div class="font-code-base text-[13px] font-bold text-tertiary">$0.0106 / req</div>
+<div class="text-[11px] font-body-sm text-on-surface-variant">38% cost spared</div>
+</div>
+</div>
+<!-- Mini Floating Card 3: JSON Tool-Call Schema (Right Side) -->
+<div class="absolute right-4 md:right-12 top-10 z-20 w-72 p-3.5 rounded-xl bg-surface-container-lowest/90 backdrop-blur-md shadow-lg shadow-on-surface/5 font-code-base text-[11px] text-on-surface">
+<div class="flex items-center justify-between pb-2 mb-2 bg-surface-container-low px-2 py-1 rounded">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-error/70"></span>
+<span class="w-2 h-2 rounded-full bg-secondary-container/70"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary/70"></span>
+</div>
+<span class="text-[10px] text-on-surface-variant font-label-caps">tool_manifest.json</span>
+</div>
+<div class="text-primary font-medium">{</div>
+<div class="pl-3 text-secondary">"action": <span class="text-tertiary">"lookup_order"</span>,</div>
+<div class="pl-3 text-secondary">"guardrail_score": <span class="text-on-surface font-semibold">0.994</span>,</div>
+<div class="pl-3 text-secondary">"pii_sanitized": <span class="text-tertiary">true</span>,</div>
+<div class="pl-3 text-secondary">"sandbox_exec": <span class="text-primary">"approved"</span></div>
+<div class="text-primary font-medium">}</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 2: THE PROBLEM WE SOLVE                                   -->
+<!-- ================================================================= -->
+<section class="w-full py-20 bg-surface-container-low/50" id="problem">
+<div class="max-w-7xl mx-auto px-margin-sm md:px-margin">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-12">
+<div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps uppercase tracking-wider">
+              Systemic Obstacles
+            </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+              Raw LLMs Are Not Enterprise Agents
+            </h2>
+</div>
+<p class="max-w-md font-body-md text-body-md text-on-surface-variant">
+            Teams discover too late that standard models lack isolation, determinism, and safety guardrails. Here is why building custom AI platforms stalls:
+          </p>
+</div>
+<!-- 6-Card Problem Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all duration-300 group">
+<div class="w-12 h-12 rounded-xl bg-error-container/60 text-error flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">psychology_alt</span>
+</div>
+<h3 class="mt-5 font-headline-sm text-headline-sm text-on-surface font-semibold">No Memory</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              Generic LLMs start from blank slates every invocation. Context windows drown under thousands of tokens, eroding session continuity and conversational context.
+            </p>
+<div class="mt-4 pt-3 flex items-center gap-1.5 text-error font-code-base text-[12px]">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span class="">Zero session state recall</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all duration-300 group">
+<div class="w-12 h-12 rounded-xl bg-error-container/60 text-error flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">shield_lock</span>
+</div>
+<h3 class="mt-5 font-headline-sm text-headline-sm text-on-surface font-semibold">No Safety &amp; Guardrails</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              Without active tool verification and input firewalls, hallucinating agents execute unauthorized refunds, leak API secrets, or breach privacy boundaries.
+            </p>
+<div class="mt-4 pt-3 flex items-center gap-1.5 text-error font-code-base text-[12px]">
+<span class="material-symbols-outlined text-[14px]">gpp_bad</span>
+<span class="">Prompt injection vulnerability</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all duration-300 group">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">trending_up</span>
+</div>
+<h3 class="mt-5 font-headline-sm text-headline-sm text-on-surface font-semibold">Runaway Token Costs</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              Repeated identical queries re-invoke heavy foundation models. Without semantic caching and tiering, monthly bills spiral out of proportion.
+            </p>
+<div class="mt-4 pt-3 flex items-center gap-1.5 text-secondary font-code-base text-[12px]">
+<span class="material-symbols-outlined text-[14px]">monetization_on</span>
+<span class="">10x unnecessary compute waste</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all duration-300 group">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">visibility_off</span>
+</div>
+<h3 class="mt-5 font-headline-sm text-headline-sm text-on-surface font-semibold">Zero Observability</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              Black-box execution leaves operations blind. When an autonomous workflow fails, teams cannot trace which prompt, tool, or retrieved chunk caused the error.
+            </p>
+<div class="mt-4 pt-3 flex items-center gap-1.5 text-on-surface-variant font-code-base text-[12px]">
+<span class="material-symbols-outlined text-[14px]">manage_search</span>
+<span class="">Opaque non-deterministic paths</span>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all duration-300 group">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">apartment</span>
+</div>
+<h3 class="mt-5 font-headline-sm text-headline-sm text-on-surface font-semibold">No Multi-Tenancy</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              Noisy neighbors consume shared rate limits while cross-tenant vectors risk data co-mingling. Enterprise compliance mandates physical data isolation.
+            </p>
+<div class="mt-4 pt-3 flex items-center gap-1.5 text-on-surface-variant font-code-base text-[12px]">
+<span class="material-symbols-outlined text-[14px]">rule_folder</span>
+<span class="">Cross-contamination hazard</span>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all duration-300 group">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">hourglass_disabled</span>
+</div>
+<h3 class="mt-5 font-headline-sm text-headline-sm text-on-surface font-semibold">Months to Build</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              Stitching together Redis vector stores, gateway proxies, sandboxes, and auditing pipelines burns 3 to 6 months of senior engineering velocity.
+            </p>
+<div class="mt-4 pt-3 flex items-center gap-1.5 text-primary font-code-base text-[12px]">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="">Opportunity cost compounding</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 3: SOLUTION OVERVIEW — 3 PERSONAS                         -->
+<!-- ================================================================= -->
+<section class="w-full py-24 px-margin-sm md:px-margin max-w-7xl mx-auto" id="personas">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-caps text-label-caps uppercase tracking-wider">
+          Unified Platform
+        </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+          One Engine. Three Experiences. Zero Overhead.
+        </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+          AgentForge orchestrates autonomous workflows end-to-end, serving every tier of the enterprise ecosystem through purpose-built control surfaces.
+        </p>
+</div>
+<!-- 3 Persona Breakdown Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Persona 1 -->
+<div class="flex flex-col justify-between p-8 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300">
+<div>
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">corporate_fare</span>
+</div>
+<span class="font-code-base text-[11px] px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant">Config &amp; Policy</span>
+</div>
+<h3 class="mt-6 font-headline-md text-headline-md text-on-surface font-semibold">Business Admin</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">Empowers non-technical and domain leaders to define operational boundaries and monitor ROI.</p>
+<div class="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Define tool permissions and human approval thresholds per department</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Upload domain RAG documents with automatic multi-tenant tagging</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Real-time per-tenant cost attribution and quota ceiling enforcement</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-4 bg-surface-container-low p-3 rounded-lg flex items-center justify-between text-on-surface-variant font-code-base text-[12px]">
+<span class="">Access Portal</span>
+<span class="text-primary font-medium">/admin/console →</span>
+</div>
+</div>
+<!-- Persona 2 -->
+<div class="flex flex-col justify-between p-8 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300">
+<div>
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">forum</span>
+</div>
+<span class="font-code-base text-[11px] px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant">Execution Flow</span>
+</div>
+<h3 class="mt-6 font-headline-md text-headline-md text-on-surface font-semibold">End User / Client</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">Delivers friction-free, context-aware responses with verified factual grounding.</p>
+<div class="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Sub-600ms streaming responses with contextual multi-turn recall</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Interactive tool confirmations for high-impact actions (e.g. order change)</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Automatic PII masking ensures private client information is safe</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-4 bg-surface-container-low p-3 rounded-lg flex items-center justify-between text-on-surface-variant font-code-base text-[12px]">
+<span class="">Runtime Endpoint</span>
+<span class="text-secondary font-medium">wss://gateway.agentforge.ai</span>
+</div>
+</div>
+<!-- Persona 3 -->
+<div class="flex flex-col justify-between p-8 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300">
+<div>
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">radar</span>
+</div>
+<span class="font-code-base text-[11px] px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant">Ops &amp; Security</span>
+</div>
+<h3 class="mt-6 font-headline-md text-headline-md text-on-surface font-semibold">Platform Ops / SRE</h3>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">Granular telemetry, distributed tracing, and immutable compliance replay engines.</p>
+<div class="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Live OpenTelemetry trace visualization mapped into Google Cloud Trace</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">One-click replay of past agent trajectories for regression verification</span>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
+<span class="">Autoscaling serverless execution via Cloud Run container fleet</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-4 bg-surface-container-low p-3 rounded-lg flex items-center justify-between text-on-surface-variant font-code-base text-[12px]">
+<span class="">Audit Sink</span>
+<span class="text-tertiary font-medium">BigQuery Analytics Sink</span>
+</div>
+</div>
+</div>
+<!-- Interactive 3D Mockup Container -->
+<div class="mt-16 p-4 md:p-8 rounded-3xl bg-surface-container-low shadow-xl">
+<div class="w-full rounded-2xl bg-surface-container-lowest p-6 shadow-md transition-all duration-500 hover:shadow-2xl">
+<div class="flex items-center justify-between pb-4 bg-surface-container-low px-4 py-2.5 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="flex gap-1.5">
+<span class="w-3 h-3 rounded-full bg-error/80"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-container/80"></span>
+<span class="w-3 h-3 rounded-full bg-tertiary/80"></span>
+</div>
+<span class="font-code-base text-code-base font-semibold text-on-surface">AgentForge Unified Ops Console</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-code-base bg-tertiary-fixed text-on-tertiary-fixed">Production: us-central1</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">refresh</span>
+</div>
+</div>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="p-4 rounded-xl bg-surface-container-low">
+<div class="text-[12px] font-label-caps text-on-surface-variant uppercase">Active Agents</div>
+<div class="text-headline-md font-headline-md font-bold text-primary mt-1">42</div>
+<div class="text-[11px] font-code-base text-tertiary mt-1">↑ 8 spun up this hour</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low">
+<div class="text-[12px] font-label-caps text-on-surface-variant uppercase">P50 Latency</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface mt-1">542ms</div>
+<div class="text-[11px] font-code-base text-tertiary mt-1">Semantic Cache: 46ms</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low">
+<div class="text-[12px] font-label-caps text-on-surface-variant uppercase">Guardrail Intercepts</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface mt-1">0.02%</div>
+<div class="text-[11px] font-code-base text-on-surface-variant mt-1">14 PII queries blocked</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low">
+<div class="text-[12px] font-label-caps text-on-surface-variant uppercase">Monthly Spend</div>
+<div class="text-headline-md font-headline-md font-bold text-secondary mt-1">$158.41</div>
+<div class="text-[11px] font-code-base text-on-surface-variant mt-1">15,000 runs metered</div>
+</div>
+</div>
+<!-- Stylized Telemetry Mini Chart -->
+<div class="mt-6 p-4 rounded-xl bg-surface-container-low">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Token Throughput &amp; Invocations (24h)</span>
+<span class="font-code-base text-[11px] text-on-surface-variant">Live Pub/Sub Stream</span>
+</div>
+<div class="h-24 w-full flex items-end gap-1 sm:gap-2 pt-2">
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[30%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[45%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[40%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[60%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[80%]"></div>
+<div class="flex-1 bg-primary/70 rounded-t hover:bg-primary transition-all h-[95%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[70%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[85%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t hover:bg-primary transition-all h-[90%]"></div>
+<div class="flex-1 bg-primary rounded-t h-[100%]"></div>
+<div class="flex-1 bg-secondary rounded-t h-[75%]"></div>
+<div class="flex-1 bg-tertiary-fixed-dim rounded-t h-[88%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 4: ARCHITECTURE — HORIZONTAL 5-LAYER PIPELINE            -->
+<!-- ================================================================= -->
+<section class="w-full py-24 bg-surface-container-low/40" id="architecture">
+<div class="max-w-7xl mx-auto px-margin-sm md:px-margin">
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps uppercase tracking-wider">
+            Autonomic Topology
+          </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+            Inside AgentForge
+          </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+            A resilient, zero-friction 5-layer pipeline orchestrating incoming queries through distributed gateway policies down into isolated sandboxes and BigQuery audits.
+          </p>
+</div>
+<!-- 5-Layer Pipeline Representation -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+<!-- Connector SVG flow line behind nodes for desktop -->
+<div class="hidden md:block absolute top-1/2 left-8 right-8 -translate-y-1/2 h-1 pointer-events-none -z-0">
+<svg class="w-full h-4 overflow-visible" xmlns="http://www.w3.org/2000/svg">
+<line class="animate-pulse" stroke="#4f46e5" stroke-dasharray="6 6" stroke-width="2" x1="0" x2="100%" y1="2" y2="2"></line>
+</svg>
+</div>
+<!-- Layer 1 -->
+<div class="relative z-10 flex flex-col p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface font-code-base font-bold text-[12px] mb-3">01</div>
+<div class="font-label-caps text-[10px] text-primary uppercase font-bold">Ingress &amp; Auth</div>
+<div class="font-headline-sm text-[16px] font-semibold text-on-surface mt-1">Apigee Gateway</div>
+<p class="mt-2 text-[12px] font-body-sm text-on-surface-variant">JWT verification, mTLS encryption, rate-limiting, and tenant routing.</p>
+<div class="mt-4 pt-2 bg-surface-container-low px-2 py-1 rounded font-code-base text-[11px] text-on-surface-variant">Rate: 10,000 rps</div>
+</div>
+<!-- Layer 2 -->
+<div class="relative z-10 flex flex-col p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface font-code-base font-bold text-[12px] mb-3">02</div>
+<div class="font-label-caps text-[10px] text-secondary uppercase font-bold">Orchestration</div>
+<div class="font-headline-sm text-[16px] font-semibold text-on-surface mt-1">Cloud Run Fleet</div>
+<p class="mt-2 text-[12px] font-body-sm text-on-surface-variant">State machine coordinator, task planning, and concurrency controls.</p>
+<div class="mt-4 pt-2 bg-surface-container-low px-2 py-1 rounded font-code-base text-[11px] text-on-surface-variant">P50 Latency: 12ms</div>
+</div>
+<!-- Layer 3 -->
+<div class="relative z-10 flex flex-col p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface font-code-base font-bold text-[12px] mb-3">03</div>
+<div class="font-label-caps text-[10px] text-tertiary uppercase font-bold">Inference &amp; RAG</div>
+<div class="font-headline-sm text-[16px] font-semibold text-on-surface mt-1">Vertex AI + Redis</div>
+<p class="mt-2 text-[12px] font-body-sm text-on-surface-variant">Gemini 1.5 Pro routing, semantic vector match, &amp; session hydration.</p>
+<div class="mt-4 pt-2 bg-surface-container-low px-2 py-1 rounded font-code-base text-[11px] text-on-surface-variant">Top-k Recall • 99%</div>
+</div>
+<!-- Layer 4 -->
+<div class="relative z-10 flex flex-col p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface font-code-base font-bold text-[12px] mb-3">04</div>
+<div class="font-label-caps text-[10px] text-primary uppercase font-bold">Action Execution</div>
+<div class="font-headline-sm text-[16px] font-semibold text-on-surface mt-1">Tool Sandbox</div>
+<p class="mt-2 text-[12px] font-body-sm text-on-surface-variant">Strict schema validation, policy authorization, and API dispatch.</p>
+<div class="mt-4 pt-2 bg-surface-container-low px-2 py-1 rounded font-code-base text-[11px] text-on-surface-variant">Isolation: gVisor</div>
+</div>
+<!-- Layer 5 -->
+<div class="relative z-10 flex flex-col p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface font-code-base font-bold text-[12px] mb-3">05</div>
+<div class="font-label-caps text-[10px] text-secondary uppercase font-bold">Observability</div>
+<div class="font-headline-sm text-[16px] font-semibold text-on-surface mt-1">BigQuery &amp; Trace</div>
+<p class="mt-2 text-[12px] font-body-sm text-on-surface-variant">Complete immutable audit trail with OpenTelemetry spans &amp; replay.</p>
+<div class="mt-4 pt-2 bg-surface-container-low px-2 py-1 rounded font-code-base text-[11px] text-on-surface-variant">Audit: Append-Only</div>
+</div>
+</div>
+<!-- Architecture Quick Metrics Bar -->
+<div class="mt-12 p-6 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-wrap items-center justify-between gap-6">
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center font-bold">5</span>
+<div>
+<div class="font-label-ui text-label-ui font-semibold text-on-surface">Integrated Layers</div>
+<div class="text-[12px] font-body-sm text-on-surface-variant">Zero external runtime dependencies</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold">11</span>
+<div>
+<div class="font-label-ui text-label-ui font-semibold text-on-surface">Managed GCP Services</div>
+<div class="text-[12px] font-body-sm text-on-surface-variant">Cloud Run, Firestore, BigQuery, Pub/Sub</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold">~550ms</span>
+<div>
+<div class="font-label-ui text-label-ui font-semibold text-on-surface">P50 Complete Roundtrip</div>
+<div class="text-[12px] font-body-sm text-on-surface-variant">Guardrail + Inference + Execution</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-xl bg-surface-container-high text-primary flex items-center justify-center font-bold">38%</span>
+<div>
+<div class="font-label-ui text-label-ui font-semibold text-on-surface">Cache Hit Savings</div>
+<div class="text-[12px] font-body-sm text-on-surface-variant">Via Semantic Memorystore Redis</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 5: THE 3 PILLARS — "WHERE WE GO DEEP"                     -->
+<!-- ================================================================= -->
+<section class="w-full py-24 px-margin-sm md:px-margin max-w-7xl mx-auto space-y-24" id="pillars">
+<div class="text-center max-w-3xl mx-auto">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-caps text-label-caps uppercase tracking-wider">
+          Core Differentiators
+        </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+          Engineered for Enterprise Depth
+        </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+          Explore the three core architectural guarantees that turn unpredictable generative algorithms into deterministic business systems.
+        </p>
+</div>
+<!-- PILLAR 01 -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<div class="lg:col-span-5 space-y-4">
+<div class="font-label-caps text-label-caps text-primary font-bold tracking-wider uppercase">Pillar 01</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface font-bold">Safe Tool-Calling via 3-Layer Guardrails</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Agents never write directly to production databases. Every invocation executes through three discrete safety checkpoints that detect prompt injections, schema drift, and financial exposure before hitting execution runtimes.
+          </p>
+<div class="space-y-3 pt-2">
+<div class="p-3.5 rounded-xl bg-surface-container-low flex items-start gap-3">
+<span class="w-6 h-6 rounded bg-error-container text-error flex items-center justify-center text-[12px] font-bold shrink-0">L1</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Input Sanitization &amp; PII Scrubbing</span>
+<p class="text-[12px] font-body-sm text-on-surface-variant">Detects jailbreak vectors and masks credit cards or social security tokens prior to LLM submission.</p>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low flex items-start gap-3">
+<span class="w-6 h-6 rounded bg-surface-container-high text-primary flex items-center justify-center text-[12px] font-bold shrink-0">L2</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Schema &amp; Confidence Validation</span>
+<p class="text-[12px] font-body-sm text-on-surface-variant">Verifies tool argument types against JSONSchema and rejects hallucinatory confidence scores below 0.85.</p>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low flex items-start gap-3">
+<span class="w-6 h-6 rounded bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center text-[12px] font-bold shrink-0">L3</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Human-in-the-Loop Thresholds</span>
+<p class="text-[12px] font-body-sm text-on-surface-variant">High-impact actions (e.g. refunds &gt; $100) enter an asynchronous queue requiring explicit business admin sign-off.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 p-6 rounded-3xl bg-surface-container-lowest shadow-lg">
+<div class="flex items-center justify-between pb-3 bg-surface-container-low px-4 py-2 rounded-xl">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">Guardrail Flow Simulator</span>
+<span class="font-code-base text-[11px] text-tertiary font-bold">STATE: PASS_ALL</span>
+</div>
+<!-- Interactive Micro Flowchart -->
+<div class="mt-6 space-y-4 font-code-base text-[12px]">
+<div class="p-4 rounded-xl bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">vpn_key</span>
+<div>
+<div class="fontsemibold text-on-surface">Raw Prompt Received</div>
+<div class="text-[11px] text-on-surface-variant">"Refund order #1234 for customer Jane Doe, SSN 000-12-3456"</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface text-[11px]">Tenant: #98</span>
+</div>
+<div class="flex justify-center text-primary">
+<span class="material-symbols-outlined">arrow_downward</span>
+</div>
+<div class="p-4 rounded-xl bg-surface-variant flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">security</span>
+<div>
+<div class="font-semibold text-on-surface">L1 Masking Result</div>
+<div class="text-[11px] text-on-surface-variant">"Refund order #1234 for customer Jane Doe, SSN [REDACTED_PII]"</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-bold">Sanitized</span>
+</div>
+<div class="flex justify-center text-secondary">
+<span class="material-symbols-outlined">arrow_downward</span>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-[20px]">task_alt</span>
+<div>
+<div class="font-semibold text-on-surface">L2 &amp; L3 Rule Verification</div>
+<div class="text-[11px] text-on-surface-variant">Order value: $45.00 (&lt; $100 auto-tier) • JSON Schema matches ✓</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-bold">Executed</span>
+</div>
+</div>
+</div>
+</div>
+<!-- PILLAR 02 -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<div class="lg:col-span-7 order-2 lg:order-1 p-6 rounded-3xl bg-surface-container-lowest shadow-lg">
+<div class="flex items-center justify-between pb-3 bg-surface-container-low px-4 py-2 rounded-xl">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">Isolated Vector Cluster Map</span>
+<span class="font-code-base text-[11px] text-primary font-bold">Vertex AI Vector Search</span>
+</div>
+<!-- Dynamic Vector Graphic / Spatial Diagram -->
+<div class="mt-6 relative h-64 w-full bg-surface-container-low rounded-2xl overflow-hidden flex items-center justify-center p-4">
+<svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<!-- Cluster Tenant A (Purple) -->
+<circle cx="28%" cy="38%" fill="rgba(79, 70, 229, 0.12)" r="45"></circle>
+<circle cx="28%" cy="38%" fill="#3525cd" r="4"></circle>
+<circle cx="24%" cy="32%" fill="#712ae2" r="3"></circle>
+<circle cx="32%" cy="44%" fill="#712ae2" r="3"></circle>
+<line stroke="#3525cd" stroke-dasharray="2 2" stroke-width="1" x1="28%" x2="24%" y1="38%" y2="32%"></line>
+<line stroke="#3525cd" stroke-dasharray="2 2" stroke-width="1" x1="28%" x2="32%" y1="38%" y2="44%"></line>
+<!-- Cluster Tenant B (Teal) -->
+<circle cx="72%" cy="65%" fill="rgba(0, 83, 74, 0.12)" r="50"></circle>
+<circle cx="72%" cy="65%" fill="#00534a" r="4"></circle>
+<circle cx="68%" cy="58%" fill="#006d62" r="3"></circle>
+<circle cx="78%" cy="72%" fill="#006d62" r="3"></circle>
+<line stroke="#00534a" stroke-dasharray="2 2" stroke-width="1" x1="72%" x2="68%" y1="65%" y2="58%"></line>
+<line stroke="#00534a" stroke-dasharray="2 2" stroke-width="1" x1="72%" x2="78%" y1="65%" y2="72%"></line>
+<!-- Hard Partition Boundary (No Cross-over) -->
+<line stroke="rgba(199, 196, 216, 0.8)" stroke-dasharray="4 4" stroke-width="2" x1="50%" x2="50%" y1="10%" y2="90%"></line>
+</svg>
+<!-- Overlay Labels -->
+<div class="absolute top-4 left-6 px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm text-[11px] font-code-base text-primary font-semibold">
+              Namespace: tenant_acme_corp
+            </div>
+<div class="absolute bottom-4 right-6 px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm text-[11px] font-code-base text-tertiary font-semibold">
+              Namespace: tenant_globex_inc
+            </div>
+<div class="absolute bg-surface-container px-3 py-1 rounded-full text-[10px] font-label-caps text-on-surface-variant uppercase font-bold tracking-wider">
+              Cryptographic Boundary
+            </div>
+</div>
+<div class="mt-4 grid grid-cols-3 gap-3 text-center">
+<div class="p-3 bg-surface-container-low rounded-xl">
+<div class="font-code-base text-[14px] font-bold text-on-surface">Top-K 3</div>
+<div class="text-[11px] text-on-surface-variant font-body-sm">Lean Retrieval</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl">
+<div class="font-code-base text-[14px] font-bold text-on-surface">Cosine 0.92</div>
+<div class="text-[11px] text-on-surface-variant font-body-sm">Similarity Floor</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl">
+<div class="font-code-base text-[14px] font-bold text-on-surface">0.00%</div>
+<div class="text-[11px] text-on-surface-variant font-body-sm">Data Cross-Leak</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 order-1 lg:order-2 space-y-4">
+<div class="font-label-caps text-label-caps text-secondary font-bold tracking-wider uppercase">Pillar 02</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface font-bold">Tenant-Isolated RAG Memory</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Multi-tenancy should never compromise compliance. AgentForge enforces physical vector separation at the index metadata layer, guaranteeing zero bleed between enterprise tenants.
+          </p>
+<ul class="space-y-3 font-body-sm text-body-sm text-on-surface pt-2">
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0">check_box</span>
+<span class=""><strong>Namespace Filtering:</strong> Every search query injects cryptographic tenant claims validated by Apigee.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0">check_box</span>
+<span class=""><strong>Context Truncation:</strong> Injects only the top 3 highest-density knowledge chunks to keep inference prompts lean and deterministic.</span>
+</li>
+<li class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0">check_box</span>
+<span class=""><strong>Session Ephemerality:</strong> Redis conversation memory auto-expires based on tenant data retention SLA.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- PILLAR 03 -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<div class="lg:col-span-5 space-y-4">
+<div class="font-label-caps text-label-caps text-tertiary font-bold tracking-wider uppercase">Pillar 03</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface font-bold">Per-Decision Immutable Audit Trails</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Transform black-box LLM calls into transparent, replayable execution graphs. Every prompt, token count, tool invocation, and human approval is streamed into BigQuery for instant compliance replay.
+          </p>
+<div class="pt-2 space-y-2">
+<div class="flex items-center gap-2 font-code-base text-[12px] text-on-surface">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="">Structured OpenTelemetry standard trace IDs</span>
+</div>
+<div class="flex items-center gap-2 font-code-base text-[12px] text-on-surface">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="">100% deterministic prompt replay engine</span>
+</div>
+<div class="flex items-center gap-2 font-code-base text-[12px] text-on-surface">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="">Real-time billing metering down to individual token cost</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 p-6 rounded-3xl bg-surface-container-lowest shadow-lg">
+<div class="flex items-center justify-between pb-3 bg-surface-container-low px-4 py-2 rounded-xl">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">Decision Timeline (Trace: #tr-89127)</span>
+<span class="font-code-base text-[11px] text-on-surface-variant">542ms Total</span>
+</div>
+<!-- Vertical Trace Flow -->
+<div class="mt-6 space-y-3 font-code-base text-[12px]">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface text-[10px] font-bold">01</span>
+<span class="text-primary font-semibold">INPUT_INSPECT</span>
+<span class="text-on-surface-variant text-[11px] truncate">Prompt sanitized • PII: 0 leaks</span>
+<span class="ml-auto text-on-surface-variant font-medium">8ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface text-[10px] font-bold">02</span>
+<span class="text-primary font-semibold">RAG_RETRIEVE</span>
+<span class="text-on-surface-variant text-[11px] truncate">Vertex Vector Search • 3 docs</span>
+<span class="ml-auto text-on-surface-variant font-medium">42ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface text-[10px] font-bold">03</span>
+<span class="text-secondary font-semibold">LLM_ROUTER</span>
+<span class="text-on-surface-variant text-[11px] truncate">Gemini 1.5 Pro • 142 tokens gen</span>
+<span class="ml-auto text-on-surface-variant font-medium">410ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface text-[10px] font-bold">04</span>
+<span class="text-tertiary font-semibold">TOOL_EXEC</span>
+<span class="text-on-surface-variant text-[11px] truncate">check_order_status(#1234)</span>
+<span class="ml-auto text-on-surface-variant font-medium">68ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-variant">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface text-[10px] font-bold">05</span>
+<span class="text-on-surface font-semibold">AUDIT_SINK</span>
+<span class="text-on-surface-variant text-[11px] truncate">Pub/Sub → BigQuery Immutable Row</span>
+<span class="ml-auto text-tertiary font-medium">14ms async</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 6: TECHNOLOGY STACK (12 GCP SERVICES)                     -->
+<!-- ================================================================= -->
+<section class="w-full py-24 bg-surface-container-low/50" id="tech-stack">
+<div class="max-w-7xl mx-auto px-margin-sm md:px-margin">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps uppercase tracking-wider">
+            Google Cloud Platform Foundation
+          </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+            Engineered Exclusively with Managed GCP
+          </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+            No bespoke VM instances to patch. No self-hosted vector databases to maintain. AgentForge deploys fully on serverless, auto-scaling Google Cloud primitives.
+          </p>
+</div>
+<!-- 4x3 Grid of 12 Managed GCP Services -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 1: Cloud Run -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">cloud</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Run</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Compute • Autoscaling</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Serverless microservices executing the core agent orchestration engine.</p>
+</div>
+<!-- 2: Apigee Gateway -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Apigee Gateway</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Security • Ingress</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Enterprise API security, OAuth token verification, and tenant rate limiting.</p>
+</div>
+<!-- 3: Vertex AI Gemini -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Vertex AI (Gemini)</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">LLM Inference Engine</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Foundation model reasoning via Gemini 1.5 Pro and Gemini Flash.</p>
+</div>
+<!-- 4: Vertex AI Vector Search -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">manage_search</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Vertex Vector Search</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">High-Scale Vector DB</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Sub-millisecond approximate nearest neighbor retrieval across billions of vectors.</p>
+</div>
+<!-- 5: Firestore -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">dataset</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Firestore</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Metadata • Config</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Tenant configs, agent manifests, and human-in-the-loop state storage.</p>
+</div>
+<!-- 6: Memorystore (Redis) -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-error-container/80 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Memorystore Redis</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Semantic Cache • State</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Ultra low-latency cache for recurring semantic queries and session states.</p>
+</div>
+<!-- 7: Secret Manager -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">key</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Secret Manager</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Credentials • KMS</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Centralized credential vaults for tenant third-party tool API keys.</p>
+</div>
+<!-- 8: Cloud Pub/Sub -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">move_to_inbox</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Pub/Sub</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Async Message Bus</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Decouples real-time user streaming from downstream telemetry sinks.</p>
+</div>
+<!-- 9: Cloud Logging -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Logging</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Log Aggregation</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Unified, structured JSON log streaming for all container actions.</p>
+</div>
+<!-- 10: BigQuery -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">table_chart</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">BigQuery</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Audit Data Warehouse</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Immutable trajectory analytics, prompt lineage, and business intelligence.</p>
+</div>
+<!-- 11: Cloud Trace -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">timeline</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Trace</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Distributed Tracing</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Visualizes latency bottlenecks across Gateway, Orchestrator, and LLM hops.</p>
+</div>
+<!-- 12: Cloud Monitoring -->
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">speed</span>
+</div>
+<div>
+<div class="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Monitoring</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">Alerts • SLOs</div>
+</div>
+</div>
+<p class="mt-3 text-[12px] font-body-sm text-on-surface-variant">Real-time alert policies, error budgets, and tenant quota tracking.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 7: LIVE FLOW DEMO — 10 STEPS TO RESOLUTION                -->
+<!-- ================================================================= -->
+<section class="w-full py-24 px-margin-sm md:px-margin max-w-7xl mx-auto" id="demo">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps uppercase tracking-wider">
+          Runtime Walkthrough
+        </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+          One Request. Ten Steps. Full Transparency.
+        </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+          Follow a sample live query: “What’s the status of my order #1234?” as it traverses the AgentForge infrastructure in ~550 milliseconds.
+        </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: 10-Step Interactive Pipeline List -->
+<div class="lg:col-span-6 space-y-2">
+<!-- Step 1 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-primary/10 text-primary font-code-base text-[11px] font-bold flex items-center justify-center">01</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Incoming WebSocket Message</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">User prompt arrives at Apigee edge</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">4ms</span>
+</div>
+<!-- Step 2 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-primary/10 text-primary font-code-base text-[11px] font-bold flex items-center justify-center">02</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Tenant Auth &amp; Rate Limit Check</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">JWT claims verified • Token bucket OK</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">12ms</span>
+</div>
+<!-- Step 3 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-primary/10 text-primary font-code-base text-[11px] font-bold flex items-center justify-center">03</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Input Guardrail Evaluation</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">PII scrubbed • Prompt injection score: 0.01</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">18ms</span>
+</div>
+<!-- Step 4 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-primary/10 text-primary font-code-base text-[11px] font-bold flex items-center justify-center">04</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Semantic Cache Probe</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Memorystore Redis cache miss → proceed</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">8ms</span>
+</div>
+<!-- Step 5 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-secondary/10 text-secondary font-code-base text-[11px] font-bold flex items-center justify-center">05</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Isolated RAG Knowledge Fetch</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Top-3 chunks returned from Vertex Search</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">38ms</span>
+</div>
+<!-- Step 6 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-secondary/10 text-secondary font-code-base text-[11px] font-bold flex items-center justify-center">06</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Gemini 1.5 Pro Reasoning Hop</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">LLM emits ToolCall: ‘check_order_status’</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">340ms</span>
+</div>
+<!-- Step 7 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-secondary/10 text-secondary font-code-base text-[11px] font-bold flex items-center justify-center">07</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Output Tool Guardrail Verification</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Order #1234 matches pattern • Confidence: 0.99</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">10ms</span>
+</div>
+<!-- Step 8 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-tertiary-fixed text-on-tertiary-fixed font-code-base text-[11px] font-bold flex items-center justify-center">08</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Tool Execution in Sandboxed Runner</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">ERP API returns: ‘Shipped via FedEx’</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">75ms</span>
+</div>
+<!-- Step 9 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-tertiary-fixed text-on-tertiary-fixed font-code-base text-[11px] font-bold flex items-center justify-center">09</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Streaming Response Generation</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Final grounded payload streamed to client</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-tertiary font-medium">35ms</span>
+</div>
+<!-- Step 10 -->
+<div class="p-3.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-surface-container-high text-primary font-code-base text-[11px] font-bold flex items-center justify-center">10</span>
+<div>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Async BigQuery Audit Log Dispatch</span>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Spans &amp; token costs persisted for compliance</div>
+</div>
+</div>
+<span class="font-code-base text-[11px] text-secondary font-medium">Async</span>
+</div>
+</div>
+<!-- Right: Live Chat Window Mockup -->
+<div class="lg:col-span-6 rounded-3xl bg-surface-container-lowest shadow-xl p-6">
+<div class="flex items-center justify-between pb-4 bg-surface-container-low px-4 py-2 rounded-xl">
+<div class="flex items-center gap-2.5">
+<span class="w-3 h-3 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-ui text-label-ui font-bold text-on-surface">Live Agent Session • Tenant #98</span>
+</div>
+<span class="font-code-base text-[11px] text-on-surface-variant">Latency: 538ms</span>
+</div>
+<!-- Chat History -->
+<div class="mt-6 space-y-4">
+<!-- User Bubble -->
+<div class="flex items-start justify-end gap-2.5">
+<div class="bg-primary text-on-primary rounded-2xl rounded-tr-none px-4 py-3 max-w-sm text-[13px] font-body-sm shadow-sm">
+                What’s the status of my order #1234?
+              </div>
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-[11px]">U</div>
+</div>
+<!-- Agent Tool Invocation Pill -->
+<div class="flex justify-center my-2">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-code-base text-[11px]">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+<span class="">Executed check_order_status(order_id="1234") • Approved</span>
+</div>
+</div>
+<!-- Agent Response Bubble -->
+<div class="flex items-start gap-2.5">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold text-[11px]">AF</div>
+<div class="bg-surface-container-low text-on-surface rounded-2xl rounded-tl-none p-4 max-w-md text-[13px] font-body-sm shadow-sm space-y-2">
+<p class="">Hello! Your order <strong>#1234</strong> shipped on October 24 via FedEx Ground.</p>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest font-code-base text-[11px] space-y-1">
+<div class=""><strong>Tracking:</strong> 7489 0192 4812</div>
+<div class=""><strong>Estimated Delivery:</strong> Tomorrow by 4:30 PM</div>
+<div class=""><strong>Destination:</strong> Austin, TX</div>
+</div>
+<div class="pt-1 flex items-center gap-2 text-[10px] text-tertiary font-code-base">
+<span class="material-symbols-outlined text-[12px]">verified</span>
+<span class="">Ground truth verified against ERP DataStore</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Bar Mockup -->
+<div class="mt-8 pt-4 bg-surface-container-low p-2 rounded-xl flex items-center gap-2">
+<input class="flex-1 bg-surface-container-lowest px-3 py-2 rounded-lg text-[13px] font-body-sm text-on-surface placeholder:text-outline focus:outline-none" disabled="" placeholder="Ask a follow-up query..." type="text">
+<button class="px-3.5 py-2 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 8: COST & PERFORMANCE                                     -->
+<!-- ================================================================= -->
+<section class="w-full py-24 bg-surface-container-low/40" id="pricing">
+<div class="max-w-7xl mx-auto px-margin-sm md:px-margin">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps uppercase tracking-wider">
+            Predictable Economics
+          </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+            Enterprise Performance. Startup Pricing.
+          </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+            Engineered from ground zero for maximum token yield. Deploy multi-tenant agent workloads without the multi-million dollar infrastructure tax.
+          </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<!-- Left Column: Latency & SLA Guarantees -->
+<div class="lg:col-span-5 p-8 rounded-3xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div>
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">Strict Latency SLAs</div>
+<p class="mt-2 text-on-surface-variant font-body-md text-body-md">Optimized routing paths minimize token overhead and cold start friction.</p>
+<div class="mt-8 space-y-6">
+<div>
+<div class="flex justify-between font-label-ui text-label-ui mb-1.5">
+<span class="text-on-surface font-medium">P50 Complete Agent Roundtrip</span>
+<span class="font-code-base text-primary font-bold">~550ms</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[45%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-ui text-label-ui mb-1.5">
+<span class="text-on-surface font-medium">Semantic Cache Hit Latency</span>
+<span class="font-code-base text-tertiary font-bold">&lt; 50ms</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-tertiary rounded-full w-[12%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-ui text-label-ui mb-1.5">
+<span class="text-on-surface font-medium">Streaming TTFT (Time to First Token)</span>
+<span class="font-code-base text-secondary font-bold">&lt; 200ms</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary rounded-full w-[25%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-ui text-label-ui mb-1.5">
+<span class="text-on-surface font-medium">System Availability (SLO Target)</span>
+<span class="font-code-base text-on-surface font-bold">99.9%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[99.9%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 rounded-xl bg-surface-container-low flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant font-bold">Monthly Unit Cost</span>
+<span class="font-code-base text-headline-sm font-bold text-tertiary">$0.0106 / Conv</span>
+</div>
+</div>
+<!-- Right Column: Cost Breakdown Table & Pilot Architecture -->
+<div class="lg:col-span-7 p-8 rounded-3xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<div>
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">10-Tenant Pilot Cost Breakdown</div>
+<div class="text-[12px] font-body-sm text-on-surface-variant">Simulated load: 15,000 deep agent conversations / month</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-code-base text-[12px] font-bold">~$158.41 / mo</span>
+</div>
+<!-- Itemized Table -->
+<div class="mt-6 space-y-3 font-code-base text-[13px]">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
+<span class="text-on-surface font-medium">Vertex AI LLM Inference</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant text-[11px]">Gemini 1.5 Pro/Flash</span>
+<span class="font-bold text-on-surface">$124.71</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">memory</span>
+<span class="text-on-surface font-medium">Cloud Run Serverless Containers</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant text-[11px]">4 vCPU scale-to-zero</span>
+<span class="font-bold text-on-surface">$20.00</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-error text-[18px]">storage</span>
+<span class="text-on-surface font-medium">Memorystore Redis Cache</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant text-[11px]">Basic 1GB Tier</span>
+<span class="font-bold text-on-surface">$11.68</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[18px]">layers</span>
+<span class="text-on-surface font-medium">Firestore + Pub/Sub + BigQuery</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant text-[11px]">Managed Logging &amp; Audit</span>
+<span class="font-bold text-on-surface">$2.02</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Cost Comparison Callout Banner -->
+<div class="mt-8 p-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-on-primary flex items-center justify-between shadow-md">
+<div>
+<div class="font-label-ui text-label-ui font-semibold">Ready for Enterprise Scale?</div>
+<div class="text-[12px] opacity-90">Auto-scales smoothly from 1 to 10,000 tenants without re-architecture.</div>
+</div>
+<a class="px-4 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-[12px] font-semibold hover:bg-surface-container-low transition-all" href="#demo">
+                Test Pilot
+              </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 9: COMPARISON TABLE — AGENTFORGE VS ALTERNATIVES         -->
+<!-- ================================================================= -->
+<section class="w-full py-24 px-margin-sm md:px-margin max-w-7xl mx-auto">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps uppercase tracking-wider">
+          Competitive Matrix
+        </div>
+<h2 class="mt-3 font-headline-lg text-headline-lg text-on-surface">
+          AgentForge vs. The Alternatives
+        </h2>
+<p class="mt-4 font-body-md text-body-md text-on-surface-variant">
+          Why engineering teams abandon DIY wrappers and raw APIs in favor of AgentForge’s turnkey autonomous foundation.
+        </p>
+</div>
+<!-- Clean Comparison Grid -->
+<div class="w-full overflow-x-auto rounded-2xl bg-surface-container-lowest shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface font-label-ui text-label-ui">
+<th class="py-4 px-6 font-semibold">Capability</th>
+<th class="py-4 px-6 text-on-surface-variant">Raw LLM API</th>
+<th class="py-4 px-6 text-on-surface-variant">LangChain / DIY</th>
+<th class="py-4 px-6 text-primary font-bold bg-primary-fixed/20">AgentForge Platform</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">Multi-tenant Data Isolation</td>
+<td class="py-4 px-6 text-error flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">cancel</span> None</td>
+<td class="py-4 px-6 text-secondary-container">Manual DIY</td>
+<td class="py-4 px-6 font-semibold text-tertiary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span> Built-in Namespaces</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">Production-Ready RAG Memory</td>
+<td class="py-4 px-6 text-error flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">cancel</span> None</td>
+<td class="py-4 px-6 text-secondary-container">Fragile Boilerplate</td>
+<td class="py-4 px-6 font-semibold text-tertiary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span> Vertex AI + Redis</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">3-Layer Guardrails (PII + Schema)</td>
+<td class="py-4 px-6 text-error flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">cancel</span> None</td>
+<td class="py-4 px-6 text-secondary-container">Third-party plugins</td>
+<td class="py-4 px-6 font-semibold text-tertiary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span> Turnkey Interceptor</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">Per-Tenant Cost Metering</td>
+<td class="py-4 px-6 text-error flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">cancel</span> None (Global org bill)</td>
+<td class="py-4 px-6 text-secondary-container">Custom DB tracking</td>
+<td class="py-4 px-6 font-semibold text-tertiary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span> Granular BigQuery</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">Full OpenTelemetry Audit Trail</td>
+<td class="py-4 px-6 text-error flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">cancel</span> None</td>
+<td class="py-4 px-6 text-secondary-container">Partial Trace</td>
+<td class="py-4 px-6 font-semibold text-tertiary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span> Cloud Trace + Replay</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">Human-in-the-Loop Escalation</td>
+<td class="py-4 px-6 text-error flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">cancel</span> None</td>
+<td class="py-4 px-6 text-secondary-container">Custom UI needed</td>
+<td class="py-4 px-6 font-semibold text-tertiary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span> Integrated Queue</td>
+</tr>
+<!-- Row 7 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="py-4 px-6 font-medium">Time-to-Production</td>
+<td class="py-4 px-6 text-secondary-container">Weeks of scaffolding</td>
+<td class="py-4 px-6 text-error">3 – 6 Months</td>
+<td class="py-4 px-6 font-bold text-primary bg-primary-fixed/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">rocket_launch</span> Under 1 Hour</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 10: PLATFORM SUMMARY & CTA CALLOUT                        -->
+<!-- ================================================================= -->
+<section class="w-full py-20 bg-surface-container-low">
+<div class="max-w-5xl mx-auto px-margin-sm md:px-margin text-center">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps uppercase tracking-wider mb-6">
+          Ready for Autonomous Operations
+        </div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">
+          Start Building Production Agents in Minutes
+        </h2>
+<p class="mt-4 font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+          Skip the infrastructure headaches. Leverage Google Cloud native power, tenant isolation, and strict safety guardrails on day one.
+        </p>
+<div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+<a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:brightness-105 transition-all" href="#demo">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span class="">Launch Live Console</span>
+</a>
+<a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-label-ui font-medium shadow-sm hover:bg-surface-container transition-all" href="https://github.com" rel="noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="">Clone Starter Template</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+</div></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-xl"><div class="max-w-7xl mx-auto px-margin-sm md:px-margin flex flex-col gap-space-lg"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-md"><div class="flex items-center gap-space-sm"><div class="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary"><span class="material-symbols-outlined text-[14px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentForge</span><span class="font-code-base text-code-base text-on-surface-variant ml-space-xs">v2.4.0-rc</span></div><div class="flex items-center gap-space-sm font-code-base text-code-base text-on-surface-variant bg-surface-container-low px-space-sm py-1 rounded-md border border-outline-variant/20"><span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span><span class="">GCP Cloud Run Services: Operational</span></div></div><div class="flex flex-wrap items-center justify-between gap-space-md border-t border-outline-variant/20 pt-space-lg"><div class="flex flex-wrap items-center gap-space-md font-body-sm text-body-sm text-on-surface-variant"><a class="hover:text-on-surface transition-colors" data-path="docs" href="#">Platform Specs</a><a class="hover:text-on-surface transition-colors" data-path="architecture" href="#">Autonomic Topology</a><a class="hover:text-on-surface transition-colors" data-path="telemetry" href="#">Telemetry API</a><a class="hover:text-on-surface transition-colors" data-path="privacy" href="#">Compliance &amp; Privacy</a></div><p class="font-body-sm text-body-sm text-on-surface-variant">Crafted for BOC 2.0 Challenge — Autonomous Agent Infrastructure.</p></div></div></footer>
+
+</body></html>

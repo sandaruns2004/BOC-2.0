@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><svg aria-hidden="true" class="inline-defs-container" style="position:absolute;width:0;height:0;overflow:hidden"></svg><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><title>AgentForge Console</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-dim": "#d2d9f4",
+        "secondary-container": "#8a4cfc",
+        "on-primary-fixed": "#0f0069",
+        "outline-variant": "#c7c4d8",
+        "on-background": "#131b2e",
+        "error-container": "#ffdad6",
+        "on-surface-variant": "#464555",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#006d62",
+        "surface-container-high": "#e2e7ff",
+        "inverse-on-surface": "#eef0ff",
+        "surface": "#faf8ff",
+        "secondary-fixed-dim": "#d2bbff",
+        "outline": "#777587",
+        "primary": "#3525cd",
+        "surface-container": "#eaedff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "secondary": "#712ae2",
+        "tertiary": "#00534a",
+        "surface-container-low": "#f2f3ff",
+        "on-primary-fixed-variant": "#3323cc",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "primary-container": "#4f46e5",
+        "on-tertiary-container": "#69f1de",
+        "on-secondary-container": "#fffbff",
+        "surface-container-highest": "#dae2fd",
+        "on-primary-container": "#dad7ff",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-variant": "#dae2fd",
+        "on-error-container": "#93000a",
+        "error": "#ba1a1a",
+        "surface-container-lowest": "#ffffff",
+        "tertiary-fixed": "#71f8e4",
+        "primary-fixed": "#e2dfff",
+        "inverse-primary": "#c3c0ff",
+        "surface-bright": "#faf8ff",
+        "on-error": "#ffffff",
+        "inverse-surface": "#283044",
+        "background": "#faf8ff",
+        "on-secondary": "#ffffff",
+        "on-secondary-fixed": "#25005a",
+        "secondary-fixed": "#eaddff",
+        "on-surface": "#131b2e",
+        "on-tertiary-fixed": "#00201c",
+        "surface-tint": "#4d44e3",
+        "on-primary": "#ffffff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-xs": "0.25rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xl": "2.5rem",
+        "space-lg": "1.5rem"
+      },
+      "fontFamily": {
+        "label-ui": ["Inter"],
+        "display-hero": ["Geist"],
+        "body-sm": ["Inter"],
+        "headline-sm": ["Geist"],
+        "body-lg": ["Inter"],
+        "headline-lg-mobile": ["Geist"],
+        "label-caps": ["JetBrains Mono"],
+        "body-md": ["Inter"],
+        "code-base": ["JetBrains Mono"],
+        "headline-md": ["Geist"],
+        "display-hero-mobile": ["Geist"],
+        "headline-lg": ["Geist"]
+      },
+      "fontSize": {
+        "label-ui": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "500"}],
+        "display-hero": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.035em", "fontWeight": "700"}],
+        "body-sm": ["13px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+        "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+        "headline-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "600"}],
+        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "500"}],
+        "body-md": ["15px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400"}],
+        "code-base": ["13px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+        "headline-md": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+        "display-hero-mobile": ["40px", {"lineHeight": "46px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+        "headline-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "600"}]
+      }
+    }
+  }
+};</script><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30"><div class="h-16 w-full px-margin-sm md:px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="launch-console" href="#"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">AgentForge</span></a><span class="font-label-caps text-label-caps text-on-surface-variant px-2 py-0.5 rounded bg-surface-container border border-outline-variant/30">CONSOLE v2.4</span></div><nav class="hidden lg:flex items-center gap-1 xl:gap-2" data-active-classes="bg-surface-container text-primary font-semibold"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="launch-console" href="#">Console Trace</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="agent-studio-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pillars-security" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pricing-economics" href="#">Pricing &amp; Economics</a></nav><div class="flex items-center gap-space-sm shrink-0"><a class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all" data-path="launch-console" href="#">Launch Console</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-space-md flex flex-col justify-between z-40 hidden md:flex"><div class="flex flex-col gap-space-sm"><div class="px-2 py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Navigation</div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container text-primary font-medium"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="launch-console" href="#">Console Trace</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="agent-studio-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pillars-security" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pricing-economics" href="#">Pricing &amp; Economics</a></nav></div><div class="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30"><div class="flex items-center gap-space-xs font-label-caps text-label-caps text-tertiary font-medium"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>Engine: Ready</div><div class="font-code-base text-code-base text-on-surface-variant mt-1">GCP us-central1</div></div></aside><main class="w-full pt-16 md:pl-64 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Context Breadcrumb & Status Bar -->
+<div class="w-full bg-surface-container-lowest shadow-sm px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 font-label-ui text-label-ui text-on-surface-variant">
+<span>Fleet Workbench</span>
+<span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+<span class="text-on-surface font-semibold">Order Resolution Bot</span>
+<span class="font-label-caps text-label-caps bg-surface-container-high text-primary px-2 py-0.5 rounded-full font-medium">v2.4-rc3</span>
+</div>
+<span class="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<div class="hidden sm:flex items-center gap-1.5 font-label-caps text-label-caps text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>Auto-synced to Cloud Spanner (14s ago)</span>
+</div>
+</div>
+<!-- Quick Action Controls -->
+<div class="flex items-center gap-3">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-ui text-label-ui flex items-center gap-1.5 transition-all" id="btn-save">
+<span class="material-symbols-outlined text-[16px]">cloud_done</span>
+<span>Draft Saved</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-ui text-label-ui flex items-center gap-1.5 transition-all active:scale-98" id="btn-test">
+<span class="material-symbols-outlined text-[16px] text-primary">play_arrow</span>
+<span>Test Agent</span>
+</button>
+<button class="px-4 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-ui text-label-ui font-medium flex items-center gap-1.5 shadow-sm transition-all active:scale-98" id="btn-deploy">
+<span class="material-symbols-outlined text-[16px]">rocket_launch</span>
+<span>Deploy v2.4</span>
+</button>
+</div>
+</div>
+<!-- Main Canvas Workspace (2-Column Asymmetric) -->
+<div class="w-full p-8 max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 items-start">
+<!-- Left Column: Core Agent Controls (Fixed ~300px) -->
+<aside class="w-full lg:w-[320px] shrink-0 flex flex-col gap-6">
+<!-- Primary Configuration Card -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Runtime Core</h2>
+<span class="font-label-caps text-label-caps bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">ACTIVE SPEC</span>
+</div>
+<!-- Engine Select -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-ui text-label-ui text-on-surface-variant font-medium">Agent Engine</label>
+<span class="font-label-caps text-label-caps text-tertiary">P50 180ms</span>
+</div>
+<div class="relative bg-surface-container-low rounded-lg p-3 flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-md bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-ui text-label-ui text-on-surface font-semibold">Gemini 1.5 Flash</span>
+<span class="font-code-base text-[11px] text-on-surface-variant">google-deepmind/1.5-flash-002</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">unfold_more</span>
+</div>
+</div>
+<!-- Failover Engine Select -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-ui text-label-ui text-on-surface-variant font-medium">Automatic Fallback</label>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Circuit: Armed</span>
+</div>
+<div class="relative bg-surface-container-low rounded-lg p-3 flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-md bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">alt_route</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-ui text-label-ui text-on-surface font-semibold">Claude 3.5 Sonnet</span>
+<span class="font-code-base text-[11px] text-on-surface-variant">anthropic/claude-3-5-sonnet-v2</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">unfold_more</span>
+</div>
+</div>
+<!-- Autonomous Financial Limit Pill Card -->
+<div class="flex flex-col gap-2 pt-2">
+<div class="flex items-center justify-between">
+<label class="font-label-ui text-label-ui text-on-surface-variant font-medium">Autonomous Financial Cap</label>
+<span class="font-label-caps text-label-caps text-error bg-error-container/40 px-1.5 py-0.5 rounded">HARD LIMIT</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">$500.00</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">USD / tx</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">lock_clock</span>
+</div>
+<!-- Soft Indigo Alert Notice -->
+<div class="bg-surface-container rounded-xl p-3.5 mt-1 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
+<p class="font-body-sm text-body-sm text-on-surface leading-snug">
+              Mutations above <strong class="font-semibold text-primary">$500.00</strong> automatically trigger Layer 3 Human Escalation &amp; suspend tool commit.
+            </p>
+</div>
+</div>
+</div>
+<!-- Telemetry & Health Auxiliary Module -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm flex flex-col gap-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Workspace Context</h3>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between font-label-ui text-label-ui">
+<span class="text-on-surface-variant">Context Window (128k)</span>
+<span class="font-semibold text-on-surface">1,842 tokens (1.4%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 1.44%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 pt-2">
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">EST. INFERENCE</span>
+<span class="font-headline-sm text-[16px] text-on-surface font-semibold mt-1">$0.00014</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ROUTING</span>
+<span class="font-headline-sm text-[16px] text-on-surface font-semibold mt-1">Zero-Leak VPC</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Column: Main Canvas & Editor Workspace (1fr) -->
+<main class="flex-1 w-full min-w-0 flex flex-col gap-6">
+<!-- Navigation Tabs Layer -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm px-6 pt-3 flex items-center justify-between overflow-x-auto">
+<div class="flex items-center gap-8">
+<!-- Tab 1: System Prompt (Active) -->
+<button class="flex items-center gap-2 py-3 border-b-2 border-primary text-primary font-label-ui text-label-ui font-semibold cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span>System Prompt</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</button>
+<!-- Tab 2: Tool Bindings -->
+<button class="flex items-center gap-2 py-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui transition-colors">
+<span class="material-symbols-outlined text-[18px]">extension</span>
+<span>Tool Bindings</span>
+<span class="font-label-caps text-label-caps bg-surface-container-high text-on-surface px-1.5 py-0.2 rounded-full font-medium">3</span>
+</button>
+<!-- Tab 3: Knowledge Base -->
+<button class="flex items-center gap-2 py-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui transition-colors">
+<span class="material-symbols-outlined text-[18px]">database</span>
+<span>Knowledge Base (RAG)</span>
+<span class="font-label-caps text-label-caps bg-surface-container-high text-on-surface px-1.5 py-0.2 rounded-full font-medium">4 files</span>
+</button>
+</div>
+<div class="hidden sm:flex items-center gap-2 py-2">
+<span class="font-label-caps text-label-caps text-tertiary bg-tertiary-fixed-dim/20 px-2 py-1 rounded">Jinja2 Engine Valid</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">UTF-8 Encoded</span>
+</div>
+</div>
+<!-- Editor Window Box -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Editor Header -->
+<div class="bg-surface-container-low px-6 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+</div>
+<span class="font-code-base text-[12px] text-on-surface-variant ml-2 font-medium">order_resolver_v2.4.jinja2</span>
+</div>
+<!-- Editor Actions -->
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui flex items-center gap-1 py-1 px-2 rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span>Copy</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui flex items-center gap-1 py-1 px-2 rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span>Revisions</span>
+</button>
+</div>
+</div>
+<!-- Code Workspace Area with Line Numbers -->
+<div class="p-6 font-code-base text-code-base leading-relaxed overflow-x-auto flex">
+<!-- Line Numbers -->
+<div class="select-none text-outline/60 pr-6 text-right font-code-base text-[13px] flex flex-col gap-1 shrink-0">
+<span>01</span>
+<span>02</span>
+<span>03</span>
+<span>04</span>
+<span>05</span>
+<span>06</span>
+<span>07</span>
+<span>08</span>
+<span>09</span>
+<span>10</span>
+<span>11</span>
+<span>12</span>
+<span>13</span>
+<span>14</span>
+</div>
+<!-- Code Content -->
+<div class="flex-1 min-w-[520px] flex flex-col gap-1 text-on-surface">
+<div><span class="text-secondary font-medium"># ROLE DEFINITION</span></div>
+<div>
+              You are <span class="text-primary font-medium">Order Resolution Bot (v2.4)</span> executing on behalf of tenant 
+              <span class="bg-primary-fixed/60 text-on-primary-fixed px-1.5 py-0.5 rounded text-[12px] font-semibold tracking-wide">{{ tenant_id }}</span>.
+            </div>
+<div class="h-4"></div>
+<div><span class="text-secondary font-medium"># BEHAVIORAL PROTOCOL</span></div>
+<div>
+              1. Verify customer account tier 
+              <span class="bg-primary-fixed/60 text-on-primary-fixed px-1.5 py-0.5 rounded text-[12px] font-semibold tracking-wide">{{ user_tier }}</span> 
+              against Cloud SQL orders table before committing mutations.
+            </div>
+<div>
+              2. Inspect target order state for 
+              <span class="bg-primary-fixed/60 text-on-primary-fixed px-1.5 py-0.5 rounded text-[12px] font-semibold tracking-wide">{{ order_id }}</span> 
+              and verify shipment lock via warehouse webhook.
+            </div>
+<div>
+              3. Inquire retention discount matrix prior to initiating irrevocable cancellation flow.
+            </div>
+<div>
+              4. Escalate any refund operations exceeding <span class="font-semibold text-error">$500.00 USD</span> to the priority human review queue.
+            </div>
+<div class="h-4"></div>
+<div><span class="text-secondary font-medium"># FALLBACK CONSTRAINT</span></div>
+<div>
+              If latency threshold &gt; 1200ms or response is malformed, trigger state dump to cold storage and invoke <span class="text-primary">claude-3-5-sonnet</span> fallback node.
+            </div>
+</div>
+</div>
+<!-- Dynamic Variables Bar -->
+<div class="bg-surface-container-low px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium">DETECTED JINJA2 VARIABLES:</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="bg-surface-container-highest text-primary font-code-base text-[11px] px-2 py-0.5 rounded flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                tenant_id
+              </span>
+<span class="bg-surface-container-highest text-primary font-code-base text-[11px] px-2 py-0.5 rounded flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                user_tier
+              </span>
+<span class="bg-surface-container-highest text-primary font-code-base text-[11px] px-2 py-0.5 rounded flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                order_id
+              </span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-label-caps text-on-surface-variant">1,842 Tokens</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Compiler: Ready</span>
+</div>
+</div>
+</div>
+<!-- Integrated Tooling & Security Preview Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Tool 1 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-sm flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">database</span>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Cloud SQL Connector</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Read-only schema access to order headers &amp; SKUs</p>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<!-- Tool 2 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-sm flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">credit_card</span>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Stripe Ledger Gateway</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Scoped refund dispatch with $500 hard circuit</p>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<!-- Tool 3 -->
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-sm flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">local_shipping</span>
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Logistics Courier API</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Intercept &amp; hold in-transit parcel fulfillments</p>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+</div>
+</main>
+</div>
+<script>
+    // Lightweight interactivity for test button and tabs
+    document.getElementById('btn-test')?.addEventListener('click', () => {
+      const originalText = document.getElementById('btn-test').innerHTML;
+      document.getElementById('btn-test').innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span>Running Test Sandbox...</span>';
+      setTimeout(() => {
+        document.getElementById('btn-test').innerHTML = originalText;
+      }, 1600);
+    });
+
+    document.getElementById('btn-deploy')?.addEventListener('click', () => {
+      const btn = document.getElementById('btn-deploy');
+      btn.innerText = 'Triggering Canary Deploy...';
+      btn.classList.add('opacity-80');
+      setTimeout(() => {
+        btn.innerText = 'Deployed v2.4 to Us-Central1';
+        btn.classList.remove('opacity-80');
+      }, 1400);
+    });
+  </script>
+</div></main></body></html>

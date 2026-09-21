@@ -1,0 +1,522 @@
+<!DOCTYPE html><html lang="en"><head><meta content="web_dashboard" name="shell-type">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><svg aria-hidden="true" class="inline-defs-container" style="position:absolute;width:0;height:0;overflow:hidden"></svg><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><title>AgentForge Console</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-dim": "#d2d9f4",
+        "secondary-container": "#8a4cfc",
+        "on-primary-fixed": "#0f0069",
+        "outline-variant": "#c7c4d8",
+        "on-background": "#131b2e",
+        "error-container": "#ffdad6",
+        "on-surface-variant": "#464555",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#006d62",
+        "surface-container-high": "#e2e7ff",
+        "inverse-on-surface": "#eef0ff",
+        "surface": "#faf8ff",
+        "secondary-fixed-dim": "#d2bbff",
+        "outline": "#777587",
+        "primary": "#3525cd",
+        "surface-container": "#eaedff",
+        "tertiary-fixed-dim": "#4fdbc8",
+        "secondary": "#712ae2",
+        "tertiary": "#00534a",
+        "surface-container-low": "#f2f3ff",
+        "on-primary-fixed-variant": "#3323cc",
+        "on-secondary-fixed-variant": "#5a00c6",
+        "primary-container": "#4f46e5",
+        "on-tertiary-container": "#69f1de",
+        "on-secondary-container": "#fffbff",
+        "surface-container-highest": "#dae2fd",
+        "on-primary-container": "#dad7ff",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-tertiary-fixed-variant": "#005048",
+        "surface-variant": "#dae2fd",
+        "on-error-container": "#93000a",
+        "error": "#ba1a1a",
+        "surface-container-lowest": "#ffffff",
+        "tertiary-fixed": "#71f8e4",
+        "primary-fixed": "#e2dfff",
+        "inverse-primary": "#c3c0ff",
+        "surface-bright": "#faf8ff",
+        "on-error": "#ffffff",
+        "inverse-surface": "#283044",
+        "background": "#faf8ff",
+        "on-secondary": "#ffffff",
+        "on-secondary-fixed": "#25005a",
+        "secondary-fixed": "#eaddff",
+        "on-surface": "#131b2e",
+        "on-tertiary-fixed": "#00201c",
+        "surface-tint": "#4d44e3",
+        "on-primary": "#ffffff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-xs": "0.25rem",
+        "space-sm": "0.5rem",
+        "space-md": "1rem",
+        "margin-sm": "1rem",
+        "margin": "2rem",
+        "space-xl": "2.5rem",
+        "space-lg": "1.5rem"
+      },
+      "fontFamily": {
+        "label-ui": ["Inter"],
+        "display-hero": ["Geist"],
+        "body-sm": ["Inter"],
+        "headline-sm": ["Geist"],
+        "body-lg": ["Inter"],
+        "headline-lg-mobile": ["Geist"],
+        "label-caps": ["JetBrains Mono"],
+        "body-md": ["Inter"],
+        "code-base": ["JetBrains Mono"],
+        "headline-md": ["Geist"],
+        "display-hero-mobile": ["Geist"],
+        "headline-lg": ["Geist"]
+      },
+      "fontSize": {
+        "label-ui": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "500"}],
+        "display-hero": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.035em", "fontWeight": "700"}],
+        "body-sm": ["13px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+        "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+        "headline-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "600"}],
+        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "500"}],
+        "body-md": ["15px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400"}],
+        "code-base": ["13px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+        "headline-md": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+        "display-hero-mobile": ["40px", {"lineHeight": "46px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+        "headline-lg": ["44px", {"lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "600"}]
+      }
+    }
+  }
+};</script><header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30"><div class="h-16 w-full px-margin-sm md:px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><a class="flex items-center gap-space-sm group" data-path="launch-console" href="#"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">AgentForge</span></a><span class="font-label-caps text-label-caps text-on-surface-variant px-2 py-0.5 rounded bg-surface-container border border-outline-variant/30">CONSOLE v2.4</span></div><nav class="hidden lg:flex items-center gap-1 xl:gap-2" data-active-classes="bg-surface-container text-primary font-semibold"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="launch-console" href="#">Console Trace</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="agent-studio-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="secops-blast-radius" href="#">SecOps &amp; Blast Radius</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pillars-security" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs rounded-lg transition-colors" data-path="pricing-economics" href="#">Pricing &amp; Economics</a></nav><div class="flex items-center gap-space-sm shrink-0"><a class="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 active:scale-98 transition-all" data-path="launch-console" href="#">Launch Console</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-space-md flex flex-col justify-between z-40 hidden md:flex"><div class="flex flex-col gap-space-sm"><div class="px-2 py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Navigation</div><nav class="flex flex-col gap-1" data-active-classes="bg-surface-container text-primary font-medium"><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="launch-console" href="#">Console Trace</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="agent-studio-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="secops-blast-radius" href="#">SecOps &amp; Blast Radius</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pillars-security" href="#">Pillars &amp; Security</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a class="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pricing-economics" href="#">Pricing &amp; Economics</a></nav></div><div class="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30"><div class="flex items-center gap-space-xs font-label-caps text-label-caps text-tertiary font-medium"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>Engine: Ready</div><div class="font-code-base text-code-base text-on-surface-variant mt-1">GCP us-central1</div></div></aside><main class="w-full pt-16 md:pl-64 bg-surface"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto px-margin-sm md:px-margin py-8 space-y-8">
+<!-- Incident Overview & Emergency Command Bar -->
+<section class="bg-surface-container-lowest rounded-xl p-6 md:p-8 shadow-sm relative overflow-hidden">
+<div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-tertiary-fixed/20 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 left-1/3 w-80 h-80 rounded-full bg-primary-fixed/25 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col xl:flex-row xl:items-start justify-between gap-6">
+<div class="flex flex-col space-y-3">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-full font-semibold flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>INCIDENT #SEC-4912</span>
+<span class="font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full">
+              SEV-1 AUTOMATED CONTAINMENT
+            </span>
+</div>
+<h1 class="font-headline-md text-headline-md md:font-headline-lg md:text-headline-lg text-on-surface tracking-tight">
+            Abnormal Execution Spike Intercepted
+          </h1>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">smart_toy</span>
+              Agent: <strong class="text-on-surface font-medium">TreasuryReconciler-v1.9</strong>
+</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">apartment</span>
+              Tenant: <strong class="text-on-surface font-medium">FinTech Global (#2091)</strong>
+</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">radar</span>
+              Detector: <strong class="text-on-surface font-medium">Apigee Anomaly v4</strong>
+</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">timer</span>
+              Elapsed: <strong class="font-label-caps text-on-surface font-medium">00:04:18</strong>
+</span>
+</div>
+</div>
+<!-- Action CTAs -->
+<div class="flex flex-wrap items-center gap-3 shrink-0 pt-2 xl:pt-0">
+<button class="bg-tertiary hover:opacity-90 active:scale-98 transition-all text-on-tertiary font-label-ui text-label-ui font-medium px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2" id="btn-freeze" onclick="toggleFreezeAgent()"><span class="material-symbols-outlined text-[18px]" id="freeze-icon">ac_unit</span><span id="freeze-label" class="">Emergency Freeze Agent</span></button>
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-ui text-label-ui font-medium px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2 transition-all" onclick="simulateRevocation()">
+<span class="material-symbols-outlined text-[18px] text-outline">key_off</span>
+<span class="">Revoke Credentials</span>
+</button>
+<button class="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium px-3.5 py-2.5 rounded-lg shadow-sm flex items-center gap-1.5 transition-all" onclick="downloadAttestation()">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="">KMS Attestation</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Key Metrics Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"><div class="flex items-center justify-between"><span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider">POTENTIAL FINANCIAL EXPOSURE</span><span class="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">attach_money</span></span></div><div class="mt-4"><div class="font-headline-md text-headline-md font-display-hero text-tertiary tracking-tight font-bold">$1,840,000</div><p class="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>14 Queued disbursements halted • $0 USD leaked via Layer 3 Ceiling</p></div><div class="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps"><span class="">Outbound Gate</span><span class="text-tertiary font-semibold">100% Intercepted</span></div></div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider">BLOCKED INVOCATIONS</span>
+<span class="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">block</span>
+</span>
+</div>
+<div class="mt-4">
+<div class="font-headline-md text-headline-md font-display-hero text-on-surface tracking-tight font-bold">4,912</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            410x nominal burst spike • Intercept latency &lt;10ms
+          </p>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
+<span class="">Detector Rate</span>
+<span class="text-primary font-semibold">4,912 / 4,912 Drops</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider">BLAST RADIUS RATING</span>
+<span class="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">security</span>
+</span>
+</div>
+<div class="mt-4">
+<div class="font-headline-md text-headline-md font-display-hero text-tertiary tracking-tight font-bold">Level 4 / Contained</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+            gVisor sandbox boundary held • Zero data records exfiltrated
+          </p>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
+<span class="">Sandbox Isolation</span>
+<span class="text-tertiary font-semibold">Active Enclave</span>
+</div>
+</div>
+</section>
+<!-- Main Canvas: Progressive Disclosure Investigation Tabs -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm p-6 md:p-8 flex flex-col">
+<!-- Tabs Navigation Header -->
+<div class="flex items-center justify-between pb-4">
+<div class="flex items-center gap-8">
+<button class="pb-3 text-primary font-label-ui text-label-ui font-semibold flex items-center gap-2 relative" id="tab-btn-topology" onclick="switchInvestigationTab('topology')">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<span class="">Topology Map</span>
+<span class="font-label-caps text-label-caps bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full">Live Mesh</span>
+<span class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" id="tab-indicator-topology"></span>
+</button>
+<button class="pb-3 text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium flex items-center gap-2 relative transition-colors" id="tab-btn-timeline" onclick="switchInvestigationTab('timeline')">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="">Forensic Timeline</span>
+<span class="font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full">8 events</span>
+<span class="hidden absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" id="tab-indicator-timeline"></span>
+</button>
+<button class="pb-3 text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium flex items-center gap-2 relative transition-colors" id="tab-btn-payloads" onclick="switchInvestigationTab('payloads')">
+<span class="material-symbols-outlined text-[18px]">data_object</span>
+<span class="">Raw Payloads</span>
+<span class="font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full">JSON</span>
+<span class="hidden absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" id="tab-indicator-payloads"></span>
+</button>
+</div>
+<div class="hidden sm:flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="">Zero Knowledge Isolation Active</span>
+</div>
+</div>
+<!-- Tab Content 1: Topology Map (Default Active) -->
+<div class="flex flex-col space-y-8 pt-4" id="tab-content-topology">
+<!-- Interactive Node Graph Canvas -->
+<div class="bg-surface-container-low rounded-xl p-6 md:p-12 relative overflow-hidden flex flex-col items-center justify-center min-h-[380px]">
+<!-- Grid Overlay Pattern -->
+<div class="absolute inset-0 opacity-40 bg-[radial-gradient(#c7c4d8_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+<!-- SVG Directed Connectors -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none hidden md:block" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="lineGrad1" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#00534a"></stop>
+<stop offset="100%" stop-color="#3525cd"></stop>
+</linearGradient>
+<linearGradient id="lineGrad2" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#3525cd"></stop>
+<stop offset="100%" stop-color="#00534a"></stop>
+</linearGradient>
+</defs>
+<!-- Node 1 to Node 2 -->
+<path class="animate-pulse" d="M 270 190 L 450 190" stroke="url(#lineGrad1)" stroke-dasharray="6,6" stroke-width="2"></path>
+<!-- Node 2 to Node 3 -->
+<path d="M 670 190 L 850 190" stroke="url(#lineGrad2)" stroke-dasharray="6,6" stroke-width="2"></path>
+</svg>
+<!-- Nodes Row -->
+<div class="relative z-10 w-full flex flex-col md:flex-row items-center justify-between max-w-4xl gap-8">
+<!-- Node 1: Origin -->
+<div class="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('agent')"><div class="relative flex items-center justify-center"><div class="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform"><div class="w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center"><span class="material-symbols-outlined text-[28px]">smart_toy</span></div></div><span class="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-caps text-label-caps">FROZEN</span></div><h3 class="font-headline-sm text-headline-sm text-on-surface mt-3 font-semibold">Agent Core</h3><p class="font-body-sm text-body-sm text-on-surface-variant font-code-base">TreasuryReconciler-v1.9</p><span class="mt-2 font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full">PID 49102 Terminated</span></div>
+<!-- Inter-Node 1 Indicator (Mobile Visible) -->
+<div class="flex flex-col items-center gap-1 md:hidden"><span class="material-symbols-outlined text-outline">south</span><span class="font-label-caps text-label-caps bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded">Token Revoked (14ms)</span></div>
+<!-- Interconnector Badge (Desktop Center 1) -->
+<div class="hidden md:flex flex-col items-center -mt-8"><span class="font-label-caps text-label-caps bg-surface-container-lowest text-tertiary px-2.5 py-1 rounded-full shadow-sm">Token Revoked • 14ms</span></div>
+<!-- Node 2: Egress Tool -->
+<div class="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('stripe')">
+<div class="relative flex items-center justify-center">
+<div class="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform">
+<div class="w-16 h-16 rounded-full bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]">credit_card</span>
+</div>
+</div>
+<span class="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-secondary text-on-secondary font-label-caps text-label-caps">REVOKED</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-3 font-semibold">Stripe API</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-code-base">KMS Credentials Invalidated</p>
+<span class="mt-2 font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full">
+                $0.00 Committed
+              </span>
+</div>
+<!-- Inter-Node 2 Indicator (Mobile Visible) -->
+<div class="flex flex-col items-center gap-1 md:hidden">
+<span class="material-symbols-outlined text-outline">south</span>
+<span class="font-label-caps text-label-caps bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded">Partition Lock</span>
+</div>
+<!-- Interconnector Badge (Desktop Center 2) -->
+<div class="hidden md:flex flex-col items-center -mt-8">
+<span class="font-label-caps text-label-caps bg-surface-container-lowest text-tertiary px-2.5 py-1 rounded-full shadow-sm">
+                Read-Only Partition Lock
+              </span>
+</div>
+<!-- Node 3: Data Store -->
+<div class="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('bigquery')">
+<div class="relative flex items-center justify-center">
+<div class="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform">
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]">database</span>
+</div>
+</div>
+<span class="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-caps text-label-caps">LOCKED</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-3 font-semibold">BigQuery</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-code-base">fintech_2091_prod</p>
+<span class="mt-2 font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full">
+                Snapshot Immutable
+              </span>
+</div>
+</div>
+</div>
+<!-- Containment Status Drawer Strip -->
+<div class="bg-surface-container-low rounded-xl p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-tertiary text-[22px] mt-0.5">verified</span>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                Containment Status: Autonomically Enforced
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Apigee DLP policy tripped at 00:04:18.491. gVisor microVM halted execution within 14ms of anomalous recursion vector.
+              </p>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-2 shrink-0">
+<span class="font-label-caps text-label-caps bg-surface-container-lowest text-on-surface-variant px-2.5 py-1 rounded shadow-sm">
+              Attestation: SHA-256 #8f44a9e8
+            </span>
+<span class="font-label-caps text-label-caps bg-surface-container-lowest text-on-surface-variant px-2.5 py-1 rounded shadow-sm">
+              KMS: gcp/kms/fintech-v2
+            </span>
+<span class="font-label-caps text-label-caps bg-surface-container-lowest text-tertiary px-2.5 py-1 rounded shadow-sm font-semibold">
+              OTel: Synchronized
+            </span>
+</div>
+</div>
+</div>
+<!-- Tab Content 2: Forensic Timeline (Initially Hidden) -->
+<div class="hidden flex-col space-y-6 pt-4" id="tab-content-timeline">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Chronological Micro-Telemetry Log</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">UTC T-Zero: 14:02:18.000</span>
+</div>
+<div class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-container-high">
+<!-- Event 1 -->
+<div class="relative group">
+<span class="absolute -left-6 top-1 w-2.5 h-2.5 rounded-full bg-tertiary ring-4 ring-tertiary-fixed"></span>
+<div class="bg-surface-container-low rounded-lg p-4">
+<div class="flex items-center justify-between">
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Apigee Anomaly Trigger: Recursive Disbursement Pattern</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">14:02:18.491 (+0ms)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Triggered rule <code class="font-code-base bg-surface-container px-1 py-0.5 rounded text-on-surface">RULE-FIN-4091</code>: Agent attempted 4,912 disbursement commands in 410ms burst.
+              </p>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="relative group">
+<span class="absolute -left-6 top-1 w-2.5 h-2.5 rounded-full bg-secondary ring-4 ring-secondary-fixed"></span>
+<div class="bg-surface-container-low rounded-lg p-4">
+<div class="flex items-center justify-between">
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Blast Radius Interceptor Tripped</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">14:02:18.496 (+5ms)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                KMS envelope token revoked for tool <code class="font-code-base bg-surface-container px-1 py-0.5 rounded text-on-surface">stripe.transfers.create</code>. Session token invalidated cluster-wide.
+              </p>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="relative group">
+<span class="absolute -left-6 top-1 w-2.5 h-2.5 rounded-full bg-tertiary ring-4 ring-tertiary-fixed"></span>
+<div class="bg-surface-container-low rounded-lg p-4">
+<div class="flex items-center justify-between">
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">gVisor Sandbox Hard Terminate</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">14:02:18.505 (+14ms)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Kernel namespace frozen for worker <code class="font-code-base bg-surface-container px-1 py-0.5 rounded text-on-surface">worker-uscentral1-gvisor-882</code>. RAM dump snapshot saved to cold vault.
+              </p>
+</div>
+</div>
+<!-- Event 4 -->
+<div class="relative group">
+<span class="absolute -left-6 top-1 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary-fixed"></span>
+<div class="bg-surface-container-low rounded-lg p-4">
+<div class="flex items-center justify-between">
+<span class="font-label-ui text-label-ui font-semibold text-on-surface">Tenant Notification Dispatched</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">14:02:19.012 (+521ms)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Webhook ping delivered to tenant FinTech Global security endpoint via mTLS.
+              </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Content 3: Raw Payloads (Initially Hidden) -->
+<div class="hidden flex-col space-y-4 pt-4" id="tab-content-payloads">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Payload Inspector — Intercept Envelope</span>
+<button class="font-label-ui text-label-ui text-primary hover:underline flex items-center gap-1" onclick="copyPayload()">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span id="copy-btn-text" class="">Copy Raw JSON</span>
+</button>
+</div>
+<div class="bg-inverse-surface rounded-xl p-5 overflow-x-auto text-inverse-on-surface font-code-base text-code-base">
+<pre class="font-code-base" id="json-payload">{
+  "incident_id": "SEC-4912",
+  "intercept_timestamp": "2025-02-24T14:02:18.491Z",
+  "anomaly_score": 0.9984,
+  "agent_context": {
+    "agent_id": "treasury-reconciler",
+    "version": "1.9.4",
+    "sandbox_runtime": "gVisor-runsc-v2",
+    "tenant_id": "fintech_2091",
+    "pid": 49102
+  },
+  "guardrail_verdict": {
+    "action": "AUTONOMIC_HALT",
+    "response_latency_ms": 14.2,
+    "blocked_calls": 4912,
+    "prevented_usd_volume": 1840000.00,
+    "leak_detected": false
+  },
+  "cryptographic_attestation": {
+    "signature": "e9b2f483c180da...a8412",
+    "kms_key": "projects/agentforge-prod/locations/us-central1/keyRings/secops/cryptoKeys/fintech-v2",
+    "immutable_ledger_hash": "sha256:8f44a9e8023bd73b9e4a30e8c0fa882a17"
+  }
+}</pre>
+</div>
+</div>
+</section>
+<!-- Context Information Footnote -->
+<footer class="pt-4 flex flex-col sm:flex-row items-center justify-between text-on-surface-variant font-body-sm text-body-sm gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">policy</span>
+<span class="">AgentForge Autonomic Governance Cluster v2.4 • Enclave us-central1-a</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-primary hover:underline font-label-ui text-label-ui" href="#">Export NIST Audit Package</a>
+<span class="text-outline-variant">•</span>
+<a class="text-primary hover:underline font-label-ui text-label-ui" href="#">Configure Blast Radius Rules</a>
+</div>
+</footer>
+</div>
+</div>
+<script>
+  function switchInvestigationTab(tabId) {
+    const tabs = ['topology', 'timeline', 'payloads'];
+    tabs.forEach(id => {
+      const content = document.getElementById('tab-content-' + id);
+      const indicator = document.getElementById('tab-indicator-' + id);
+      const btn = document.getElementById('tab-btn-' + id);
+
+      if (id === tabId) {
+        content.classList.remove('hidden');
+        content.classList.add('flex');
+        indicator.classList.remove('hidden');
+        btn.classList.add('text-primary', 'font-semibold');
+        btn.classList.remove('text-on-surface-variant');
+      } else {
+        content.classList.add('hidden');
+        content.classList.remove('flex');
+        indicator.classList.add('hidden');
+        btn.classList.remove('text-primary', 'font-semibold');
+        btn.classList.add('text-on-surface-variant');
+      }
+    });
+  }
+
+  let isFrozen = true;
+  function toggleFreezeAgent() {
+    const btn = document.getElementById('btn-freeze');
+    const label = document.getElementById('freeze-label');
+    const icon = document.getElementById('freeze-icon');
+
+    if (isFrozen) {
+      if (confirm("Are you sure you want to unfreeze TreasuryReconciler-v1.9? Anomaly score is still critical.")) {
+        isFrozen = false;
+        btn.classList.remove('bg-error');
+        btn.classList.add('bg-tertiary');
+        label.innerText = "Agent Unfrozen (Resume)";
+        icon.innerText = "play_arrow";
+      }
+    } else {
+      isFrozen = true;
+      btn.classList.remove('bg-tertiary');
+      btn.classList.add('bg-error');
+      label.innerText = "Emergency Freeze Agent";
+      icon.innerText = "ac_unit";
+    }
+  }
+
+  function simulateRevocation() {
+    alert("KMS Tokens and OAuth sessions successfully invalidated across FinTech Global (#2091) tools.");
+  }
+
+  function downloadAttestation() {
+    alert("Downloading signed cryptographic proof: attestation-SEC-4912.bin");
+  }
+
+  function copyPayload() {
+    const jsonText = document.getElementById('json-payload').innerText;
+    navigator.clipboard.writeText(jsonText).then(() => {
+      const copyBtn = document.getElementById('copy-btn-text');
+      copyBtn.innerText = "Copied to clipboard!";
+      setTimeout(() => {
+        copyBtn.innerText = "Copy Raw JSON";
+      }, 2000);
+    });
+  }
+
+  function showNodeInspect(node) {
+    if (node === 'agent') {
+      alert("Node: Agent Core (TreasuryReconciler-v1.9)\nStatus: PID 49102 Terminated\ngVisor Sandbox: Intercepted syscall recursion at 00:04:18.505");
+    } else if (node === 'stripe') {
+      alert("Node: Stripe API\nStatus: KMS Token Revoked\nCommitted Loss: $0.00\nCeiling Limit: $50,000 threshold strictly guarded");
+    } else if (node === 'bigquery') {
+      alert("Node: BigQuery Storage\nDataset: fintech_2091_prod\nStatus: Read-Only Partition Lock active\nNo writes or deletion vectors accepted");
+    }
+  }
+</script></main>
+
+</body></html>
