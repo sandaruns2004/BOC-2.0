@@ -118,12 +118,32 @@ export async function POST(req: NextRequest) {
   let completionTokens = 0;
 
   try {
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-3.5-flash',
-      systemInstruction: systemPrompt,
-    });
+    const modelsToTry = ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.5-flash-lite'];
+    let lastError: any;
+    let result: any;
+    
+    for (const modelName of modelsToTry) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          systemInstruction: systemPrompt,
+        });
 
-    const result = await model.generateContent(guardrailResult.scrubbedMessage);
+        result = await model.generateContent(guardrailResult.scrubbedMessage);
+        console.log(`[LLM] Success with model: ${modelName}`);
+        break; // Success! Break out of the retry loop.
+      } catch (e: any) {
+        if (e?.status === 503 || e?.status === 429) {
+          console.warn(`[LLM] ${modelName} unavailable (${e?.status}), trying next model...`);
+          lastError = e;
+          continue;
+        }
+        throw e; // Throw for other errors (like 400 Bad Request)
+      }
+    }
+
+    if (!result) throw lastError;
+
     llmResponse = result.response.text();
 
     // Token counts (may not be available in all SDK versions)
