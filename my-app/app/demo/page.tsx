@@ -73,6 +73,7 @@ export default function AgentForgeLiveDemoAndTraceConsole() {
   const [isLoading, setIsLoading] = useState(false);
   const [lastTraceId, setLastTraceId] = useState<string | null>(null);
   const [lastMeta, setLastMeta] = useState<ChatMessage['meta'] | null>(null);
+  const [tenantId, setTenantId] = useState('acme_corp');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -109,9 +110,9 @@ export default function AgentForgeLiveDemoAndTraceConsole() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMessage,
-          tenantId: 'acme_corp',
+          tenantId: tenantId,
           agentConfig: {
-            systemPrompt: 'You are a helpful customer service agent for Acme Corp. Be concise and professional.',
+            systemPrompt: `You are a helpful customer service agent for ${tenantId}. Be concise and professional.`,
             refundLimit: 100,
           },
         }),
@@ -213,9 +214,12 @@ export default function AgentForgeLiveDemoAndTraceConsole() {
             <div className="flex flex-wrap items-center gap-4">
               <div className="relative flex items-center bg-surface-container-lowest rounded-lg px-3 py-1.5 shadow-sm">
                 <span className="material-symbols-outlined text-primary text-[18px] mr-2">corporate_fare</span>
-                <select className="bg-transparent font-label-ui text-label-ui text-on-surface font-semibold focus:outline-none cursor-pointer pr-4">
-                  <option>Acme Corp (Enterprise Tenant #1042)</option>
-                  <option>Fintech Global AG (Tenant #8812)</option>
+                <select 
+                  value={tenantId}
+                  onChange={(e) => setTenantId(e.target.value)}
+                  className="bg-transparent font-label-ui text-label-ui text-on-surface font-semibold focus:outline-none cursor-pointer pr-4">
+                  <option value="acme_corp">Acme Corp (Enterprise Tenant #1042)</option>
+                  <option value="fintech_global">Fintech Global AG (Tenant #8812)</option>
                 </select>
               </div>
               <div className="flex items-center gap-2 font-code-base text-[12px] text-on-surface-variant bg-surface-container px-3 py-1.5 rounded-lg">
