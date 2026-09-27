@@ -1,45 +1,25 @@
-// ============================================================
-// AgentForge — Main Chat API Endpoint
-// POST /api/chat
-//
-// This is the core "brain" of the MVP monolith.
-// It runs the full agent pipeline in a single Cloud Run instance:
-//   1. L1 Input Guardrails (injection detection + PII scrubbing)
-//   2. LLM Call (Gemini Flash via Google AI Studio)
-//   3. L2 Output Guardrails (risk classification)
-//   4. L3 Human Escalation (Firestore queue if high-risk)
-//   5. Decision Trace logging (async, non-blocking)
-// ============================================================
-
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  runInputGuardrails,
-  runOutputGuardrails,
-  detectToolCall,
-} from '@/lib/guardrails';
+import { runInputGuardrails, runOutputGuardrails, detectToolCall } from '@/lib/guardrails';
 import { logTraceStep, logCompletedTrace } from '@/lib/trace-logger';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
+// NEW AWS & RAG IMPORTS
+import { publishEscalation } from '@/lib/pubsub';
+import { insertAuditTrace } from '@/lib/bigquery';
+import { logDecisionStep } from '@/lib/cloud-logging';
+import { embedText, searchVectors } from '@/lib/rag';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: NextRequest) {
   const startTime = Date.now();
   const traceId = `tr_${uuidv4().slice(0, 8)}`;
+  let stepOrder = 0;
 
-  let requestBody: {
-    message: string;
-    tenantId?: string;
-    sessionId?: string;
-    agentConfig?: {
-      systemPrompt?: string;
-      refundLimit?: number;
-      modelPreference?: 'flash' | 'pro';
-    };
-  };
-
+  let requestBody: any;
   try {
     requestBody = await req.json();
   } catch {
@@ -54,18 +34,8 @@ export async function POST(req: NextRequest) {
   } = requestBody;
 
   if (!message || typeof message !== 'string' || message.trim().length === 0) {
-    return NextResponse.json(
-      { error: 'Message is required and must be a non-empty string.' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
   }
-
-  const systemPrompt =
-    agentConfig.systemPrompt ||
-    `You are a helpful, professional customer service agent for ${tenantId}. 
-     Be concise, accurate, and empathetic. 
-     If asked to do something that requires processing a refund or cancelling a subscription, 
-     describe what you would do and the amount involved.`;
 
   const refundLimit = agentConfig.refundLimit ?? 100;
 
@@ -76,46 +46,70 @@ export async function POST(req: NextRequest) {
   const guardrailResult = runInputGuardrails(message);
   const l1Duration = Date.now() - l1Start;
 
-  // Log this step (fire-and-forget — never blocks the response)
+  // Local console log (fallback)
   logTraceStep({
-    traceId, sessionId, tenantId,
-    stepOrder: 1,
-    stepType: 'INPUT_INSPECT',
-    durationMs: l1Duration,
-    status: guardrailResult.blocked ? 'block' : 'pass',
-    details: {
-      piiFound: guardrailResult.piiFound,
-      piiTypes: guardrailResult.piiTypes,
-      injectionDetected: guardrailResult.injectionDetected,
-      blocked: guardrailResult.blocked,
-      blockReason: guardrailResult.blockReason || null,
-    },
+    traceId, sessionId, tenantId, stepOrder: 1, stepType: 'INPUT_INSPECT',
+    durationMs: l1Duration, status: guardrailResult.blocked ? 'block' : 'pass',
+    details: { piiFound: guardrailResult.piiFound, blocked: guardrailResult.blocked },
   });
 
-  // If injection detected, block immediately — never call the LLM
+  // AWS CloudWatch log
+  await logDecisionStep(traceId, tenantId, {
+    stepType: 'INPUT_INSPECT', stepOrder: ++stepOrder,
+    data: { piiFound: guardrailResult.piiFound, blocked: guardrailResult.blocked },
+    durationMs: l1Duration
+  });
+
+  // AWS DynamoDB audit
+  await insertAuditTrace({
+    trace_id: traceId, tenant_id: tenantId, session_id: sessionId,
+    step_order: stepOrder, step_type: 'INPUT_INSPECT',
+    guardrail_action: guardrailResult.blocked ? 'BLOCK' : 'PASS',
+    pii_detected: guardrailResult.piiFound, duration_ms: l1Duration
+  });
+
   if (guardrailResult.blocked) {
     return NextResponse.json(
-      {
-        error: guardrailResult.blockReason,
-        traceId,
-        blocked: true,
-        guardrail: {
-          injectionDetected: guardrailResult.injectionDetected,
-          piiFound: guardrailResult.piiFound,
-          piiTypes: guardrailResult.piiTypes,
-        },
-      },
+      { error: guardrailResult.blockReason, traceId, blocked: true, guardrail: { piiFound: guardrailResult.piiFound } },
       { status: 400 }
     );
   }
 
   // ────────────────────────────────────────────────────────────────
-  // STEP 2 — LLM CALL (Gemini Flash)
+  // STEP 1.5 — RAG MEMORY RETRIEVAL (Pinecone)
+  // ────────────────────────────────────────────────────────────────
+  const ragStart = Date.now();
+  let contextBlock = '';
+  try {
+    const queryVector = await embedText(guardrailResult.scrubbedMessage);
+    if (queryVector.length > 0) {
+      const neighbors = await searchVectors(queryVector, tenantId);
+      contextBlock = neighbors.map((n: any) => n.metadata?.text || '').join('\n\n');
+    }
+  } catch (e) {
+    console.error('[RAG] Retrieval failed, falling back to no context.');
+  }
+  const ragDuration = Date.now() - ragStart;
+
+  await logDecisionStep(traceId, tenantId, {
+    stepType: 'RAG_RETRIEVE', stepOrder: ++stepOrder,
+    data: { contextFound: !!contextBlock }, durationMs: ragDuration
+  });
+
+  // ────────────────────────────────────────────────────────────────
+  // STEP 2 — LLM CALL (Gemini Flash) with Fallback Loop
   // ────────────────────────────────────────────────────────────────
   const llmStart = Date.now();
   let llmResponse = '';
   let promptTokens = 0;
   let completionTokens = 0;
+  let modelUsed = 'gemini-3.5-flash';
+
+  const systemPrompt =
+    agentConfig.systemPrompt ||
+    `You are a helpful, professional customer service agent for ${tenantId}. Be concise, accurate, and empathetic. If asked to do something that requires processing a refund or cancelling a subscription, describe what you would do and the amount involved.`;
+
+  const fullPrompt = `${systemPrompt}\n\n${contextBlock ? `RELEVANT KNOWLEDGE BASE CONTEXT:\n${contextBlock}\n\n` : ''}`;
 
   try {
     const modelsToTry = ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.5-flash-lite'];
@@ -126,55 +120,48 @@ export async function POST(req: NextRequest) {
       try {
         const model = genAI.getGenerativeModel({
           model: modelName,
-          systemInstruction: systemPrompt,
+          systemInstruction: fullPrompt,
         });
 
         result = await model.generateContent(guardrailResult.scrubbedMessage);
+        modelUsed = modelName;
         console.log(`[LLM] Success with model: ${modelName}`);
-        break; // Success! Break out of the retry loop.
+        break;
       } catch (e: any) {
         if (e?.status === 503 || e?.status === 429) {
           console.warn(`[LLM] ${modelName} unavailable (${e?.status}), trying next model...`);
           lastError = e;
           continue;
         }
-        throw e; // Throw for other errors (like 400 Bad Request)
+        throw e;
       }
     }
 
     if (!result) throw lastError;
 
     llmResponse = result.response.text();
-
-    // Token counts (may not be available in all SDK versions)
     const usage = result.response.usageMetadata;
     promptTokens = usage?.promptTokenCount ?? 0;
     completionTokens = usage?.candidatesTokenCount ?? 0;
   } catch (llmError) {
     console.error('[Chat API] LLM call failed:', llmError);
     return NextResponse.json(
-      {
-        error: 'The AI engine is temporarily unavailable. Please try again.',
-        traceId,
-      },
+      { error: 'The AI engine is temporarily unavailable. Please try again.', traceId },
       { status: 503 }
     );
   }
 
   const llmDuration = Date.now() - llmStart;
 
-  logTraceStep({
-    traceId, sessionId, tenantId,
-    stepOrder: 2,
-    stepType: 'LLM_CALL',
-    durationMs: llmDuration,
-    status: 'pass',
-    details: {
-      model: 'gemini-3.5-flash',
-      promptTokens,
-      completionTokens,
-      piiWasScrubbed: guardrailResult.piiFound,
-    },
+  await logDecisionStep(traceId, tenantId, {
+    stepType: 'LLM_CALL', stepOrder: ++stepOrder,
+    data: { model: modelUsed, promptTokens, completionTokens }, durationMs: llmDuration
+  });
+
+  await insertAuditTrace({
+    trace_id: traceId, tenant_id: tenantId, session_id: sessionId,
+    step_order: stepOrder, step_type: 'LLM_CALL', model_used: modelUsed,
+    prompt_tokens: promptTokens, completion_tokens: completionTokens, duration_ms: llmDuration
   });
 
   // ────────────────────────────────────────────────────────────────
@@ -185,20 +172,10 @@ export async function POST(req: NextRequest) {
   const outputGuardrail = runOutputGuardrails(detectedToolCall, refundLimit);
   const l2Duration = Date.now() - l2Start;
 
-  logTraceStep({
-    traceId, sessionId, tenantId,
-    stepOrder: 3,
-    stepType: 'OUTPUT_GUARDRAIL',
-    durationMs: l2Duration,
-    status:
-      outputGuardrail.action === 'ESCALATE_TO_HUMAN' ? 'escalate' : 'pass',
-    details: {
-      action: outputGuardrail.action,
-      riskLevel: outputGuardrail.riskLevel,
-      toolDetected: detectedToolCall?.name ?? null,
-      toolParameters: detectedToolCall?.parameters ?? null,
-      reason: outputGuardrail.reason ?? null,
-    },
+  await logDecisionStep(traceId, tenantId, {
+    stepType: 'OUTPUT_GUARDRAIL', stepOrder: ++stepOrder,
+    data: { action: outputGuardrail.action, toolDetected: detectedToolCall?.name ?? null },
+    durationMs: l2Duration
   });
 
   // ────────────────────────────────────────────────────────────────
@@ -207,68 +184,45 @@ export async function POST(req: NextRequest) {
   if (outputGuardrail.action === 'ESCALATE_TO_HUMAN') {
     const escalationId = `ESC-${Math.floor(Math.random() * 9000) + 1000}`;
 
+    // 1. Firebase (for the UI)
     try {
       await addDoc(collection(db, 'escalations'), {
-        escalationId,
-        traceId,
-        sessionId,
-        tenantId,
+        escalationId, traceId, sessionId, tenantId,
         toolName: detectedToolCall?.name || null,
         toolParameters: detectedToolCall?.parameters || null,
         riskLevel: outputGuardrail.riskLevel || null,
-        riskReason: outputGuardrail.reason || null,
-        agentSummary: llmResponse,
-        userMessage: message, // Store original (not scrubbed) for admin review
-        status: 'pending',
-        adminId: null,
-        adminNote: null,
-        decidedAt: null,
-        createdAt: serverTimestamp(),
+        agentSummary: llmResponse, userMessage: message,
+        status: 'pending', createdAt: serverTimestamp(),
       });
     } catch (dbError) {
-      console.error('[Chat API] Failed to create escalation:', dbError);
+      console.error('[Chat API] Failed to create escalation in Firebase:', dbError);
     }
 
-    logTraceStep({
-      traceId, sessionId, tenantId,
-      stepOrder: 4,
-      stepType: 'ESCALATION',
-      durationMs: 0,
-      status: 'escalate',
-      details: { escalationId, riskLevel: outputGuardrail.riskLevel },
+    // 2. AWS SQS (for backend processing)
+    await publishEscalation({
+      escalationId, traceId, tenantId,
+      toolCall: detectedToolCall,
+      riskLevel: outputGuardrail.riskLevel
     });
-
-    const totalDuration = Date.now() - startTime;
-
-    // Async audit log — never blocks user response
+    
+    // Async audit log
     logCompletedTrace({
       traceId, sessionId, tenantId,
-      totalDurationMs: totalDuration,
-      modelUsed: 'gemini-3.5-flash',
+      totalDurationMs: Date.now() - startTime,
+      modelUsed: modelUsed,
       promptTokens, completionTokens,
       piiDetected: guardrailResult.piiFound,
       escalated: true, blocked: false,
       toolCalled: detectedToolCall?.name || null,
     });
 
+    const totalDuration = Date.now() - startTime;
     return NextResponse.json({
-      response:
-        "I've flagged this action for human review. A manager will be notified and will respond shortly. Your session is safely held in memory.",
-      traceId,
-      sessionId,
-      escalated: true,
-      escalationId,
+      response: "I've flagged this action for human review. A manager will be notified and will respond shortly. Your session is safely held in memory.",
+      traceId, sessionId, escalated: true, escalationId,
       riskLevel: outputGuardrail.riskLevel,
-      guardrail: {
-        piiFound: guardrailResult.piiFound,
-        piiTypes: guardrailResult.piiTypes,
-      },
-      meta: {
-        totalDurationMs: totalDuration,
-        model: 'gemini-3.5-flash',
-        promptTokens,
-        completionTokens,
-      },
+      guardrail: { piiFound: guardrailResult.piiFound },
+      meta: { totalDurationMs: totalDuration, model: modelUsed }
     });
   }
 
@@ -276,12 +230,12 @@ export async function POST(req: NextRequest) {
   // STEP 5 — RETURN SUCCESSFUL RESPONSE
   // ────────────────────────────────────────────────────────────────
   const totalDuration = Date.now() - startTime;
-
+  
   // Async audit log
   logCompletedTrace({
     traceId, sessionId, tenantId,
     totalDurationMs: totalDuration,
-    modelUsed: 'gemini-3.5-flash',
+    modelUsed: modelUsed,
     promptTokens, completionTokens,
     piiDetected: guardrailResult.piiFound,
     escalated: false, blocked: false,
@@ -289,21 +243,9 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json({
-    response: llmResponse,
-    traceId,
-    sessionId,
-    escalated: false,
-    blocked: false,
-    guardrail: {
-      piiFound: guardrailResult.piiFound,
-      piiTypes: guardrailResult.piiTypes,
-      piiScrubbed: guardrailResult.piiFound,
-    },
-    meta: {
-      totalDurationMs: totalDuration,
-      model: 'gemini-3.5-flash',
-      promptTokens,
-      completionTokens,
-    },
+    response: llmResponse, traceId, sessionId,
+    escalated: false, blocked: false,
+    guardrail: { piiFound: guardrailResult.piiFound },
+    meta: { totalDurationMs: totalDuration, model: modelUsed }
   });
 }

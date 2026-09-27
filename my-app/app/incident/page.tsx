@@ -44,12 +44,12 @@ export default function AgentForgeSecurityIncident() {
 </div>
 
 <div className="flex flex-wrap items-center gap-3 shrink-0 pt-2 xl:pt-0">
-<button className="bg-tertiary hover:opacity-90 active:scale-98 transition-all text-on-tertiary font-label-ui text-label-ui font-medium px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2" id="btn-freeze" onclick="toggleFreezeAgent()"><span className="material-symbols-outlined text-[18px]" id="freeze-icon">ac_unit</span><span id="freeze-label" className="">Emergency Freeze Agent</span></button>
-<button className="bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-ui text-label-ui font-medium px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2 transition-all" onclick="simulateRevocation()">
+<button className="bg-tertiary hover:opacity-90 active:scale-98 transition-all text-on-tertiary font-label-ui text-label-ui font-medium px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2" id="btn-freeze" onClick={() => {}}><span className="material-symbols-outlined text-[18px]" id="freeze-icon">ac_unit</span><span id="freeze-label" className="">Emergency Freeze Agent</span></button>
+<button className="bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-ui text-label-ui font-medium px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2 transition-all" onClick={() => {}}>
 <span className="material-symbols-outlined text-[18px] text-outline">key_off</span>
 <span className="">Revoke Credentials</span>
 </button>
-<button className="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium px-3.5 py-2.5 rounded-lg shadow-sm flex items-center gap-1.5 transition-all" onclick="downloadAttestation()">
+<button className="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium px-3.5 py-2.5 rounded-lg shadow-sm flex items-center gap-1.5 transition-all" onClick={() => {}}>
 <span className="material-symbols-outlined text-[18px]">verified_user</span>
 <span className="">KMS Attestation</span>
 </button>
@@ -106,19 +106,19 @@ export default function AgentForgeSecurityIncident() {
 
 <div className="flex items-center justify-between pb-4">
 <div className="flex items-center gap-8">
-<button className="pb-3 text-primary font-label-ui text-label-ui font-semibold flex items-center gap-2 relative" id="tab-btn-topology" onclick="switchInvestigationTab('topology')">
+<button className="pb-3 text-primary font-label-ui text-label-ui font-semibold flex items-center gap-2 relative" id="tab-btn-topology" onClick={() => {}}>
 <span className="material-symbols-outlined text-[18px]">hub</span>
 <span className="">Topology Map</span>
 <span className="font-label-caps text-label-caps bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full">Live Mesh</span>
 <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" id="tab-indicator-topology"></span>
 </button>
-<button className="pb-3 text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium flex items-center gap-2 relative transition-colors" id="tab-btn-timeline" onclick="switchInvestigationTab('timeline')">
+<button className="pb-3 text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium flex items-center gap-2 relative transition-colors" id="tab-btn-timeline" onClick={() => {}}>
 <span className="material-symbols-outlined text-[18px]">history</span>
 <span className="">Forensic Timeline</span>
 <span className="font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full">8 events</span>
 <span className="hidden absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" id="tab-indicator-timeline"></span>
 </button>
-<button className="pb-3 text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium flex items-center gap-2 relative transition-colors" id="tab-btn-payloads" onclick="switchInvestigationTab('payloads')">
+<button className="pb-3 text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui font-medium flex items-center gap-2 relative transition-colors" id="tab-btn-payloads" onClick={() => {}}>
 <span className="material-symbols-outlined text-[18px]">data_object</span>
 <span className="">Raw Payloads</span>
 <span className="font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full">JSON</span>
@@ -156,13 +156,13 @@ export default function AgentForgeSecurityIncident() {
 
 <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between max-w-4xl gap-8">
 
-<div className="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('agent')"><div className="relative flex items-center justify-center"><div className="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform"><div className="w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center"><span className="material-symbols-outlined text-[28px]">smart_toy</span></div></div><span className="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-caps text-label-caps">FROZEN</span></div><h3 className="font-headline-sm text-headline-sm text-on-surface mt-3 font-semibold">Agent Core</h3><p className="font-body-sm text-body-sm text-on-surface-variant font-code-base">TreasuryReconciler-v1.9</p><span className="mt-2 font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full">PID 49102 Terminated</span></div>
+<div className="flex flex-col items-center text-center group cursor-pointer" onClick={() => {}}><div className="relative flex items-center justify-center"><div className="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform"><div className="w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center"><span className="material-symbols-outlined text-[28px]">smart_toy</span></div></div><span className="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-caps text-label-caps">FROZEN</span></div><h3 className="font-headline-sm text-headline-sm text-on-surface mt-3 font-semibold">Agent Core</h3><p className="font-body-sm text-body-sm text-on-surface-variant font-code-base">TreasuryReconciler-v1.9</p><span className="mt-2 font-label-caps text-label-caps bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full">PID 49102 Terminated</span></div>
 
 <div className="flex flex-col items-center gap-1 md:hidden"><span className="material-symbols-outlined text-outline">south</span><span className="font-label-caps text-label-caps bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded">Token Revoked (14ms)</span></div>
 
 <div className="hidden md:flex flex-col items-center -mt-8"><span className="font-label-caps text-label-caps bg-surface-container-lowest text-tertiary px-2.5 py-1 rounded-full shadow-sm">Token Revoked • 14ms</span></div>
 
-<div className="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('stripe')">
+<div className="flex flex-col items-center text-center group cursor-pointer" onClick={() => {}}>
 <div className="relative flex items-center justify-center">
 <div className="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform">
 <div className="w-16 h-16 rounded-full bg-surface-container text-primary flex items-center justify-center">
@@ -189,7 +189,7 @@ export default function AgentForgeSecurityIncident() {
               </span>
 </div>
 
-<div className="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('bigquery')">
+<div className="flex flex-col items-center text-center group cursor-pointer" onClick={() => {}}>
 <div className="relative flex items-center justify-center">
 <div className="w-24 h-24 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center p-2 group-hover:scale-105 transition-transform">
 <div className="w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
@@ -297,7 +297,7 @@ export default function AgentForgeSecurityIncident() {
 <div className="hidden flex-col space-y-4 pt-4" id="tab-content-payloads">
 <div className="flex items-center justify-between">
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Payload Inspector — Intercept Envelope</span>
-<button className="font-label-ui text-label-ui text-primary hover:underline flex items-center gap-1" onclick="copyPayload()">
+<button className="font-label-ui text-label-ui text-primary hover:underline flex items-center gap-1" onClick={() => {}}>
 <span className="material-symbols-outlined text-[16px]">content_copy</span>
 <span id="copy-btn-text" className="">Copy Raw JSON</span>
 </button>

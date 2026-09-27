@@ -233,12 +233,12 @@ export default function AgentForgeLiveDemoAndTraceConsole() {
                 <div className="flex items-center gap-4 bg-surface-container-lowest px-3 py-1.5 rounded-lg shadow-sm">
                   <div className="flex flex-col">
                     <span className="font-label-caps text-[10px] text-on-surface-variant">E2E LATENCY</span>
-                    <span className="font-code-base text-[13px] text-on-surface font-semibold">{lastMeta.totalDurationMs}ms</span>
+                    <span className="font-code-base text-[13px] text-on-surface font-semibold">{String(lastMeta.totalDurationMs || 0)}ms</span>
                   </div>
                   <div className="w-px h-6 bg-surface-container"></div>
                   <div className="flex flex-col">
                     <span className="font-label-caps text-[10px] text-on-surface-variant">TOKENS</span>
-                    <span className="font-code-base text-[13px] text-on-surface font-semibold">{lastMeta.promptTokens + lastMeta.completionTokens}</span>
+                    <span className="font-code-base text-[13px] text-on-surface font-semibold">{String((lastMeta.promptTokens || 0) + (lastMeta.completionTokens || 0))}</span>
                   </div>
                   {lastTraceId && (
                     <>
@@ -420,7 +420,7 @@ export default function AgentForgeLiveDemoAndTraceConsole() {
                             )}
                           </div>
                           {step.durationMs !== undefined && (
-                            <span className="font-code-base text-[12px] text-on-surface font-medium shrink-0">{step.durationMs}ms</span>
+                            <span className="font-code-base text-[12px] text-on-surface font-medium shrink-0">{String(step.durationMs || 0)}ms</span>
                           )}
                         </div>
                         {step.detail && (

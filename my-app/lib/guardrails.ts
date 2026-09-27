@@ -182,12 +182,14 @@ export function detectToolCall(
   const lowerResponse = response.toLowerCase();
 
   // Detect refund intent
-  const refundMatch = response.match(/\$\s?(\d+(?:\.\d{2})?)/);
+  const refundMatch = response.match(/\$\s?(\d+(?:,\d{3})*(?:\.\d{2})?)/);
   if (
     (lowerResponse.includes('refund') || lowerResponse.includes('reimburse')) &&
     refundMatch
   ) {
-    const amount = parseFloat(refundMatch[1]);
+    // Remove commas before parsing
+    const amountStr = refundMatch[1].replace(/,/g, '');
+    const amount = parseFloat(amountStr);
     return {
       name: 'issue_refund',
       parameters: { amount, currency: 'usd' },

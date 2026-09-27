@@ -93,10 +93,10 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 
 <div className="flex items-center gap-space-xs bg-surface-container p-1 rounded-xl shadow-inner">
-<button className="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold shadow-sm transition-all flex items-center gap-1.5" id="btn-flow-live" onclick="setPipelineFlow('live')">
+<button className="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold shadow-sm transition-all flex items-center gap-1.5" id="btn-flow-live" onClick={() => {}}>
 <span className="w-2 h-2 rounded-full bg-tertiary"></span> Nominal Flow
           </button>
-<button className="px-3 py-1.5 rounded-lg text-on-surface-variant font-label-ui text-label-ui font-medium hover:text-on-surface transition-all flex items-center gap-1.5" id="btn-flow-failover" onclick="setPipelineFlow('failover')">
+<button className="px-3 py-1.5 rounded-lg text-on-surface-variant font-label-ui text-label-ui font-medium hover:text-on-surface transition-all flex items-center gap-1.5" id="btn-flow-failover" onClick={() => {}}>
 <span className="w-2 h-2 rounded-full bg-secondary"></span> Fallback Circuit (Claude 3.5)
           </button>
 </div>
@@ -104,7 +104,7 @@ export default function AgentForgeArchitectureandPipeline() {
 
 <div className="grid grid-cols-1 lg:grid-cols-5 gap-space-md mb-8">
 
-<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l1" onclick="selectLayer(1)">
+<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l1" onClick={() => {}}>
 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-primary font-bold tracking-wider">01 // EDGE</span>
@@ -118,7 +118,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l2" onclick="selectLayer(2)">
+<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l2" onClick={() => {}}>
 <div className="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-primary font-bold tracking-wider">02 // RUNTIME</span>
@@ -132,7 +132,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l3" onclick="selectLayer(3)">
+<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l3" onClick={() => {}}>
 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary to-primary"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-secondary font-bold tracking-wider">03 // COGNITIVE</span>
@@ -146,7 +146,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l4" onclick="selectLayer(4)">
+<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l4" onClick={() => {}}>
 <div className="absolute top-0 left-0 right-0 h-1 bg-tertiary"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-tertiary font-bold tracking-wider">04 // SANDBOX</span>
@@ -160,7 +160,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l5" onclick="selectLayer(5)">
+<div className="group cursor-pointer rounded-2xl bg-surface-container-lowest p-space-md shadow-sm transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden" id="card-l5" onClick={() => {}}>
 <div className="absolute top-0 left-0 right-0 h-1 bg-surface-tint"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-on-surface-variant font-bold tracking-wider">05 // AUDIT</span>
@@ -276,10 +276,10 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 <div className="flex items-center gap-space-sm">
 <span className="font-label-caps text-label-caps text-on-surface-variant">Filter Focus:</span>
-<button className="topo-btn px-2.5 py-1 rounded bg-primary text-on-primary font-label-caps text-label-caps font-medium" onclick="filterTopology('all')">All (6)</button>
-<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onclick="filterTopology('compute')">Compute</button>
-<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onclick="filterTopology('data')">Data &amp; AI</button>
-<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onclick="filterTopology('security')">Security</button>
+<button className="topo-btn px-2.5 py-1 rounded bg-primary text-on-primary font-label-caps text-label-caps font-medium" onClick={() => {}}>All (6)</button>
+<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onClick={() => {}}>Compute</button>
+<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onClick={() => {}}>Data &amp; AI</button>
+<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onClick={() => {}}>Security</button>
 </div>
 </div>
 
