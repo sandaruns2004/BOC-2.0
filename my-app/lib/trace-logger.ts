@@ -63,10 +63,11 @@ export async function logCompletedTrace(summary: {
   toolCalled?: string;
 }): Promise<void> {
   try {
-    await addDoc(collection(db, 'trace_summaries'), {
-      ...summary,
-      timestamp: serverTimestamp(),
-    });
+    const docData: any = { ...summary, timestamp: serverTimestamp() };
+    if (docData.toolCalled === undefined) {
+      delete docData.toolCalled;
+    }
+    await addDoc(collection(db, 'trace_summaries'), docData);
   } catch (error) {
     console.error('[TraceLogger] Failed to write trace summary:', error);
   }
