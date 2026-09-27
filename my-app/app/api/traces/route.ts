@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
         timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
       }));
       
-      const steps = allSteps.sort((a, b) => (a.stepOrder as number) - (b.stepOrder as number));
+      const steps = allSteps.sort((a: any, b: any) => (a.stepOrder as number) - (b.stepOrder as number));
 
       return NextResponse.json({ traceId, steps, stepCount: steps.length });
     }
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
     }));
     
     const traces = allTraces
-      .sort((a, b) => {
+      .sort((a: any, b: any) => {
         const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
         const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
         return timeB - timeA;

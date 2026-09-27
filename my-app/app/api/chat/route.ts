@@ -213,7 +213,7 @@ export async function POST(req: NextRequest) {
       promptTokens, completionTokens,
       piiDetected: guardrailResult.piiFound,
       escalated: true, blocked: false,
-      toolCalled: detectedToolCall?.name || null,
+      toolCalled: detectedToolCall?.name || undefined,
     });
 
     const totalDuration = Date.now() - startTime;
@@ -239,7 +239,7 @@ export async function POST(req: NextRequest) {
     promptTokens, completionTokens,
     piiDetected: guardrailResult.piiFound,
     escalated: false, blocked: false,
-    toolCalled: detectedToolCall?.name || null,
+    toolCalled: detectedToolCall?.name || undefined,
   });
 
   return NextResponse.json({

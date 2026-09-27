@@ -40,8 +40,8 @@ export async function GET(req: NextRequest) {
     }));
 
     const escalations = allEscalations
-      .filter((e) => e.status === status)
-      .sort((a, b) => {
+      .filter((e: any) => e.status === status)
+      .sort((a: any, b: any) => {
         const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
         return timeB - timeA; // Descending
