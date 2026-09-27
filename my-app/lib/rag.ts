@@ -6,10 +6,9 @@ const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PIN
 
 export async function embedText(text: string): Promise<number[]> {
   try {
-    // 2026 Model format for embeddings
     const model = genAI.getGenerativeModel({ model: 'gemini-embedding-2' });
     const result = await model.embedContent(text);
-    return result.embedding.values;
+    return result.embedding.values.slice(0, 768);
   } catch (e) {
     console.error('[RAG] Failed to embed text:', e);
     return [];
