@@ -14,8 +14,8 @@ import {
   doc,
   updateDoc,
   serverTimestamp,
+  getDoc,
 } from 'firebase/firestore';
-import { isText } from '@/lib/request-validation';
 
 // GET — Fetch a single escalation by its escalationId (e.g. ESC-9082)
 export async function GET(
@@ -79,13 +79,6 @@ export async function PATCH(
   if (!['approved', 'rejected'].includes(decision)) {
     return NextResponse.json(
       { error: "Decision must be either 'approved' or 'rejected'." },
-      { status: 400 }
-    );
-  }
-
-  if (!isText(adminId, 320) || !isText(adminNote, 2_000)) {
-    return NextResponse.json(
-      { error: 'A valid adminId and a review note of up to 2,000 characters are required.' },
       { status: 400 }
     );
   }

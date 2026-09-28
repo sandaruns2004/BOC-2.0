@@ -15,16 +15,11 @@ import {
   setDoc,
   serverTimestamp,
 } from 'firebase/firestore';
-import { isRecord, isText, parseTenantId } from '@/lib/request-validation';
 
 // GET — Load the active agent config for a tenant
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const tenantId = parseTenantId(searchParams.get('tenantId'));
-
-  if (!tenantId) {
-    return NextResponse.json({ error: 'Invalid tenantId.' }, { status: 400 });
-  }
+  const tenantId = searchParams.get('tenantId') ?? 'acme_corp';
 
   try {
     const q = query(
@@ -41,7 +36,7 @@ export async function GET(req: NextRequest) {
         modelPreference: 'flash',
         refundLimit: 100,
         allowedTools: ['check_order', 'issue_refund'],
-        guardrailRules: { blockInjections: true, scrubPii: true },
+        guardrailRules: { blockInjections: true, scrubbPii: true },
         deployed: false,
       });
     }
@@ -79,40 +74,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const tenantId = parseTenantId(body.tenantId);
-
-  if (!tenantId) {
-    return NextResponse.json({ error: 'Invalid tenantId.' }, { status: 400 });
-  }
-
-  if (body.systemPrompt !== undefined && !isText(body.systemPrompt, 8_000)) {
-    return NextResponse.json(
-      { error: 'systemPrompt must be between 1 and 8,000 characters.' },
-      { status: 400 }
-    );
-  }
-
-  if (body.modelPreference !== undefined && !['flash', 'pro'].includes(body.modelPreference)) {
-    return NextResponse.json({ error: 'Invalid modelPreference.' }, { status: 400 });
-  }
-
-  if (
-    body.refundLimit !== undefined &&
-    (!Number.isFinite(body.refundLimit) || body.refundLimit < 0 || body.refundLimit > 100_000)
-  ) {
-    return NextResponse.json({ error: 'refundLimit must be between 0 and 100,000.' }, { status: 400 });
-  }
-
-  if (
-    body.allowedTools !== undefined &&
-    (!Array.isArray(body.allowedTools) || body.allowedTools.length > 20 || !body.allowedTools.every((tool) => isText(tool, 100)))
-  ) {
-    return NextResponse.json({ error: 'allowedTools must contain up to 20 valid tool names.' }, { status: 400 });
-  }
-
-  if (body.guardrailRules !== undefined && !isRecord(body.guardrailRules)) {
-    return NextResponse.json({ error: 'guardrailRules must be an object.' }, { status: 400 });
-  }
+  const tenantId = body.tenantId ?? 'acme_corp';
 
   const agentConfig = {
     tenantId,
@@ -124,7 +86,7 @@ export async function POST(req: NextRequest) {
     allowedTools: body.allowedTools ?? ['check_order'],
     guardrailRules: body.guardrailRules ?? {
       blockInjections: true,
-      scrubPii: true,
+      scrubbPii: true,
     },
     deployed: true,
     updatedAt: serverTimestamp(),

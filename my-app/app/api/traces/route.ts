@@ -10,19 +10,16 @@ import {
   collection,
   query,
   where,
+  orderBy,
+  limit as firestoreLimit,
   getDocs,
 } from 'firebase/firestore';
-import { parseBoundedInteger, parseTenantId } from '@/lib/request-validation';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const tenantId = parseTenantId(searchParams.get('tenantId'));
+  const tenantId = searchParams.get('tenantId') ?? 'acme_corp';
   const traceId = searchParams.get('traceId');
-  const limitParam = parseBoundedInteger(searchParams.get('limit'), 20, 1, 100);
-
-  if (!tenantId) {
-    return NextResponse.json({ error: 'Invalid tenantId.' }, { status: 400 });
-  }
+  const limitParam = parseInt(searchParams.get('limit') ?? '20', 10);
 
   try {
     if (traceId) {
@@ -32,22 +29,13 @@ export async function GET(req: NextRequest) {
         where('traceId', '==', traceId)
       );
       const snapshot = await getDocs(q);
-      const allSteps = snapshot.docs.map(
-        (
-          d
-        ): Record<string, unknown> & {
-          stepOrder?: number;
-          timestamp?: string | null;
-        } => ({
-          id: d.id,
-          ...d.data(),
-          timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
-        })
-      );
-
-      const steps = allSteps.sort(
-        (a, b) => (a.stepOrder ?? 0) - (b.stepOrder ?? 0)
-      );
+      const allSteps = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+        timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
+      }));
+      
+      const steps = allSteps.sort((a: any, b: any) => (a.stepOrder as number) - (b.stepOrder as number));
 
       return NextResponse.json({ traceId, steps, stepCount: steps.length });
     }
@@ -63,15 +51,11 @@ export async function GET(req: NextRequest) {
       ...d.data(),
       timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
     }));
-
+    
     const traces = allTraces
-      .sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
-        const timeA = a.timestamp
-          ? new Date(a.timestamp as string).getTime()
-          : 0;
-        const timeB = b.timestamp
-          ? new Date(b.timestamp as string).getTime()
-          : 0;
+      .sort((a: any, b: any) => {
+        const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+        const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
         return timeB - timeA;
       })
       .slice(0, limitParam);

@@ -1,6 +1,41 @@
+'use client';
 /* eslint-disable */
 // @ts-nocheck
+import { useState, useEffect } from 'react';
+
 export default function AgentForgeAgentStudio() {
+  const [deploying, setDeploying] = useState(false);
+  const [deployStatus, setDeployStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleDeploy = async () => {
+    setDeploying(true);
+    setDeployStatus('idle');
+    try {
+      const res = await fetch('/api/agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenantId: 'acme_corp',
+          systemPrompt: `# ROLE DEFINITION\nYou are Order Resolution Bot (v2.4) executing on behalf of tenant acme_corp.\n\n# BEHAVIORAL PROTOCOL\n1. Verify customer account tier against orders before committing mutations.\n2. Inspect target order state and verify shipment lock via warehouse webhook.\n3. Inquire retention discount matrix prior to initiating irrevocable cancellation flow.\n4. Escalate any refund operations exceeding $500.00 USD to the priority human review queue.\n\n# FALLBACK CONSTRAINT\nIf latency threshold > 1200ms or response is malformed, invoke claude-3-5-sonnet fallback node.`,
+          modelPreference: 'flash',
+          refundLimit: 500,
+          allowedTools: ['check_order', 'issue_refund', 'logistics_webhook'],
+          guardrailRules: { blockInjections: true, scrubbPii: true },
+        }),
+      });
+      if (res.ok) {
+        setDeployStatus('success');
+        setTimeout(() => setDeployStatus('idle'), 3000);
+      } else {
+        setDeployStatus('error');
+      }
+    } catch (e) {
+      setDeployStatus('error');
+    } finally {
+      setDeploying(false);
+    }
+  };
+
   return (
     <>
       <svg aria-hidden="true" className="inline-defs-container" style={{position: 'absolute', width: '0', height: '0', overflow: 'hidden'}}></svg><aside className="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-space-md flex flex-col justify-between z-40 hidden md:flex"><div className="flex flex-col gap-space-sm"><div className="px-2 py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Navigation</div><nav className="flex flex-col gap-1" data-active-classes="bg-surface-container text-primary font-medium"><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="launch-console" href="#">Console Trace</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="agent-studio-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pillars-security" href="#">Pillars &amp; Security</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pricing-economics" href="#">Pricing &amp; Economics</a></nav></div><div className="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30"><div className="flex items-center gap-space-xs font-label-caps text-label-caps text-tertiary font-medium"><span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>Engine: Ready</div><div className="font-code-base text-code-base text-on-surface-variant mt-1">GCP us-central1</div></div></aside><main className="w-full pt-16 md:pl-64 bg-surface"><div className="flex flex-col w-full">
@@ -29,9 +64,9 @@ export default function AgentForgeAgentStudio() {
 <span className="material-symbols-outlined text-[16px] text-primary">play_arrow</span>
 <span>Test Agent</span>
 </button>
-<button className="px-4 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-ui text-label-ui font-medium flex items-center gap-1.5 shadow-sm transition-all active:scale-98" id="btn-deploy">
-<span className="material-symbols-outlined text-[16px]">rocket_launch</span>
-<span>Deploy v2.4</span>
+<button onClick={handleDeploy} disabled={deploying} className={`px-4 py-1.5 rounded-lg font-label-ui text-label-ui font-medium flex items-center gap-1.5 shadow-sm transition-all active:scale-98 disabled:opacity-60 ${deployStatus === 'success' ? 'bg-tertiary text-on-tertiary' : deployStatus === 'error' ? 'bg-error text-on-error' : 'bg-primary hover:bg-primary-container text-on-primary'}`} id="btn-deploy">
+<span className="material-symbols-outlined text-[16px]">{deployStatus === 'success' ? 'check_circle' : deployStatus === 'error' ? 'error' : 'rocket_launch'}</span>
+<span>{deploying ? 'Deploying...' : deployStatus === 'success' ? 'Deployed ✓' : deployStatus === 'error' ? 'Failed — Retry' : 'Deploy v2.4'}</span>
 </button>
 </div>
 </div>
