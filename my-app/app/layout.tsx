@@ -34,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </header>
         {children}
         <footer className="site-footer">
-          <span>AgentForge · BOC 2.0 Scenario 5</span>
+          <span>AgentForge ┬╖ BOC 2.0 Scenario 5</span>
           <span>Guardrails, approvals, and decision traces.</span>
         </footer>
       </body>

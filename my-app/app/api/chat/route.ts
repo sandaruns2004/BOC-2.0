@@ -33,15 +33,15 @@ import { embedText, searchVectors } from '@/lib/rag';
 const MAX_MESSAGE_LENGTH = 8_000;
 
 const MODEL_BY_PREFERENCE = {
-  flash: 'gemini-2.5-flash',
-  pro: 'gemini-2.5-pro',
+  flash: 'gemini-3.8-flash',
+  pro: 'gemini-3.8-pro',
 } as const;
 
 // Fallback chain tried in order when the primary model is overloaded
 const MODEL_FALLBACK_CHAIN = [
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
-  'gemini-1.5-flash',
+  'gemini-3.8-flash',
+  'gemini-3.8-flash-lite',
+  'gemini-3.8-pro',
 ];
 
 export async function POST(req: NextRequest) {

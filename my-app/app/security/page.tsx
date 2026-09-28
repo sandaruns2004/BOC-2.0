@@ -1,4 +1,3 @@
-"use client";
 /* eslint-disable */
 // @ts-nocheck
 export default function AgentForgePillarsandSecurity() {
@@ -49,7 +48,7 @@ export default function AgentForgePillarsandSecurity() {
 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
 <span className="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
 </span>
-<span className="font-label-caps text-label-caps text-tertiary font-semibold tracking-wide">HARDWARE KMS BACKED · CONTINUOUS VERIFICATION</span>
+<span className="font-label-caps text-label-caps text-tertiary font-semibold tracking-wide">HARDWARE KMS BACKED ┬╖ CONTINUOUS VERIFICATION</span>
 </div>
 </div>
 </section>
@@ -367,7 +366,7 @@ export default function AgentForgePillarsandSecurity() {
 <code className="font-code-base text-code-base px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm select-all">
           curl -sSL https://agentforge.dev/audit | sh
         </code>
-<button className="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 transition-all" onClick={() => {}}>
+<button className="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium shadow-sm hover:opacity-95 transition-all" onclick="navigator.clipboard.writeText('curl -sSL https://agentforge.dev/audit | sh'); this.innerText = 'Copied!';">
           Copy
         </button>
 </div>
