@@ -55,7 +55,7 @@ export default function AgentForgeAgentStudio() {
 
   return (
     <>
-      <svg aria-hidden="true" className="inline-defs-container" style={{position: 'absolute', width: '0', height: '0', overflow: 'hidden'}}></svg><aside className="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-space-md flex flex-col justify-between z-40 hidden md:flex"><div className="flex flex-col gap-space-sm"><div className="px-2 py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Navigation</div><nav className="flex flex-col gap-1"><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/launch">Console Trace</a><a className="font-label-ui text-label-ui bg-surface-container text-primary font-medium px-space-sm py-2 rounded-lg transition-colors" href="/studio">Agent Studio &amp; Knowledge Base</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/architecture">Architecture</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/security">Pillars &amp; Security</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/demo">Live Flow Demo</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/pricing">Pricing &amp; Economics</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/escalation">Escalation Queue</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/replay">Execution Replay</a></nav></div><div className="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30"><div className="flex items-center gap-space-xs font-label-caps text-label-caps text-tertiary font-medium"><span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>Engine: Ready</div><div className="font-code-base text-code-base text-on-surface-variant mt-1">GCP us-central1</div></div></aside><main className="w-full pt-16 md:pl-64 bg-surface"><div className="flex flex-col w-full">
+      <div className="w-full bg-surface min-h-screen"><div className="flex flex-col w-full">
 
 <div className="w-full bg-surface-container-lowest shadow-sm px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
 <div className="flex items-center gap-3">
@@ -350,7 +350,7 @@ export default function AgentForgeAgentStudio() {
 </main>
 </div>
 
-</div></main>
+</div></div>
     </>
   );
 }

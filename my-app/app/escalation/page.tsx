@@ -91,33 +91,7 @@ export default function AgentForgeHumanEscalationQueue() {
 
   return (
     <>
-      <aside className="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-4 flex flex-col justify-between z-40 hidden md:flex">
-        <div className="flex flex-col gap-4">
-          <div className="px-2 py-1 text-on-surface-variant font-label-caps text-[10px] uppercase tracking-wider">Suite Navigation</div>
-          <nav className="flex flex-col gap-1">
-            {[
-              ['/', 'Platform Overview'],
-              ['/studio', 'Agent Studio'],
-              ['/demo', 'Live Demo'],
-              ['/escalation', 'Escalation Queue'],
-              ['/replay', 'Execution Replay'],
-            ].map(([href, label]) => (
-              <a key={href} href={href} className="font-label-ui text-[13px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-3 py-2 rounded-lg transition-colors">
-                {label}
-              </a>
-            ))}
-          </nav>
-        </div>
-        <div className="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
-          <div className="flex items-center gap-2 font-label-caps text-[10px] text-tertiary font-medium">
-            <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-            Engine: Ready
-          </div>
-          <div className="font-code-base text-[11px] text-on-surface-variant mt-1">Firebase · Realtime Poll</div>
-        </div>
-      </aside>
-
-      <main className="w-full pt-16 md:pl-64 bg-surface min-h-screen">
+      <div className="w-full bg-surface min-h-screen">
         <div className="flex flex-col w-full">
           <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 py-6">
 
@@ -347,7 +321,7 @@ export default function AgentForgeHumanEscalationQueue() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }
