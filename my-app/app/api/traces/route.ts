@@ -32,16 +32,22 @@ export async function GET(req: NextRequest) {
         where('traceId', '==', traceId)
       );
       const snapshot = await getDocs(q);
-      const allSteps = snapshot.docs.map((d): Record<string, unknown> & {
-        stepOrder?: number;
-        timestamp?: string | null;
-      } => ({
-        id: d.id,
-        ...d.data(),
-        timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
-      }));
-      
-      const steps = allSteps.sort((a, b) => (a.stepOrder ?? 0) - (b.stepOrder ?? 0));
+      const allSteps = snapshot.docs.map(
+        (
+          d
+        ): Record<string, unknown> & {
+          stepOrder?: number;
+          timestamp?: string | null;
+        } => ({
+          id: d.id,
+          ...d.data(),
+          timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
+        })
+      );
+
+      const steps = allSteps.sort(
+        (a, b) => (a.stepOrder ?? 0) - (b.stepOrder ?? 0)
+      );
 
       return NextResponse.json({ traceId, steps, stepCount: steps.length });
     }
@@ -57,11 +63,15 @@ export async function GET(req: NextRequest) {
       ...d.data(),
       timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
     }));
-    
+
     const traces = allTraces
-      .sort((a, b) => {
-        const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
-        const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+      .sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
+        const timeA = a.timestamp
+          ? new Date(a.timestamp as string).getTime()
+          : 0;
+        const timeB = b.timestamp
+          ? new Date(b.timestamp as string).getTime()
+          : 0;
         return timeB - timeA;
       })
       .slice(0, limitParam);

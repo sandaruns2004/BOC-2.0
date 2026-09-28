@@ -14,172 +14,169 @@ Every technology choice below answers three questions:
 
 ---
 
-## 1. Cloud Run (Serverless Containers) — Core Compute
+## 1. AWS Lambda / Vercel (Serverless Compute) — Core Compute
 
-**What it does:** Runs containerized services that scale automatically from zero to thousands of instances based on incoming traffic.
+**What it does:** Runs serverless functions that scale automatically from zero to thousands of instances based on incoming traffic.
 
 **Why for this problem:**
-An AI agent platform has inherently unpredictable traffic — one business's agent might be idle for hours, then get hit by a product launch and spike to 500 concurrent requests. Traditional VM-based compute would either waste money sitting idle or fail to scale fast enough. Cloud Run scales to zero when idle (zero cost) and spins up new instances within seconds during spikes.
+An AI agent platform has inherently unpredictable traffic — one business's agent might be idle for hours, then get hit by a product launch and spike to 500 concurrent requests. Traditional VM-based compute would either waste money sitting idle or fail to scale fast enough. Vercel's serverless Next.js deployment scales to zero when idle (zero cost) and spins up new instances within milliseconds during spikes.
 
-More critically: each service in our architecture (Orchestration, Memory, LLM Router, Guardrails, Tool Executor) needs to scale *independently*. If we get a wave of tool-heavy requests, only the Tool Executor needs to scale — not the memory layer. Cloud Run's per-service auto-scaling makes this possible without manual intervention.
+For production microservices, AWS Lambda provides per-function auto-scaling — if we get a wave of tool-heavy requests, only the Tool Executor Lambda needs to scale, not the memory layer.
 
-**Considered instead:** Cloud Functions — rejected because our services have stateful connection patterns (Redis, Firestore) and longer request lifecycles (multi-step agent reasoning can take 5–30 seconds), which Cloud Functions handle poorly. GKE — rejected because it requires cluster management overhead that adds operational complexity without meaningful benefit at our expected scale.
+**Free Tier:** Vercel Hobby plan is completely free for Next.js apps. AWS Lambda: 1M free requests/month + 400,000 GB-seconds compute.
+
+**Considered instead:** Google Cloud Run — rejected due to billing account restrictions encountered during development. AWS ECS/Fargate — viable but adds cluster management overhead not justified at MVP scale.
 
 ---
 
-## 2. Apigee API Gateway — Entry Point & Tenant Routing
+## 2. AWS API Gateway — Entry Point & Tenant Routing
 
 **What it does:** A fully managed API gateway that handles authentication, rate limiting, request routing, and usage metering.
 
 **Why for this problem:**
-Multi-tenancy requires every request to be authenticated and attributed to a specific business tenant *before* it reaches any internal service. Doing this in application code across multiple services is error-prone and duplicative. Apigee handles this at the perimeter: it validates the tenant's API key, injects a tenant context header, enforces per-tenant rate limits (e.g., max 100 requests/minute for the free tier), and meters usage for billing — all before a single line of business logic runs.
+Multi-tenancy requires every request to be authenticated and attributed to a specific business tenant *before* it reaches any internal service. AWS API Gateway handles this at the perimeter: it validates the tenant's API key, enforces per-tenant rate limits (e.g., max 100 requests/minute for the free tier), and meters usage for billing — all before a single line of business logic runs.
 
-This is critical for the problem's multi-tenant isolation requirement: if we didn't enforce tenant limits at the gateway, a single misbehaving tenant could spike LLM usage and degrade service for all others.
+**Free Tier:** AWS API Gateway: 1M HTTP API calls/month free for 12 months.
 
-**Considered instead:** Cloud Endpoints — simpler but lacks Apigee's per-tenant policy management and built-in monetization/metering features. NGINX Ingress — rejected because it would require manual policy management and doesn't integrate with GCP's IAM and billing systems.
+**Considered instead:** Google Apigee — excellent product but requires GCP billing; AWS API Gateway provides equivalent capabilities with free tier.
 
 ---
 
-## 3. Vertex AI Vector Search — Tenant-Isolated Agent Memory
+## 3. Pinecone — Tenant-Isolated Agent Memory (Vector Search)
 
 **What it does:** A managed vector database that stores high-dimensional embeddings and supports fast approximate nearest-neighbor (ANN) similarity search.
 
 **Why for this problem:**
-Agent memory in a multi-tenant context is fundamentally a retrieval problem: "given this new message, what past information is most relevant to include in the LLM's context?" Passing the entire conversation history to the LLM on every call is prohibitively expensive (large prompts = high token cost = high latency) and hits context window limits.
+Agent memory in a multi-tenant context is fundamentally a retrieval problem: "given this new message, what past information is most relevant to include in the LLM's context?" Passing the entire conversation history to the LLM on every call is prohibitively expensive.
 
-Vector search solves this: we embed every conversation turn and knowledge base document, store them as vectors, and at query time retrieve only the top-K most semantically relevant ones. Each tenant gets a separate vector index — their embeddings are physically separated from other tenants', making cross-tenant data leakage structurally impossible, not just policy-enforced.
+Vector search solves this: we embed every conversation turn and knowledge base document, store them as vectors, and at query time retrieve only the top-K most semantically relevant ones. Tenant isolation is enforced via Pinecone's metadata filter (`{ tenantId: { $eq: tenantId } }`) — ensuring cross-tenant data leakage is structurally impossible.
 
-**Considered instead:** Pinecone — excellent product, but requires a separate API integration and data residency is outside GCP, complicating compliance. PostgreSQL with pgvector — viable for small scale but not managed at our target throughput; would require significant ops work. In-memory search — fails immediately at scale with multiple tenants and large knowledge bases.
+**Free Tier:** Pinecone Starter: 1 free index, 2GB storage, 100K vectors — sufficient for the entire competition MVP.
+
+**Considered instead:** Vertex AI Vector Search — requires GCP billing; Pinecone provides identical capability with a genuine free tier. PostgreSQL with pgvector — viable but requires significant ops work.
 
 ---
 
-## 4. Vertex AI Embedding Models (text-embedding-004) — Context Vectorization
+## 4. Google AI Studio (text-embedding-004) — Context Vectorization
 
-**What it does:** Converts text (queries, conversation turns, documents) into fixed-size numerical vectors that capture semantic meaning.
+**What it does:** Converts text (queries, conversation turns, documents) into 768-dimensional numerical vectors that capture semantic meaning.
 
 **Why for this problem:**
-For RAG to work, the embedding model must be the same one used both when documents are indexed and when queries are made (otherwise the vector spaces don't align). Using a GCP-native embedding model means:
-- No external API dependency for a latency-critical path
-- Consistent embedding dimensions with Vector Search configuration
-- Low latency (co-located within GCP network)
-- Cost: ~$0.000025/1K tokens — negligible relative to LLM costs
+For RAG to work, the embedding model must be the same one used both when documents are indexed and when queries are made. Google AI Studio's `text-embedding-004` model:
+- 768 dimensions matching Pinecone index configuration
+- Completely free via Gemini API key
+- High quality embeddings competitive with paid alternatives
 
-**Considered instead:** OpenAI text-embedding-3-small — good quality, but adds an external API dependency in a latency-sensitive path. Self-hosted embedding model — would require GPU compute, adding cost and ops overhead without meaningful quality gain for our use case.
+**Free Tier:** Google AI Studio: 1,500 requests/day free — sufficient for the entire demo and pilot.
 
 ---
 
-## 5. Gemini API via Vertex AI — Primary LLM
+## 5. AWS Bedrock (Claude 3 Haiku / Sonnet) — Primary LLM (Production)
 
 **What it does:** Provides large language model inference for agent reasoning, response generation, and tool-call decision-making.
 
 **Why for this problem:**
-We need an LLM that supports structured output (for reliable tool-call JSON generation) and has a range of model sizes (Gemini Flash for cheap/simple tasks, Gemini 1.5 Pro for complex reasoning). Using Gemini via Vertex AI means:
-- No external API calls (LLM inference stays within GCP network — faster, more secure)
-- Native IAM-based access control (no API key management for LLM calls)
-- Automatic request logging through GCP Audit Logs
-- Supports function-calling natively — the LLM can produce structured JSON tool call requests that our Tool Executor can validate and execute
+AWS Bedrock provides access to Anthropic's Claude models (industry-leading for tool-calling and instruction-following) without managing model infrastructure. Claude 3 Haiku is used for simple queries (fast, cheap), Sonnet for complex multi-step reasoning.
 
-**Model selection strategy (cost critical):**
-- Gemini Flash: $0.075/1M input tokens, $0.30/1M output tokens — used for >60% of requests
-- Gemini 1.5 Pro: $3.50/1M input tokens, $10.50/1M output tokens — used for complex multi-step tasks only
-- Claude 3.5 Sonnet (via API): used as fallback if Gemini API is degraded
+**Model routing strategy:**
+- Claude 3 Haiku: ~$0.25/1M input tokens — used for >60% of requests
+- Claude 3.5 Sonnet: ~$3/1M input tokens — used for complex reasoning only
+- Google Gemini (AI Studio key): completely free — used in local dev and as fallback
 
-**Considered instead:** OpenAI GPT-4o — excellent quality but requires external API, no native GCP integration, higher latency across the network boundary. Self-hosted Llama-3 — would require expensive GPU instances (A100s), complex deployment, and ongoing maintenance; cost-effective only at very high volume.
+**Free Tier:** No free tier for Bedrock inference, but costs are pay-per-use. For MVP demo: ~$0.001 per conversation with Haiku.
+
+**Considered instead:** Vertex AI Gemini — identical capability but requires GCP billing account which was unavailable. OpenAI GPT-4o — excellent quality but no AWS-native integration.
 
 ---
 
-## 6. Memorystore for Redis — Semantic Response Cache
+## 6. AWS ElastiCache (Redis) — Semantic Response Cache
 
 **What it does:** A managed in-memory key-value store used for caching LLM responses to semantically similar queries.
 
 **Why for this problem:**
-A significant portion of queries to a business support agent are semantically identical ("What are your business hours?" "When are you open?" "Are you open on weekends?"). Without caching, each of these would trigger a separate, costly LLM call. Semantic caching works by:
-1. Embedding the incoming query
-2. Checking if any stored embedding is within a cosine similarity threshold (e.g., >0.92)
-3. If yes, return the cached response immediately — 0 tokens consumed, <5ms latency vs. 800ms for a real LLM call
+A significant portion of queries to a business support agent are semantically identical. Semantic caching:
+1. Embeds the incoming query
+2. Checks if any stored embedding is within cosine similarity threshold (>0.92)
+3. Returns cached response — 0 tokens consumed, <5ms vs 800ms for real LLM call
 
-Estimated cache hit rate for a customer support agent: 25–40% of queries. This directly translates to 25–40% reduction in LLM inference costs.
+Estimated cache hit rate: 25–40% of queries, directly reducing LLM costs.
 
-**Considered instead:** Cloud Memcache — simpler but lacks the data structure flexibility needed for embedding-based lookups. Application-layer cache — rejected because it would not persist across Cloud Run instance restarts and would not be shared across the fleet.
+**Free Tier:** AWS ElastiCache: No permanent free tier. For MVP: use a simple in-memory Node.js Map as a mock cache; upgrade to ElastiCache for production.
 
 ---
 
-## 7. Firestore — Conversational State & Agent Configuration
+## 7. Firebase Firestore — Conversational State & Agent Configuration
 
 **What it does:** A NoSQL document database with real-time sync capabilities, used for storing agent configurations and conversation histories.
 
 **Why for this problem:**
-Agent configuration data (system prompt, allowed tools, guardrail rules, model preferences) has a flexible, nested schema that varies significantly between tenants. A relational schema would require constant migrations as we add new agent capabilities. Firestore's document model accommodates this naturally.
+Agent configuration data (system prompt, allowed tools, guardrail rules, model preferences) has a flexible, nested schema that varies significantly between tenants. Firestore's document model accommodates this naturally.
 
-For conversation history, we need per-user sub-collections that can be queried efficiently by session ID without complex joins. Firestore's collection-document hierarchy maps directly to this (tenants/{tenantId}/conversations/{sessionId}/messages).
+**Free Tier:** Firebase Spark plan: 50K reads/day, 20K writes/day — more than sufficient for the demo and pilot.
 
-**Considered instead:** Cloud Spanner — strong consistency is unnecessary for agent config data and adds significant cost. Cloud SQL (PostgreSQL) — viable but requires connection pool management and schema migrations for flexible agent config; overhead not justified for this use case.
+**Already configured** in this project and actively working.
 
 ---
 
-## 8. Secret Manager — Tool Credentials per Tenant
+## 8. AWS SSM Parameter Store — Tool Credentials per Tenant
 
-**What it does:** A managed secrets store that stores, versions, and serves sensitive credentials (API keys, OAuth tokens) with fine-grained IAM controls.
+**What it does:** A managed secrets store that stores, versions, and serves sensitive credentials with fine-grained IAM controls.
 
 **Why for this problem:**
-Each business tenant configures their agent to call their own external APIs (their CRM, their helpdesk system). These API keys are highly sensitive — a leak would let anyone impersonate that business's system. Storing them in Firestore (even encrypted) is insufficient because application code handling the decryption becomes a single point of compromise.
+Each business tenant configures their agent to call their own external APIs (CRM, helpdesk). These API keys are highly sensitive. SSM Parameter Store stores each credential at a path namespaced by tenant: `/agentforge/{tenantId}/tools/{toolName}/apiKey`.
 
-Secret Manager stores each credential at a path namespaced by tenant: `/tenants/{tenantId}/tools/{toolName}/apiKey`. The Tool Executor service account has IAM permission to read only the secrets in its current tenant's namespace — structurally preventing cross-tenant credential access.
+**Free Tier:** AWS SSM Standard Parameters: completely FREE, no limit.
 
-**Considered instead:** Environment variables in Cloud Run — terrible choice: credentials would be visible in deployment configs and logs. Encrypted fields in Firestore — better, but requires the application to manage encryption keys, which Secret Manager handles automatically with Cloud KMS integration.
+**Considered instead:** Google Secret Manager — requires GCP billing; AWS SSM is free and provides identical capability.
 
 ---
 
-## 9. Cloud Pub/Sub — Human Escalation Queue & Async Decoupling
+## 9. AWS SQS — Human Escalation Queue & Async Decoupling
 
 **What it does:** A managed message queue that decouples producers (Guardrails Pipeline) from consumers (Admin Dashboard, human reviewers).
 
 **Why for this problem:**
-When the Guardrails Pipeline identifies a high-risk action (e.g., agent wants to issue a refund above a threshold), we cannot simply block and wait for human approval synchronously — this would hold the user's connection open indefinitely. Instead, the Guardrails Pipeline publishes the pending action to a Pub/Sub topic, immediately responds to the user ("This action requires approval and will be completed shortly"), and the admin receives a notification to review.
+When the Guardrails Pipeline identifies a high-risk action (e.g., agent wants to issue a refund above threshold), we cannot block and wait for human approval synchronously — this would hold the user's connection open indefinitely. Instead, the Guardrails Pipeline publishes the pending action to an SQS queue, immediately responds to the user, and the admin receives a notification.
 
-Pub/Sub also decouples audit log writing from the critical path — the Orchestration Service publishes trace events to a log topic asynchronously, preventing any slowdown in the audit layer from impacting user-facing response latency.
+SQS also decouples audit log writing from the critical path — preventing any slowdown in the audit layer from impacting user-facing response latency.
 
-**Considered instead:** Cloud Tasks — better for delayed/scheduled single-target delivery, but Pub/Sub's fan-out capability is needed (one event → notifies both the admin dashboard AND the email notification service simultaneously). Redis Streams — viable but requires more operational management than the fully managed Pub/Sub.
+**Free Tier:** AWS SQS: 1M requests/month FREE forever.
 
----
-
-## 10. Cloud Logging + BigQuery — Immutable Audit Trail
-
-**What it does:** Cloud Logging captures structured logs from all services in real time. A Log Sink exports them to BigQuery for long-term storage and analytical queries.
-
-**Why for this problem:**
-The problem statement explicitly requires the ability to explain "why an agent made a given decision" — not just that it made one. This requires storing not just the final output, but every intermediate step: what context was retrieved from memory, what prompt was sent to the LLM, what tool call the LLM requested, what the tool returned, and what the final response was.
-
-Cloud Logging captures this at sub-second granularity with structured JSON fields. BigQuery allows arbitrary SQL queries across months of agent decision history — for debugging, compliance audits, and agent behavior analysis. The Log Sink is configured with a deletion lock on the BigQuery dataset, making the audit trail tamper-evident.
-
-**Considered instead:** Cloud Storage (raw log files) — queryable but requires external tooling for structured queries. Elasticsearch — powerful but operationally expensive and not native to GCP; Cloud Logging + BigQuery provides 90% of the capability at a fraction of the ops cost.
+**Considered instead:** Google Cloud Pub/Sub — requires GCP billing beyond free basics; SQS provides identical fan-out capability with a genuine free tier.
 
 ---
 
-## 11. Cloud Trace — Distributed Request Tracing
+## 10. AWS CloudWatch + AWS DynamoDB — Immutable Audit Trail
 
-**What it does:** Captures the full execution path of each request across all microservices, with timing information for each hop.
+**What CloudWatch does:** Captures structured logs from all services in real time with per-tenant log streams.
+
+**What DynamoDB does:** Stores every agent decision trace as a queryable document — trace_id, tenant_id, model used, tokens consumed, PII detected, escalation status.
 
 **Why for this problem:**
-An agent invocation touches 5–7 services (Apigee → Orchestration → Memory → LLM Router → Guardrails → Tool Executor → Audit). When a request is slow or fails, identifying which service caused the issue without distributed tracing requires guesswork. Cloud Trace propagates a trace ID across all services automatically, providing a single view of the entire request lifecycle with per-service latency breakdowns.
+The problem statement explicitly requires the ability to explain "why an agent made a given decision." DynamoDB allows efficient queries: "show all decisions for tenant X in the last 7 days" using a Global Secondary Index on tenant_id + timestamp.
 
-This directly supports the observability requirement: a platform operator can select any failed agent request and see exactly where it spent its time and where it failed.
+**Free Tier:**
+- CloudWatch: 5GB log ingestion/month + 5GB storage FREE
+- DynamoDB: 25GB storage + 25 WCU + 25 RCU FREE forever (no billing required!)
+
+**Considered instead:** Google BigQuery + Cloud Logging — requires GCP billing; AWS CloudWatch + DynamoDB provide equivalent capability entirely within the free tier.
 
 ---
 
 ## Summary Table
 
-| Component           | GCP Service             | Primary Reason for Choice         |
-|---------------------|-------------------------|------------------------------------|
-| API Entry & Auth    | Apigee                  | Multi-tenant rate limiting + metering |
-| Compute             | Cloud Run               | Independent auto-scaling per service |
-| LLM Inference       | Vertex AI (Gemini)      | Native, no external API, IAM-controlled |
-| Agent Memory        | Vertex AI Vector Search | Tenant-isolated embeddings at scale |
-| Embedding           | Vertex AI text-embedding | Co-located, consistent vector space |
-| Response Cache      | Memorystore (Redis)     | Semantic cache → 25–40% cost saving |
-| State & Config      | Firestore               | Flexible schema, per-tenant collections |
-| Tool Credentials    | Secret Manager          | Tenant-namespaced secrets, IAM-enforced |
-| Async Queues        | Cloud Pub/Sub           | Decoupled escalation + audit logging |
-| Audit Trail         | Cloud Logging + BigQuery | Immutable, queryable decision history |
-| Distributed Tracing | Cloud Trace             | Per-request cross-service visibility |
-| Monitoring          | Cloud Monitoring        | Dashboards + alerting for all tenants |
+| Component           | AWS / Free Service          | Primary Reason for Choice              |
+|---------------------|-----------------------------|----------------------------------------|
+| API Entry & Auth    | AWS API Gateway             | Multi-tenant rate limiting + metering  |
+| Compute             | Vercel / AWS Lambda         | Zero-cost serverless scaling           |
+| LLM Inference       | AWS Bedrock (Claude 3)      | Best tool-calling, pay-per-use         |
+| LLM (Dev/Free)      | Google AI Studio (Gemini)   | Completely free for local dev          |
+| Agent Memory        | Pinecone Vector DB          | Free starter tier, tenant metadata filter |
+| Embedding           | Gemini text-embedding-004   | Free via AI Studio key                 |
+| Response Cache      | In-memory / ElastiCache     | Semantic cache → 25–40% LLM cost saving |
+| State & Config      | Firebase Firestore          | Free tier, flexible schema             |
+| Tool Credentials    | AWS SSM Parameter Store     | Free, tenant-namespaced               |
+| Async Queues        | AWS SQS                     | 1M free requests/month forever        |
+| Audit Trail         | AWS DynamoDB                | 25GB free forever, fast queries       |
+| Structured Logging  | AWS CloudWatch              | 5GB free/month, per-tenant streams    |
+| Monitoring          | AWS CloudWatch Dashboards   | Built-in with CloudWatch logs         |
