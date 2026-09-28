@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable */
 // @ts-nocheck
 export default function AgentForgeDocsandSDKReference() {
@@ -114,13 +115,13 @@ export default function AgentForgeDocsandSDKReference() {
 <div className="rounded-xl overflow-hidden shadow-sm bg-inverse-surface text-inverse-on-surface">
 <div className="flex items-center justify-between px-4 py-2.5 bg-[#1b2234]">
 <div className="flex items-center gap-4 font-label-ui text-xs">
-<button className="text-on-primary font-semibold flex items-center gap-1.5" id="pkg-tab-pip" onclick="setPackageTab('pip')">
+<button className="text-on-primary font-semibold flex items-center gap-1.5" id="pkg-tab-pip" onClick={() => {}}>
 <span className="w-1.5 h-1.5 rounded-full bg-primary-container"></span>pip
                 </button>
-<button className="text-on-surface-variant hover:text-inverse-on-surface transition-colors flex items-center gap-1.5" id="pkg-tab-npm" onclick="setPackageTab('npm')">npm</button>
-<button className="text-on-surface-variant hover:text-inverse-on-surface transition-colors flex items-center gap-1.5" id="pkg-tab-cargo" onclick="setPackageTab('cargo')">cargo</button>
+<button className="text-on-surface-variant hover:text-inverse-on-surface transition-colors flex items-center gap-1.5" id="pkg-tab-npm" onClick={() => {}}>npm</button>
+<button className="text-on-surface-variant hover:text-inverse-on-surface transition-colors flex items-center gap-1.5" id="pkg-tab-cargo" onClick={() => {}}>cargo</button>
 </div>
-<button className="text-on-surface-variant hover:text-inverse-on-surface transition-colors flex items-center gap-1 text-xs" onclick="copyCommand()">
+<button className="text-on-surface-variant hover:text-inverse-on-surface transition-colors flex items-center gap-1 text-xs" onClick={() => {}}>
 <span className="material-symbols-outlined text-[15px]" id="copy-icon">content_copy</span>
 <span id="copy-label">Copy</span>
 </button>
@@ -135,9 +136,9 @@ export default function AgentForgeDocsandSDKReference() {
 <div className="flex items-center justify-between">
 <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">Client Implementation</h2>
 <div className="flex items-center gap-1 bg-surface-container p-1 rounded-lg">
-<button className="px-3 py-1 rounded font-label-ui text-xs font-semibold bg-surface-container-lowest text-primary shadow-sm transition-all" id="tab-py" onclick="switchLang('py')">Python</button>
-<button className="px-3 py-1 rounded font-label-ui text-xs text-on-surface-variant hover:text-on-surface transition-all" id="tab-ts" onclick="switchLang('ts')">TypeScript</button>
-<button className="px-3 py-1 rounded font-label-ui text-xs text-on-surface-variant hover:text-on-surface transition-all" id="tab-curl" onclick="switchLang('curl')">cURL</button>
+<button className="px-3 py-1 rounded font-label-ui text-xs font-semibold bg-surface-container-lowest text-primary shadow-sm transition-all" id="tab-py" onClick={() => {}}>Python</button>
+<button className="px-3 py-1 rounded font-label-ui text-xs text-on-surface-variant hover:text-on-surface transition-all" id="tab-ts" onClick={() => {}}>TypeScript</button>
+<button className="px-3 py-1 rounded font-label-ui text-xs text-on-surface-variant hover:text-on-surface transition-all" id="tab-curl" onClick={() => {}}>cURL</button>
 </div>
 </div>
 
@@ -302,8 +303,8 @@ stream = client.agents.stream(
 <div className="flex flex-col gap-2">
 <label className="font-label-caps text-label-caps uppercase text-on-surface-variant font-medium">Prompt Payload</label>
 <div className="flex flex-col sm:flex-row gap-2">
-<input className="flex-1 bg-surface-container-low rounded-lg px-3.5 py-2 text-on-surface font-body-sm text-body-sm focus:outline-none focus:bg-surface-container transition-colors shadow-inner" id="sandbox-prompt" type="text" value="Scan transaction #849201 for PII and compute ledger delta."/>
-<button className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium hover:bg-primary/95 active:scale-95 transition-all shadow-sm" onclick="triggerSandbox()">
+<input className="flex-1 bg-surface-container-low rounded-lg px-3.5 py-2 text-on-surface font-body-sm text-body-sm focus:outline-none focus:bg-surface-container transition-colors shadow-inner" id="sandbox-prompt" type="text" defaultValue="Scan transaction #849201 for PII and compute ledger delta."/>
+<button className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium hover:bg-primary/95 active:scale-95 transition-all shadow-sm" onClick={() => {}}>
 <span className="material-symbols-outlined text-[18px]">play_arrow</span>
 <span>Send Request</span>
 </button>

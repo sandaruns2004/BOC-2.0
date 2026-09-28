@@ -189,7 +189,7 @@ export default function AgentForgeLaunchConsole() {
 <div className="p-space-md rounded-lg bg-surface-container-low flex items-center gap-space-sm">
 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">verified_user</span>
 <span className="font-body-sm text-body-sm text-on-surface-variant">
-              Autonomous sandbox memory isolation active across all 3 containers · TLS 1.3 / gRPC
+              Autonomous sandbox memory isolation active across all 3 containers ┬╖ TLS 1.3 / gRPC
             </span>
 </div>
 </div>
@@ -217,7 +217,7 @@ export default function AgentForgeLaunchConsole() {
 <div className="flex items-center justify-between">
 <div className="flex flex-col">
 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">24h Fleet Throughput</span>
-<span className="font-body-md text-body-md font-semibold text-on-surface">99.98% OK <span className="font-body-sm font-normal text-on-surface-variant">· peak 4.8k tokens/sec</span></span>
+<span className="font-body-md text-body-md font-semibold text-on-surface">99.98% OK <span className="font-body-sm font-normal text-on-surface-variant">┬╖ peak 4.8k tokens/sec</span></span>
 </div>
 <div className="w-2 h-2 rounded-full bg-tertiary"></div>
 </div>
@@ -266,7 +266,7 @@ export default function AgentForgeLaunchConsole() {
 <div className="flex items-center gap-space-sm min-w-0">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
 <div className="flex flex-col min-w-0">
-<span className="font-body-sm text-body-sm text-on-surface font-medium truncate">Order Refund ($42.50) · 312ms</span>
+<span className="font-body-sm text-body-sm text-on-surface font-medium truncate">Order Refund ($42.50) ┬╖ 312ms</span>
 <span className="font-label-caps text-label-caps text-tertiary">Auto-Approved via Guardrail Rule #12</span>
 </div>
 </div>
@@ -277,7 +277,7 @@ export default function AgentForgeLaunchConsole() {
 <div className="flex items-center gap-space-sm min-w-0">
 <span className="material-symbols-outlined text-primary text-[18px] shrink-0">verified</span>
 <div className="flex flex-col min-w-0">
-<span className="font-body-sm text-body-sm text-on-surface font-medium truncate">CVE Vulnerability Enrichment · 640ms</span>
+<span className="font-body-sm text-body-sm text-on-surface font-medium truncate">CVE Vulnerability Enrichment ┬╖ 640ms</span>
 <span className="font-label-caps text-label-caps text-primary">Triaged to SecOps P2 Queue</span>
 </div>
 </div>
@@ -288,7 +288,7 @@ export default function AgentForgeLaunchConsole() {
 <div className="flex items-center gap-space-sm min-w-0">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
 <div className="flex flex-col min-w-0">
-<span className="font-body-sm text-body-sm text-on-surface font-medium truncate">Logistics Route Recalculation · 185ms</span>
+<span className="font-body-sm text-body-sm text-on-surface font-medium truncate">Logistics Route Recalculation ┬╖ 185ms</span>
 <span className="font-label-caps text-label-caps text-tertiary">Completed with zero deviation</span>
 </div>
 </div>
