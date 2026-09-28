@@ -242,7 +242,7 @@ export async function POST(req: NextRequest) {
   let llmResponse = '';
   let promptTokens = 0;
   let completionTokens = 0;
-  let modelUsed = preferredModel;
+  let modelUsed: string = preferredModel;
 
   const fullSystemPrompt = `${baseSystemPrompt}${
     contextBlock
