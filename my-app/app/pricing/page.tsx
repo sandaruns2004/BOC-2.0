@@ -1,4 +1,3 @@
-"use client";
 /* eslint-disable */
 // @ts-nocheck
 export default function AgentForgePricingandEconomics() {
@@ -314,7 +313,7 @@ export default function AgentForgePricingandEconomics() {
 </label>
 <span className="font-code-base text-code-base font-semibold text-primary" id="display-conv">50,000</span>
 </div>
-<input className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary" id="slider-conv" max="500000" min="10000" step="5000" type="range" defaultValue="50000" />
+<input className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary" id="slider-conv" max="500000" min="10000" step="5000" type="range" value="50000" />
 <div className="flex justify-between text-[11px] font-code-base text-on-surface-variant mt-1">
 <span>10,000</span>
 <span>250,000</span>
@@ -330,7 +329,7 @@ export default function AgentForgePricingandEconomics() {
 </label>
 <span className="font-code-base text-code-base font-semibold text-secondary" id="display-cache">35%</span>
 </div>
-<input className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-secondary" id="slider-cache" max="75" min="5" step="1" type="range" defaultValue="35" />
+<input className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-secondary" id="slider-cache" max="75" min="5" step="1" type="range" value="35" />
 <div className="flex justify-between text-[11px] font-code-base text-on-surface-variant mt-1">
 <span>5% (Conservative)</span>
 <span>35% (Average)</span>
@@ -346,7 +345,7 @@ export default function AgentForgePricingandEconomics() {
 </label>
 <span className="font-code-base text-code-base font-semibold text-on-surface" id="display-tokens">1,800 tokens</span>
 </div>
-<input className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-on-surface" id="slider-tokens" max="8000" min="500" step="100" type="range" defaultValue="1800" />
+<input className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-on-surface" id="slider-tokens" max="8000" min="500" step="100" type="range" value="1800" />
 <div className="flex justify-between text-[11px] font-code-base text-on-surface-variant mt-1">
 <span>500 (Quick chat)</span>
 <span>1,800 (RAG prompt)</span>
