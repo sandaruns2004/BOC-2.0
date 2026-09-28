@@ -355,7 +355,7 @@ stream = client.agents.stream(
 <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">GCP Terraform Module</h2>
 <p className="font-body-sm text-body-sm text-on-surface-variant">Deploy an isolated VPC, private Cloud Run swarm cluster, and Cloud Armor edge guardrails in 1 command.</p>
 </div>
-<a className="font-label-ui text-label-ui text-primary font-medium hover:underline flex items-center gap-1" href="#">
+<a className="font-label-ui text-label-ui text-primary font-medium hover:underline flex items-center gap-1" href="https://github.com" rel="noreferrer" target="_blank">
               Registry <span className="material-symbols-outlined text-[14px]">open_in_new</span>
 </a>
 </div>

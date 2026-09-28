@@ -27,32 +27,32 @@ Our architecture addresses all four patterns.
 
 ## How Each Service Scales
 
-### Apigee API Gateway
-- Apigee is fully managed and globally distributed — it scales horizontally without any configuration from us.
+### Amazon API Gateway
+- Amazon API Gateway is fully managed and globally distributed — it scales horizontally without any configuration from us.
 - Per-tenant rate limits are enforced at the gateway: even if a tenant has no rate limit contractually, a hard ceiling (e.g., 500 req/min) prevents any single tenant from overwhelming backend services.
-- During a global spike, Apigee begins queuing or shedding requests per-tenant before they reach backend services, protecting the LLM budget.
+- During a global spike, API Gateway begins queuing or shedding requests per-tenant before they reach Cloud Run services, protecting the LLM budget.
 
-### Agent Orchestration Service (Cloud Run)
+### Agent Orchestration Service (Cloud Run — Next.js App Router)
 - Configured with: min instances = 2 (always warm), max instances = 200, concurrency per instance = 10 (because each request holds an LLM call in flight)
 - Scales from 2 to 200 instances in under 60 seconds via Cloud Run's automatic scaling
-- Each instance is stateless — no session state stored in memory, all state in Firestore/Redis
+- Each instance is stateless — no session state stored in memory, all state in Firebase Firestore
 - Scaling is per-service: only the Orchestration Service scales during a request spike, not all services simultaneously
 
-### Memory & Context Layer (Cloud Run)
-- Typical latency: 80–150ms (embedding call + vector search + Firestore read)
-- Vector Search scales automatically: Vertex AI Vector Search is a managed service with autoscaling node pools
-- Firestore reads are sub-10ms at any scale for document lookups by ID
+### Memory & Context Layer (Cloud Run + Pinecone + Firebase Firestore)
+- Typical latency: 80–150ms (embedding call + Pinecone vector search + Firestore read)
+- Pinecone scales automatically: the managed service handles query load with dedicated pods
+- Firebase Firestore reads are sub-10ms at any scale for document lookups by ID
 - This layer is not a bottleneck under normal load; scales with Cloud Run auto-scaling
 
-### LLM Router (Cloud Run + Redis)
-- The semantic cache (Redis) handles 25–40% of queries with <5ms latency, dramatically reducing LLM API pressure during spikes
-- Model selection is the primary mechanism for managing LLM API rate limits:
-  - During high load: classifier threshold is lowered — more requests routed to Gemini Flash (10x higher rate limit than Pro)
-  - If Gemini API is approaching rate limit: router queues Pro-tier requests (via Pub/Sub) rather than failing them
-  - Hard rate limit reached: graceful degradation — router returns cached/approximate responses from Redis with a disclaimer, rather than returning errors
+### LLM Router (Cloud Run + Gemini 3-Tier Fallback)
+- The Gemini 3-tier fallback chain handles LLM API rate limits gracefully:
+  - During high load: **Gemini 3.5 Flash** handles >80% of requests (lowest cost, highest throughput)
+  - If 3.5 Flash error rate > 5%: circuit breaker opens, routes to **Gemini 3.6 Flash** (secondary)
+  - If 3.6 Flash also degraded: routes to **Gemini 3.5 Flash Lite** (tertiary graceful degradation)
+  - Hard rate limit reached: returns cached/approximate responses from Firestore with a disclaimer, rather than returning errors
 
 **LLM Token Budget Management:**
-- Each tenant has a monthly token quota stored in Firestore
+- Each tenant has a monthly token quota stored in **Firebase Firestore**
 - Every LLM call decrements the tenant's available quota atomically (using Firestore transactions)
 - At 80% quota: warning notification sent to tenant admin
 - At 100% quota: agent returns a friendly "usage limit reached" message rather than calling LLM
@@ -74,20 +74,20 @@ Our architecture addresses all four patterns.
 
 For a typical agent request (no tool call, cache miss):
 
-| Step                          | Expected Latency | Notes                          |
-|-------------------------------|-----------------|--------------------------------|
-| Apigee auth + routing         | 10–20ms         | Edge-located                   |
-| Orchestration: config load    | 5–10ms          | Firestore cached in Redis      |
-| Embedding generation          | 30–50ms         | Vertex AI embedding model      |
-| Vector Search retrieval       | 20–40ms         | ANN search, ~50ms P99          |
-| Conversation history load     | 5–10ms          | Firestore document read        |
-| Guardrails (input)            | 15–25ms         | Lightweight classifier         |
-| LLM call (Gemini Flash)       | 400–800ms       | Dominant latency factor        |
-| Guardrails (output)           | 10–20ms         |                                |
-| Audit log write (async)       | 0ms (async)     | Written via Pub/Sub background |
-| Response serialization        | 5ms             |                                |
-| **Total (P50 estimate)**      | **~550ms**      |                                |
-| **Total (P95 estimate)**      | **~1,200ms**    | With Pro model + cold start    |
+| Step                          | Expected Latency | Notes                                        |
+|-------------------------------|-----------------|----------------------------------------------|
+| API Gateway auth + routing    | 10–20ms         | Edge-located (AWS)                           |
+| Orchestration: config load    | 5–10ms          | Firebase Firestore document read             |
+| Embedding generation          | 30–50ms         | Gemini text-embedding-004                    |
+| Pinecone vector retrieval     | 20–40ms         | ANN search, ~50ms P99 per namespace          |
+| Conversation history load     | 5–10ms          | Firestore document read                      |
+| Guardrails L1 (input)         | 15–25ms         | Lightweight classifier                       |
+| LLM call (Gemini 3.5 Flash)   | 380–700ms       | Dominant latency factor                      |
+| Guardrails L2 (output)        | 10–20ms         |                                              |
+| Audit log write (async)       | 0ms (async)     | Written via SQS → DynamoDB background        |
+| Response serialization        | 5ms             |                                              |
+| **Total (P50 estimate)**      | **~542ms**      |                                              |
+| **Total (P95 estimate)**      | **~1,200ms**    | With fallback model + cold start             |
 
 For requests with a semantic cache hit:
 - Total latency: ~50ms (embedding + Redis lookup + response)
@@ -107,10 +107,10 @@ For user-facing chat interfaces, 800ms "thinking time" before any text appears f
 
 The key mechanism ensuring one tenant's spike doesn't affect others:
 
-1. Apigee enforces per-tenant rate limits before any backend processing
-2. LLM Router maintains per-tenant token buckets in Redis — each tenant's LLM calls are metered independently
-3. Tool Executor has per-tenant concurrency limits (Cloud Run Jobs with namespace-based quotas)
-4. Firestore reads are per-tenant document paths — no shared scan queries that could be slowed by another tenant's data volume
-5. Vector Search uses per-tenant indexes — a spike in one tenant's queries does not affect search latency for others
+1. Amazon API Gateway enforces per-tenant rate limits before any backend processing
+2. LLM Router tracks per-tenant token usage in Firebase Firestore — each tenant's LLM calls are metered independently with Firestore transactions
+3. Tool Executor has per-tenant concurrency limits (Cloud Run with namespace-based quotas)
+4. Firebase Firestore reads are per-tenant document paths — no shared scan queries that could be slowed by another tenant's data volume
+5. Pinecone uses per-tenant namespaces — a spike in one tenant's queries does not affect search latency for others
 
-If Tenant A spikes to 10x normal volume and hits their rate limit at the gateway, their requests are queued or rejected. Tenants B, C, D experience no degradation whatsoever because they were never competing for the same resources — they have separate quotas, separate indexes, and separate tool execution slots.
+If Tenant A spikes to 10x normal volume and hits their rate limit at the gateway, their requests are queued or rejected. Tenants B, C, D experience no degradation whatsoever because they were never competing for the same resources — they have separate quotas, separate Pinecone namespaces, and separate Firestore paths.

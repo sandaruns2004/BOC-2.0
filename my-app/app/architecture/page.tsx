@@ -1,7 +1,19 @@
 "use client";
 /* eslint-disable */
 // @ts-nocheck
+import { useState, useEffect } from 'react';
+
 export default function AgentForgeArchitectureandPipeline() {
+  const [filter, setFilter] = useState('all');
+  const [healthData, setHealthData] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/architecture')
+      .then(r => r.json())
+      .then(setHealthData)
+      .catch(console.error);
+  }, []);
+
   return (
     <>
       <main className="w-full pt-16 bg-surface"><div className="flex flex-col w-full">
@@ -14,9 +26,9 @@ export default function AgentForgeArchitectureandPipeline() {
 
 <div className="flex flex-wrap items-center justify-between gap-space-sm mb-6">
 <div className="flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant">
-<span className="hover:text-primary transition-colors cursor-pointer">Platform</span>
+<a href="/" className="hover:text-primary transition-colors">Platform</a>
 <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-<span className="hover:text-primary transition-colors cursor-pointer">Architecture</span>
+<a href="/architecture" className="hover:text-primary transition-colors">Architecture</a>
 <span className="material-symbols-outlined text-[14px]">chevron_right</span>
 <span className="text-primary font-semibold">5-Layer Engine</span>
 </div>
@@ -31,7 +43,7 @@ export default function AgentForgeArchitectureandPipeline() {
           Inside the 5-Layer Autonomous Agent Engine
         </h1>
 <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-          Cloud-native, zero-trust request orchestration deployed exclusively across managed Google Cloud infrastructure. Built for enterprise SLA determinism, cryptographic multi-tenant isolation, and sub-second reasoning spans.
+          Cloud-native, zero-trust request orchestration built on a hybrid GCP + AWS + Pinecone infrastructure. Engineered for enterprise SLA determinism, cryptographic multi-tenant isolation, and sub-second reasoning spans.
         </p>
 </div>
 
@@ -49,8 +61,8 @@ export default function AgentForgeArchitectureandPipeline() {
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">Managed Services</span>
 <span className="material-symbols-outlined text-primary text-[18px]">cloud</span>
 </div>
-<span className="font-headline-sm text-headline-sm text-on-surface font-bold">11 GCP Native</span>
-<span className="font-code-base text-[11px] text-on-surface-variant mt-1">Zero self-managed VMs</span>
+<span className="font-headline-sm text-headline-sm text-on-surface font-bold">Hybrid Cloud</span>
+<span className="font-code-base text-[11px] text-on-surface-variant mt-1">GCP + AWS + Pinecone</span>
 </div>
 <div className="flex flex-col p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
 <div className="flex items-center justify-between mb-1">
@@ -89,7 +101,7 @@ export default function AgentForgeArchitectureandPipeline() {
             The Interactive 5-Layer Request Pipeline
           </h2>
 <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-            Select any pipeline stage to inspect real-time GCP components, protocol parameters, and latency budgets.
+            Select any pipeline stage to inspect system components, protocol parameters, and latency budgets.
           </p>
 </div>
 
@@ -98,7 +110,7 @@ export default function AgentForgeArchitectureandPipeline() {
 <span className="w-2 h-2 rounded-full bg-tertiary"></span> Nominal Flow
           </button>
 <button className="px-3 py-1.5 rounded-lg text-on-surface-variant font-label-ui text-label-ui font-medium hover:text-on-surface transition-all flex items-center gap-1.5" id="btn-flow-failover" onClick={() => {}}>
-<span className="w-2 h-2 rounded-full bg-secondary"></span> Fallback Circuit (Claude 3.5)
+<span className="w-2 h-2 rounded-full bg-secondary"></span> Fallback Chain (Gemini 3.6 → Lite)
           </button>
 </div>
 </div>
@@ -123,13 +135,13 @@ export default function AgentForgeArchitectureandPipeline() {
 <div className="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-primary font-bold tracking-wider">02 // RUNTIME</span>
-<span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">gRPC / Redis</span>
+<span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">HTTPS / Firebase</span>
 </div>
 <h3 className="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Agent Orchestration</h3>
-<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Cloud Run container instances, context window assembler, semantic cache.</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Cloud Run container instances hosting Next.js API routes; Firebase Firestore for session state and agent configs.</p>
 <div className="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
-<span>Cache Lookup</span>
-<span className="font-bold">~4ms</span>
+<span>API Route Handler</span>
+<span className="font-bold">~10ms</span>
 </div>
 </div>
 
@@ -140,9 +152,9 @@ export default function AgentForgeArchitectureandPipeline() {
 <span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">SSE Stream</span>
 </div>
 <h3 className="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Cognitive &amp; RAG</h3>
-<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Vertex AI Gemini 1.5 Pro inference with Vector Search tenant namespaces.</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Gemini 3.5 Flash inference with Pinecone per-tenant vector namespaces.</p>
 <div className="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
-<span>HNSW Retrieval</span>
+<span>Pinecone HNSW Retrieval</span>
 <span className="font-bold">~380ms</span>
 </div>
 </div>
@@ -151,10 +163,10 @@ export default function AgentForgeArchitectureandPipeline() {
 <div className="absolute top-0 left-0 right-0 h-1 bg-tertiary"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-tertiary font-bold tracking-wider">04 // SANDBOX</span>
-<span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">gRPC Sandbox</span>
+<span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">In-Process JS</span>
 </div>
 <h3 className="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Execution &amp; Safety</h3>
-<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">3-layer guardrail scan, schema validation, Cloud Run ephemeral tools.</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">3-layer guardrail pipeline (L1 input, L2 output, L3 human escalation), PII scrubbing, injection detection, and refund threshold enforcement.</p>
 <div className="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
 <span>Guardrail Scan</span>
 <span className="font-bold">~85ms</span>
@@ -165,12 +177,12 @@ export default function AgentForgeArchitectureandPipeline() {
 <div className="absolute top-0 left-0 right-0 h-1 bg-surface-tint"></div>
 <div className="flex items-center justify-between mb-3">
 <span className="font-code-base text-label-caps text-on-surface-variant font-bold tracking-wider">05 // AUDIT</span>
-<span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">BigQuery Sync</span>
+<span className="px-2 py-0.5 rounded text-[10px] font-code-base bg-surface-container text-on-surface-variant font-medium">DynamoDB / Firebase</span>
 </div>
 <h3 className="font-headline-sm text-[17px] font-bold text-on-surface mb-1">Telemetry &amp; Audit</h3>
-<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">Cloud Trace distributed spans, partitioned BigQuery immutable log stream.</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant mb-4 line-clamp-2">AWS DynamoDB immutable trace log, Firebase trace summaries, Cloud Logging decision steps.</p>
 <div className="pt-3 flex items-center justify-between font-code-base text-[12px] text-tertiary">
-<span>Async Buffer</span>
+<span>Async Write</span>
 <span className="font-bold">&lt; 1ms</span>
 </div>
 </div>
@@ -191,18 +203,18 @@ export default function AgentForgeArchitectureandPipeline() {
 <div className="flex items-center gap-space-sm font-code-base text-code-base text-on-surface-variant">
 <span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-primary rounded"></span> Active Ingress</span>
 <span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-secondary rounded"></span> Dynamic Circuit</span>
-<span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-tertiary rounded"></span> Pub/Sub Escalation</span>
+<span className="flex items-center gap-1.5"><span className="w-3 h-1 bg-tertiary rounded"></span> AWS SQS Escalation</span>
 </div>
 </div>
 
 <div className="w-full overflow-x-auto">
 <svg className="w-full min-w-[760px] h-48" fill="none" viewBox="0 0 960 180" xmlns="http://www.w3.org/2000/svg">
 
-<line className="text-on-surface" stroke="currentColor" strokeDasharray="4 4" stroke-opacity="0.06" x1="0" x2="960" y1="45" y2="45"></line>
-<line className="text-on-surface" stroke="currentColor" strokeDasharray="4 4" stroke-opacity="0.06" x1="0" x2="960" y1="90" y2="90"></line>
-<line className="text-on-surface" stroke="currentColor" strokeDasharray="4 4" stroke-opacity="0.06" x1="0" x2="960" y1="135" y2="135"></line>
+<line className="text-on-surface" stroke="currentColor" strokeDasharray="4 4" strokeOpacity="0.06" x1="0" x2="960" y1="45" y2="45"></line>
+<line className="text-on-surface" stroke="currentColor" strokeDasharray="4 4" strokeOpacity="0.06" x1="0" x2="960" y1="90" y2="90"></line>
+<line className="text-on-surface" stroke="currentColor" strokeDasharray="4 4" strokeOpacity="0.06" x1="0" x2="960" y1="135" y2="135"></line>
 
-<path className="text-primary-container" d="M 60 90 L 240 90 L 440 90 L 660 90 L 880 90" stroke="currentColor" strokeLinecap="round" stroke-opacity="0.2" strokeWidth="4"></path>
+<path className="text-primary-container" d="M 60 90 L 240 90 L 440 90 L 660 90 L 880 90" stroke="currentColor" strokeLinecap="round" strokeOpacity="0.2" strokeWidth="4"></path>
 <path d="M 60 90 L 240 90 L 440 90 L 660 90 L 880 90" stroke="#4F46E5" strokeDasharray="12 12" strokeLinecap="round" strokeWidth="2">
 <animate attributeName="stroke-dashoffset" dur="2s" from="48" repeatCount="indefinite" to="0"></animate>
 </path>
@@ -214,48 +226,48 @@ export default function AgentForgeArchitectureandPipeline() {
 <g transform="translate(60, 90)">
 <circle fill="#FFFFFF" r="22" stroke="#4F46E5" strokeWidth="2"></circle>
 <circle fill="#4F46E5" r="8"></circle>
-<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">Client Edge</text>
-<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">Apigee / Armor</text>
+<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" textAnchor="middle" x="0" y="38">Client Edge</text>
+<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="52">Apigee / Armor</text>
 </g>
 
 <g transform="translate(240, 90)">
 <circle fill="#FFFFFF" r="20" stroke="#4F46E5" strokeWidth="2"></circle>
 <circle fill="#4F46E5" r="6"></circle>
-<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">Cloud Run Core</text>
-<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">Memorystore Hits</text>
+<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" textAnchor="middle" x="0" y="38">Cloud Run Core</text>
+<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="52">Memorystore Hits</text>
 </g>
 
 <g transform="translate(440, 90)">
 <circle fill="#FFFFFF" r="24" stroke="#3525CD" strokeWidth="2"></circle>
 <circle fill="#3525CD" r="9"></circle>
-<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="40">Vertex AI Gemini</text>
-<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="54">Vector Search 1.5</text>
+<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" textAnchor="middle" x="0" y="40">Gemini 3.5 Flash</text>
+<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="54">Pinecone RAG</text>
 </g>
 
 <g transform="translate(680, 35)">
 <rect fill="#FFFFFF" height="28" rx="6" stroke="#712AE2" strokeWidth="1.5" width="90" x="-45" y="-14"></rect>
-<text className="font-code-base text-[10px] fill-current text-secondary font-bold" text-anchor="middle" x="0" y="4">Fallback Model</text>
-<text className="font-label-caps text-[8px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="24">Anthropic Claude</text>
+<text className="font-code-base text-[10px] fill-current text-secondary font-bold" textAnchor="middle" x="0" y="4">Fallback Model</text>
+<text className="font-label-caps text-[8px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="24">Gemini 3.6 Flash</text>
 </g>
 
 <g transform="translate(660, 90)">
 <circle fill="#FFFFFF" r="20" stroke="#00534A" strokeWidth="2"></circle>
 <circle fill="#00534A" r="6"></circle>
-<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">Sandbox Execution</text>
-<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">gVisor Sandbox</text>
+<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" textAnchor="middle" x="0" y="38">Sandbox Execution</text>
+<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="52">gVisor Sandbox</text>
 </g>
 
 <g transform="translate(860, 145)">
 <rect fill="#FFFFFF" height="24" rx="4" stroke="#006D62" strokeWidth="1.5" width="80" x="-40" y="-12"></rect>
-<text className="font-code-base text-[10px] fill-current text-tertiary font-bold" text-anchor="middle" x="0" y="4">Pub/Sub Queue</text>
-<text className="font-label-caps text-[8px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="22">Human-in-Loop</text>
+<text className="font-code-base text-[10px] fill-current text-tertiary font-bold" textAnchor="middle" x="0" y="4">AWS SQS Queue</text>
+<text className="font-label-caps text-[8px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="22">Human-in-Loop</text>
 </g>
 
 <g transform="translate(880, 90)">
 <circle fill="#FFFFFF" r="20" stroke="#4D44E3" strokeWidth="2"></circle>
 <circle fill="#4D44E3" r="6"></circle>
-<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" text-anchor="middle" x="0" y="38">BigQuery Stream</text>
-<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" text-anchor="middle" x="0" y="52">Immutable Audit</text>
+<text className="font-code-base text-[11px] fill-current text-on-surface font-semibold" textAnchor="middle" x="0" y="38">DynamoDB Audit</text>
+<text className="font-label-caps text-[9px] fill-current text-on-surface-variant" textAnchor="middle" x="0" y="52">Immutable Trace Log</text>
 </g>
 </svg>
 </div>
@@ -272,21 +284,21 @@ export default function AgentForgeArchitectureandPipeline() {
             GCP Managed Topology &amp; Service Mapping
           </h2>
 <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-            Every architectural building block is native, enterprise-managed Google Cloud infrastructure with no custom daemons or unmanaged VMs.
+            System services span GCP Cloud Run, Firebase Firestore, AWS DynamoDB, AWS SQS, and Pinecone — all fully managed with no self-hosted VMs or custom daemons.
           </p>
 </div>
 <div className="flex items-center gap-space-sm">
 <span className="font-label-caps text-label-caps text-on-surface-variant">Filter Focus:</span>
-<button className="topo-btn px-2.5 py-1 rounded bg-primary text-on-primary font-label-caps text-label-caps font-medium" onClick={() => {}}>All (6)</button>
-<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onClick={() => {}}>Compute</button>
-<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onClick={() => {}}>Data &amp; AI</button>
-<button className="topo-btn px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-medium" onClick={() => {}}>Security</button>
+<button className={`topo-btn px-2.5 py-1 rounded font-label-caps text-label-caps font-medium transition-colors ${filter === 'all' ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface'}`} onClick={() => setFilter('all')}>All (6)</button>
+<button className={`topo-btn px-2.5 py-1 rounded font-label-caps text-label-caps font-medium transition-colors ${filter === 'compute' ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface'}`} onClick={() => setFilter('compute')}>Compute</button>
+<button className={`topo-btn px-2.5 py-1 rounded font-label-caps text-label-caps font-medium transition-colors ${filter === 'data' ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface'}`} onClick={() => setFilter('data')}>Data &amp; AI</button>
+<button className={`topo-btn px-2.5 py-1 rounded font-label-caps text-label-caps font-medium transition-colors ${filter === 'security' ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface'}`} onClick={() => setFilter('security')}>Security</button>
 </div>
 </div>
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
 
-<div className="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="compute">
+<div className={`topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200 ${filter !== 'all' && filter !== 'compute' ? 'hidden' : ''}`} data-category="compute">
 <div>
 <div className="flex items-center justify-between mb-4">
 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -311,7 +323,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="compute">
+<div className={`topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200 ${filter !== 'all' && filter !== 'compute' ? 'hidden' : ''}`} data-category="compute">
 <div>
 <div className="flex items-center justify-between mb-4">
 <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
@@ -336,7 +348,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="data">
+<div className={`topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200 ${filter !== 'all' && filter !== 'data' ? 'hidden' : ''}`} data-category="data">
 <div>
 <div className="flex items-center justify-between mb-4">
 <div className="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
@@ -344,24 +356,24 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 <span className="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">State &amp; Cache</span>
 </div>
-<h3 className="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Firestore &amp; Memorystore</h3>
+<h3 className="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Firebase Firestore &amp; State</h3>
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-6">
-              Dual-layer storage topology: ACID-compliant Firestore manages session graphs &amp; tenant configs; Memorystore Redis maintains sub-5ms semantic embedding caches.
+              Primary state layer: ACID-compliant Firebase Firestore manages session graphs, agent configs, escalations, and trace summaries. All reads and writes go through authenticated Next.js API routes.
             </p>
 </div>
 <div className="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
 <div className="flex items-center justify-between font-code-base text-[11px]">
-<span className="text-on-surface-variant">Semantic Cache Hit Rate</span>
-<span className="text-tertiary font-semibold">38.4% Average</span>
+<span className="text-on-surface-variant">Firestore Writes</span>
+<span className="text-tertiary font-semibold">Firestore Strong Consistency</span>
 </div>
 <div className="flex items-center justify-between font-code-base text-[11px]">
-<span className="text-on-surface-variant">Consistency Model</span>
-<span className="text-on-surface font-semibold">Strong Global (Firestore)</span>
+<span className="text-on-surface-variant">Storage Model</span>
+<span className="text-on-surface font-semibold">Firebase + AWS DynamoDB</span>
 </div>
 </div>
 </div>
 
-<div className="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="data">
+<div className={`topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200 ${filter !== 'all' && filter !== 'data' ? 'hidden' : ''}`} data-category="data">
 <div>
 <div className="flex items-center justify-between mb-4">
 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -369,9 +381,9 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 <span className="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">Cognitive Layer</span>
 </div>
-<h3 className="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Vertex AI &amp; Vector Search</h3>
+<h3 className="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">Gemini AI &amp; Pinecone RAG</h3>
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-6">
-              Gemini 1.5 Pro multimodal reasoning coupled with billion-scale Vertex Vector Search. Employs ScaNN &amp; HNSW indexing partitioned into cryptographically unique tenant namespaces.
+              Gemini 3.5 Flash multimodal reasoning coupled with Pinecone vector DB. Employs HNSW indexing partitioned into cryptographically isolated per-tenant namespaces.
             </p>
 </div>
 <div className="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
@@ -381,12 +393,12 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 <div className="flex items-center justify-between font-code-base text-[11px]">
 <span className="text-on-surface-variant">Model Fallback</span>
-<span className="text-on-surface font-semibold">Cloud Function Circuit</span>
+<span className="text-on-surface font-semibold">Gemini 3.6 / Lite Fallback</span>
 </div>
 </div>
 </div>
 
-<div className="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="security">
+<div className={`topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200 ${filter !== 'all' && filter !== 'security' ? 'hidden' : ''}`} data-category="security">
 <div>
 <div className="flex items-center justify-between mb-4">
 <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
@@ -411,7 +423,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 </div>
 
-<div className="topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200" data-category="data">
+<div className={`topo-card flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-all duration-200 ${filter !== 'all' && filter !== 'data' ? 'hidden' : ''}`} data-category="data">
 <div>
 <div className="flex items-center justify-between mb-4">
 <div className="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
@@ -419,19 +431,19 @@ export default function AgentForgeArchitectureandPipeline() {
 </div>
 <span className="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-base text-[11px] font-medium">Lakehouse &amp; SRE</span>
 </div>
-<h3 className="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">BigQuery Stream &amp; Cloud Trace</h3>
+<h3 className="font-headline-sm text-headline-sm font-semibold text-on-surface mb-2">AWS DynamoDB &amp; Cloud Logging</h3>
 <p className="font-body-sm text-body-sm text-on-surface-variant mb-6">
-              Every token, model evaluation score, tool execution parameter, and latency span is continuously streamed into day-partitioned BigQuery tables for immutable audit and cost ledgering.
+              Every agent decision, tool call, guardrail result, and latency span is written to AWS DynamoDB (audit) and Firebase trace_summaries, with step-level detail logged to GCP Cloud Logging.
             </p>
 </div>
 <div className="pt-4 bg-surface-container-low -mx-space-lg -mb-space-lg p-space-md rounded-b-2xl flex flex-col gap-2">
 <div className="flex items-center justify-between font-code-base text-[11px]">
 <span className="text-on-surface-variant">Write Latency</span>
-<span className="text-tertiary font-semibold">&lt; 100ms Ingestion SLA</span>
+<span className="text-tertiary font-semibold">&lt; 50ms DynamoDB Write</span>
 </div>
 <div className="flex items-center justify-between font-code-base text-[11px]">
 <span className="text-on-surface-variant">Trace Propagation</span>
-<span className="text-on-surface font-semibold">W3C TraceContext</span>
+<span className="text-on-surface font-semibold">W3C TraceContext / Cloud Log</span>
 </div>
 </div>
 </div>
@@ -462,7 +474,7 @@ export default function AgentForgeArchitectureandPipeline() {
               Cryptographic Namespace Partitioning
             </h3>
 <p className="font-body-md text-body-md text-on-surface-variant mb-6">
-              Tenant documents are tagged with immutable SHA-256 HMAC prefixes inside Vertex Vector Search. At query time, filters enforce hard tenancy at the ANN indexing layer.
+              Tenant documents are scoped inside Pinecone with per-tenant namespace isolation. At query time, filters enforce hard tenancy at the vector indexing layer — cross-tenant data leakage is structurally impossible.
             </p>
 <ul className="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant mb-6">
 <li className="flex items-start gap-2">
@@ -475,12 +487,12 @@ export default function AgentForgeArchitectureandPipeline() {
 </li>
 <li className="flex items-start gap-2">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
-<span>Strict row-level security in BigQuery analytics</span>
+<span>Strict tenant isolation in DynamoDB audit logs</span>
 </li>
 </ul>
 </div>
 <div className="p-space-sm bg-surface-container rounded-xl font-code-base text-[11px] text-on-surface">
-<span className="text-primary font-semibold">filter:</span> <code>tenant_id == hmac_sha256(sub)</code>
+<span className="text-primary font-semibold">namespace:</span> <code>pinecone.index(tenantId)</code>
 </div>
 </div>
 
@@ -506,12 +518,12 @@ export default function AgentForgeArchitectureandPipeline() {
 </li>
 <li className="flex items-start gap-2">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
-<span>Real-time budget alert hooks via Pub/Sub</span>
+<span>High-risk escalations published to AWS SQS queue</span>
 </li>
 </ul>
 </div>
 <div className="p-space-sm bg-surface-container rounded-xl font-code-base text-[11px] text-on-surface">
-<span className="text-secondary font-semibold">threshold:</span> <code>max_recursion_depth: 8 | 150k tok</code>
+<span className="text-secondary font-semibold">refundLimit:</span> <code>configurable per tenant | blockInjections: true</code>
 </div>
 </div>
 
@@ -524,7 +536,7 @@ export default function AgentForgeArchitectureandPipeline() {
               Multi-AZ 99.9% Failover
             </h3>
 <p className="font-body-md text-body-md text-on-surface-variant mb-6">
-              Cloud Run and Vertex AI replicas span 3 availability zones in us-central1. Should Gemini encounter 503 or latency degradation, circuit breakers invoke Anthropic Claude in &lt;180ms.
+              Cloud Run replicas span availability zones in us-central1. Should Gemini 3.5 Flash encounter 503 or rate limiting, the fallback loop automatically retries gemini-3.6-flash then gemini-3.5-flash-lite.
             </p>
 <ul className="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant mb-6">
 <li className="flex items-start gap-2">
@@ -533,7 +545,7 @@ export default function AgentForgeArchitectureandPipeline() {
 </li>
 <li className="flex items-start gap-2">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
-<span>State continuity via Memorystore session store</span>
+<span>Session state persisted in Firebase Firestore</span>
 </li>
 <li className="flex items-start gap-2">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
@@ -555,7 +567,7 @@ export default function AgentForgeArchitectureandPipeline() {
 <h3 className="font-headline-md text-headline-md font-bold text-on-surface">Technical Reference Checklist</h3>
 <p className="font-body-md text-body-md text-on-surface-variant mt-1">Verification parameters for enterprise security evaluations and cloud review boards.</p>
 </div>
-<a className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow hover:opacity-95 transition-all" data-path="console" href="#">
+<a className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow hover:opacity-95 transition-all" href="/launch">
 <span>Explore Runtime Telemetry</span>
 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
 </a>

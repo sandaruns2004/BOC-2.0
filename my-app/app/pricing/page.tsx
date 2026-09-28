@@ -9,6 +9,20 @@ export default function AgentForgePricingandEconomics() {
 <div className="relative w-full overflow-hidden">
 <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[980px] h-[460px] bg-gradient-to-b from-primary/10 via-secondary/5 to-transparent blur-3xl pointer-events-none -z-10"></div>
 
+<section className="max-w-7xl mx-auto px-margin-sm md:px-margin pt-4 pb-0 w-full">
+<div className="flex items-center justify-between">
+<div className="flex items-center gap-1 font-label-caps text-label-caps text-on-surface-variant text-[11px]">
+<a href="/" className="hover:text-primary transition-colors">Platform</a>
+<span className="material-symbols-outlined text-[13px] text-outline-variant">chevron_right</span>
+<span className="text-primary font-semibold">Pricing &amp; Economics</span>
+</div>
+<div className="flex items-center gap-2">
+<a href="/architecture" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all"><span className="material-symbols-outlined text-[12px]">account_tree</span>Architecture</a>
+<a href="/demo" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all"><span className="material-symbols-outlined text-[12px]">play_circle</span>Live Demo</a>
+</div>
+</div>
+</section>
+
 <section className="max-w-7xl mx-auto px-margin-sm md:px-margin pt-space-xl pb-space-lg text-center flex flex-col items-center">
 <div className="inline-flex items-center gap-space-xs py-1 px-3.5 rounded-full bg-surface-container border-none shadow-sm mb-space-md">
 <span className="material-symbols-outlined text-[15px] text-primary" style={{fontVariationSettings: '\'FILL\' 1'}}>cloud_done</span>
@@ -57,7 +71,7 @@ export default function AgentForgePricingandEconomics() {
 </div>
 <div className="flex items-start gap-2.5">
 <span className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
-<span className="font-body-sm text-body-sm text-on-surface">Tenant-isolated RAG (Vertex AI Vector Search)</span>
+<span className="font-body-sm text-body-sm text-on-surface">Tenant-isolated RAG (Pinecone per-namespace)</span>
 </div>
 <div className="flex items-start gap-2.5">
 <span className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
@@ -69,7 +83,7 @@ export default function AgentForgePricingandEconomics() {
 </div>
 </div>
 </div>
-<a className="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="#">
+<a className="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="/demo">
             Deploy 10-Tenant Pilot
           </a>
 </div>
@@ -115,7 +129,7 @@ export default function AgentForgePricingandEconomics() {
 </div>
 </div>
 </div>
-<a className="w-full text-center py-3.5 px-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-md hover:brightness-105 active:scale-98 transition-all" href="#">
+<a className="w-full text-center py-3.5 px-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-medium shadow-md hover:brightness-105 active:scale-98 transition-all" href="/launch">
             Start 14-Day Free Trial
           </a>
 </div>
@@ -155,7 +169,7 @@ export default function AgentForgePricingandEconomics() {
 </div>
 </div>
 </div>
-<a className="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="#">
+<a className="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="/docs">
             Talk to Platform Engineers
           </a>
 </div>
@@ -514,10 +528,10 @@ export default function AgentForgePricingandEconomics() {
           </p>
 </div>
 <div className="flex flex-col sm:flex-row gap-3 shrink-0 relative z-10 w-full md:w-auto">
-<a className="px-6 py-3.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold text-center hover:bg-surface-container-low transition-all shadow-md" href="#">
+<a className="px-6 py-3.5 rounded-lg bg-surface-container-lowest text-primary font-label-ui text-label-ui font-semibold text-center hover:bg-surface-container-low transition-all shadow-md" href="/launch">
             Deploy via Cloud Shell
           </a>
-<a className="px-5 py-3.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-on-primary font-label-ui text-label-ui font-medium text-center transition-all" href="#">
+<a className="px-5 py-3.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-on-primary font-label-ui text-label-ui font-medium text-center transition-all" href="/docs">
             Schedule Architecture Review
           </a>
 </div>

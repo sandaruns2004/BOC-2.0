@@ -23,18 +23,18 @@ Our resilience strategy prioritizes in order:
 
 ## Component-by-Component Failure Analysis
 
-### Failure: Vertex AI Gemini API is Degraded or Rate-Limited
+### Failure: Gemini Flash API is Degraded or Rate-Limited
 
 **What happens without mitigation:** All agent requests fail; users receive errors.
 
-**Our response (cascading fallback):**
-1. LLM Router detects elevated error rate (>5% in 60s) or latency (>3s P99) from Gemini
-2. Automatically switches to Claude 3.5 Sonnet via Anthropic API for complex queries
-3. For simple queries: force-routes to semantic cache — return the closest cached response with a disclaimer ("Based on a similar previous question...")
-4. If all LLM APIs are degraded: return a graceful "Agent temporarily unavailable, try again in a moment" message — never silently return a stale/wrong answer
-5. LLM Router implements **circuit breaker pattern**: after 10 consecutive failures to an API, it opens the circuit (stops calling that API for 60 seconds), preventing timeout pile-up
+**Our response (cascading fallback — 3-tier circuit breaker):**
+1. LLM Router detects elevated error rate (>5% in 60s) or latency (>1,200ms P99) from Gemini 3.5 Flash
+2. Circuit breaker opens — automatically switches to **Gemini 3.6 Flash** (secondary fallback)
+3. If Gemini 3.6 Flash is also degraded: switches to **Gemini 3.5 Flash Lite** (tertiary graceful degradation — simple queries only)
+4. If all Gemini tiers are degraded: return a graceful "Agent temporarily unavailable, try again in a moment" message — never silently return a stale/wrong answer
+5. Circuit breaker pattern: after 10 consecutive failures to a model tier, it opens the circuit (stops calling that tier for 60 seconds), preventing timeout pile-up
 
-**Detection:** Cloud Monitoring alert triggers on Gemini API error rate >3% — PagerDuty notification within 2 minutes.
+**Detection:** AWS CloudWatch alert triggers on Gemini API error rate >3% — PagerDuty notification within 2 minutes.
 
 ---
 
@@ -43,24 +43,24 @@ Our resilience strategy prioritizes in order:
 **What happens:** Agent configurations and conversation history cannot be read.
 
 **Our response:**
-1. Agent configurations are cached in Memorystore (Redis) with a 5-minute TTL — most requests can proceed using the cached config without hitting Firestore
-2. Conversation history (last 10 turns) is also cached in Redis per session ID with a 30-minute TTL — active sessions continue seamlessly
+1. Agent configurations are cached in **Firebase Firestore** with in-memory TTL — most requests can proceed using the last-known config without re-reading Firestore
+2. Conversation history (last 10 turns) is also cached in-process per session ID with a 30-minute TTL — active sessions continue seamlessly
 3. New sessions (no cache entry yet) return a graceful "starting fresh context" response — the agent works but without history, which is clearly better than failing
-4. Write failures (saving new conversation turns): these are queued to Pub/Sub and retried automatically when Firestore recovers — no turn is permanently lost
+4. Write failures (saving new conversation turns): these are queued to **AWS SQS** and retried automatically when Firestore recovers — no turn is permanently lost
 
-**Data durability:** Firestore uses multi-region replication within a GCP region (us-central1). A single availability zone failure does not cause data loss. RPO (recovery point objective) = 0 — no data is lost. RTO (recovery time objective) = <60 seconds for automatic failover to another AZ.
+**Data durability:** Firebase Firestore uses multi-region replication. A single availability zone failure does not cause data loss. RPO (recovery point objective) = 0 — no data is lost. RTO (recovery time objective) = <60 seconds for automatic failover to another AZ.
 
 ---
 
-### Failure: Memorystore (Redis) is Unavailable
+### Failure: In-Memory Cache is Unavailable
 
-**What happens:** Semantic cache and configuration cache are unavailable.
+**What happens:** Semantic config cache is unavailable.
 
 **Our response:**
-1. LLM Router detects cache connection failure and switches to **cache-bypass mode** — all requests go directly to the LLM
-2. Config cache miss: Orchestration Service reads agent config directly from Firestore (adds ~10ms latency, not a correctness issue)
-3. Effect: higher LLM API costs and slightly higher latency, but zero correctness impact
-4. Redis is configured in **high-availability mode** (Memorystore with replica enabled) — automatic failover to replica within 1–2 seconds if primary fails
+1. LLM Router switches to **cache-bypass mode** — all requests go directly to the LLM from Gemini
+2. Config cache miss: Orchestration Service reads agent config directly from Firebase Firestore (adds ~10ms latency, not a correctness issue)
+3. Effect: slightly higher latency but zero correctness impact
+4. Graceful degradation: system continues operating normally, just without the caching optimization
 
 ---
 
@@ -117,10 +117,10 @@ Our resilience strategy prioritizes in order:
 | Data                    | Backup Frequency | Retention  | Recovery Method                          |
 |-------------------------|-----------------|------------|------------------------------------------|
 | Firestore (all tenants) | Daily automated export to Cloud Storage | 30 days | Point-in-time restore via import |
-| Vector Search indexes   | Weekly snapshot export | 4 weeks | Re-import from snapshot |
-| Secret Manager          | Versioned (every change) | 90 days | Roll back to any previous version |
-| Cloud Logging / BigQuery | Continuous streaming | Indefinite | No recovery needed; append-only |
-| Redis cache             | Not backed up | N/A | Cache is ephemeral; rebuild from Firestore on restart |
+| Pinecone vector indexes | Weekly namespace export | 4 weeks | Re-import from snapshot |
+| AWS SSM Parameter Store | Versioned (every change) | 90 days | Roll back to any previous version |
+| CloudWatch Logs         | Continuous streaming | 5GB/month free | No recovery needed; append-only |
+| DynamoDB traces         | Continuous write | 25GB free forever | No recovery needed; append-only |
 
 ---
 
@@ -144,9 +144,10 @@ At pilot scale, we do not implement multi-region active-active because:
 
 | Failure Scenario            | Impact                        | Recovery Mechanism             | RTO      |
 |-----------------------------|-------------------------------|-------------------------------|----------|
-| LLM API degraded            | Higher latency or fallback    | Circuit breaker + fallback LLM | Seconds  |
-| Firestore unavailable       | Config from cache, writes queued | Redis cache + Pub/Sub queue | Minutes  |
-| Redis unavailable           | Cache bypass mode             | Auto-failover to replica      | <60s     |
+| Gemini 3.5 Flash degraded   | Routes to Gemini 3.6 Flash    | 3-tier circuit breaker chain   | Seconds  |
+| All Gemini tiers degraded   | Graceful "unavailable" message | Circuit breaker + safe fallback | Seconds  |
+| Firestore unavailable       | Config from cache, writes queued | In-memory cache + SQS queue | Minutes  |
+| In-memory cache miss        | Cache bypass mode             | Direct Firestore read (+10ms)  | 0ms      |
 | Tool call timeout           | Graceful error message        | Hard timeout + LLM error prompt | N/A    |
 | Agent tool loop             | Hard turn/session limit       | Automatic stop + alert        | Immediate|
 | Cloud Run service crash     | New instances auto-started    | Health check + SIGTERM drain  | <30s     |

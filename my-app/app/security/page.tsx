@@ -13,6 +13,8 @@ export default function AgentForgePillarsandSecurity() {
 
 <nav aria-label="Breadcrumb" className="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-surface-container-lowest shadow-sm">
 <span className="material-symbols-outlined text-primary text-[16px]">verified_user</span>
+<a href="/" className="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Platform</a>
+<span className="text-on-surface-variant/40">/</span>
 <span className="font-label-caps text-label-caps text-on-surface-variant">ENTERPRISE SECURITY</span>
 <span className="text-on-surface-variant/40">/</span>
 <span className="font-label-caps text-label-caps text-primary font-semibold">ZERO-TRUST ARCHITECTURE</span>

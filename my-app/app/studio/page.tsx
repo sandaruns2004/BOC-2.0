@@ -7,6 +7,23 @@ export default function AgentForgeAgentStudio() {
   const [deploying, setDeploying] = useState(false);
   const [deployStatus, setDeployStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+  // State mapping to backend schema
+  const [systemPrompt, setSystemPrompt] = useState(`# ROLE DEFINITION\nYou are Order Resolution Bot (v2.4) executing on behalf of tenant acme_corp.\n\n# BEHAVIORAL PROTOCOL\n1. Verify customer account tier against orders before committing mutations.\n2. Inspect target order state and verify shipment lock via warehouse webhook.\n3. Inquire retention discount matrix prior to initiating irrevocable cancellation flow.\n4. Escalate any refund operations exceeding $500.00 USD to the priority human review queue.\n\n# FALLBACK CONSTRAINT\nIf latency threshold > 1200ms or response is malformed, invoke claude-3-5-sonnet fallback node.`);
+  const [modelPreference, setModelPreference] = useState<'flash' | 'pro'>('flash');
+  const [refundLimit, setRefundLimit] = useState(500);
+
+  // Fetch active configuration on load
+  useEffect(() => {
+    fetch('/api/agent?tenantId=acme_corp')
+      .then(res => res.json())
+      .then(data => {
+        if (data.systemPrompt) setSystemPrompt(data.systemPrompt);
+        if (data.modelPreference) setModelPreference(data.modelPreference);
+        if (data.refundLimit) setRefundLimit(data.refundLimit);
+      })
+      .catch(console.error);
+  }, []);
+
   const handleDeploy = async () => {
     setDeploying(true);
     setDeployStatus('idle');
@@ -16,9 +33,9 @@ export default function AgentForgeAgentStudio() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tenantId: 'acme_corp',
-          systemPrompt: `# ROLE DEFINITION\nYou are Order Resolution Bot (v2.4) executing on behalf of tenant acme_corp.\n\n# BEHAVIORAL PROTOCOL\n1. Verify customer account tier against orders before committing mutations.\n2. Inspect target order state and verify shipment lock via warehouse webhook.\n3. Inquire retention discount matrix prior to initiating irrevocable cancellation flow.\n4. Escalate any refund operations exceeding $500.00 USD to the priority human review queue.\n\n# FALLBACK CONSTRAINT\nIf latency threshold > 1200ms or response is malformed, invoke claude-3-5-sonnet fallback node.`,
-          modelPreference: 'flash',
-          refundLimit: 500,
+          systemPrompt,
+          modelPreference,
+          refundLimit,
           allowedTools: ['check_order', 'issue_refund', 'logistics_webhook'],
           guardrailRules: { blockInjections: true, scrubbPii: true },
         }),
@@ -38,7 +55,7 @@ export default function AgentForgeAgentStudio() {
 
   return (
     <>
-      <svg aria-hidden="true" className="inline-defs-container" style={{position: 'absolute', width: '0', height: '0', overflow: 'hidden'}}></svg><aside className="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-space-md flex flex-col justify-between z-40 hidden md:flex"><div className="flex flex-col gap-space-sm"><div className="px-2 py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Navigation</div><nav className="flex flex-col gap-1" data-active-classes="bg-surface-container text-primary font-medium"><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="launch-console" href="#">Console Trace</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="agent-studio-knowledge-base" href="#">Agent Studio &amp; Knowledge Base</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="architecture" href="#">Architecture</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pillars-security" href="#">Pillars &amp; Security</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="live-flow-demo" href="#">Live Flow Demo</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-space-sm py-2 rounded-lg transition-colors" data-path="pricing-economics" href="#">Pricing &amp; Economics</a></nav></div><div className="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30"><div className="flex items-center gap-space-xs font-label-caps text-label-caps text-tertiary font-medium"><span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>Engine: Ready</div><div className="font-code-base text-code-base text-on-surface-variant mt-1">GCP us-central1</div></div></aside><main className="w-full pt-16 md:pl-64 bg-surface"><div className="flex flex-col w-full">
+      <svg aria-hidden="true" className="inline-defs-container" style={{position: 'absolute', width: '0', height: '0', overflow: 'hidden'}}></svg><aside className="fixed top-16 left-0 bottom-0 w-64 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/30 p-space-md flex flex-col justify-between z-40 hidden md:flex"><div className="flex flex-col gap-space-sm"><div className="px-2 py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Navigation</div><nav className="flex flex-col gap-1"><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/launch">Console Trace</a><a className="font-label-ui text-label-ui bg-surface-container text-primary font-medium px-space-sm py-2 rounded-lg transition-colors" href="/studio">Agent Studio &amp; Knowledge Base</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/architecture">Architecture</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/security">Pillars &amp; Security</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/demo">Live Flow Demo</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/pricing">Pricing &amp; Economics</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/escalation">Escalation Queue</a><a className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low px-space-sm py-2 rounded-lg transition-colors" href="/replay">Execution Replay</a></nav></div><div className="p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/30"><div className="flex items-center gap-space-xs font-label-caps text-label-caps text-tertiary font-medium"><span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>Engine: Ready</div><div className="font-code-base text-code-base text-on-surface-variant mt-1">GCP us-central1</div></div></aside><main className="w-full pt-16 md:pl-64 bg-surface"><div className="flex flex-col w-full">
 
 <div className="w-full bg-surface-container-lowest shadow-sm px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
 <div className="flex items-center gap-3">
@@ -51,7 +68,7 @@ export default function AgentForgeAgentStudio() {
 <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
 <div className="hidden sm:flex items-center gap-1.5 font-label-caps text-label-caps text-tertiary">
 <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-<span>Auto-synced to Cloud Spanner (14s ago)</span>
+<span>Synced to Firebase Firestore</span>
 </div>
 </div>
 
@@ -92,8 +109,8 @@ export default function AgentForgeAgentStudio() {
 <span className="material-symbols-outlined text-[18px]">bolt</span>
 </div>
 <div className="flex flex-col">
-<span className="font-label-ui text-label-ui text-on-surface font-semibold">Gemini 1.5 Flash</span>
-<span className="font-code-base text-[11px] text-on-surface-variant">google-deepmind/1.5-flash-002</span>
+<span className="font-label-ui text-label-ui text-on-surface font-semibold">Gemini 3.5 Flash</span>
+<span className="font-code-base text-[11px] text-on-surface-variant">google/gemini-3.5-flash</span>
 </div>
 </div>
 <span className="material-symbols-outlined text-outline text-[18px]">unfold_more</span>
@@ -111,8 +128,8 @@ export default function AgentForgeAgentStudio() {
 <span className="material-symbols-outlined text-[18px]">alt_route</span>
 </div>
 <div className="flex flex-col">
-<span className="font-label-ui text-label-ui text-on-surface font-semibold">Claude 3.5 Sonnet</span>
-<span className="font-code-base text-[11px] text-on-surface-variant">anthropic/claude-3-5-sonnet-v2</span>
+<span className="font-label-ui text-label-ui text-on-surface font-semibold">Gemini 3.6 Flash</span>
+<span className="font-code-base text-[11px] text-on-surface-variant">google/gemini-3.6-flash</span>
 </div>
 </div>
 <span className="material-symbols-outlined text-outline text-[18px]">unfold_more</span>
@@ -126,7 +143,7 @@ export default function AgentForgeAgentStudio() {
 </div>
 <div className="bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
 <div className="flex items-center gap-2">
-<span className="font-headline-sm text-headline-sm text-on-surface font-semibold">$500.00</span>
+<span className="font-headline-sm text-headline-sm text-on-surface font-semibold">${refundLimit.toFixed(2)}</span>
 <span className="font-label-caps text-label-caps text-on-surface-variant">USD / tx</span>
 </div>
 <span className="material-symbols-outlined text-primary text-[20px]">lock_clock</span>
@@ -135,7 +152,7 @@ export default function AgentForgeAgentStudio() {
 <div className="bg-surface-container rounded-xl p-3.5 mt-1 flex items-start gap-2.5">
 <span className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
 <p className="font-body-sm text-body-sm text-on-surface leading-snug">
-              Mutations above <strong className="font-semibold text-primary">$500.00</strong> automatically trigger Layer 3 Human Escalation &amp; suspend tool commit.
+              Mutations above <strong className="font-semibold text-primary">${refundLimit.toFixed(2)}</strong> automatically trigger Layer 3 Human Escalation &amp; suspend tool commit.
             </p>
 </div>
 </div>
@@ -264,7 +281,7 @@ export default function AgentForgeAgentStudio() {
 <div className="h-4"></div>
 <div><span className="text-secondary font-medium"># FALLBACK CONSTRAINT</span></div>
 <div>
-              If latency threshold &gt; 1200ms or response is malformed, trigger state dump to cold storage and invoke <span className="text-primary">claude-3-5-sonnet</span> fallback node.
+              If latency threshold &gt; 1200ms or response is malformed, trigger state dump and retry with <span className="text-primary">gemini-3.6-flash</span> then <span className="text-primary">gemini-3.5-flash-lite</span> fallback chain.
             </div>
 </div>
 </div>

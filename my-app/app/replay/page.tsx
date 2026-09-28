@@ -1,16 +1,49 @@
+'use client';
 /* eslint-disable */
 // @ts-nocheck
+import { useState, useEffect } from 'react';
+
 export default function AgentForgeExecutionReplay() {
+  const [traceId, setTraceId] = useState('tr-8f3a9bc2');
+  const [searchInput, setSearchInput] = useState('');
+  const [traceData, setTraceData] = useState<any>(null);
+  const [loadingTrace, setLoadingTrace] = useState(false);
+  const [traceError, setTraceError] = useState('');
+
+  // Fetch trace on mount and when traceId changes
+  useEffect(() => {
+    async function fetchTrace() {
+      setLoadingTrace(true);
+      setTraceError('');
+      try {
+        const res = await fetch(`/api/traces?traceId=${traceId}`);
+        if (!res.ok) throw new Error('Trace not found');
+        const data = await res.json();
+        setTraceData(data);
+      } catch (e: any) {
+        setTraceError(e.message ?? 'Failed to load trace');
+      } finally {
+        setLoadingTrace(false);
+      }
+    }
+    fetchTrace();
+  }, [traceId]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchInput.trim()) setTraceId(searchInput.trim());
+  };
+
   return (
     <>
-      <aside className="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between py-6 px-4 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div className="flex flex-col gap-6"><div className="flex items-center gap-3 px-3"><div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">A</div><div className="flex flex-col"><span className="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">AgentForge</span><span className="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Developer v2.4</span></div></div><div className="px-3"><div className="flex items-center justify-between px-2.5 py-1.5 rounded-full bg-surface-container-high"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span><span className="font-label-caps text-label-caps text-tertiary font-medium">CLUSTER ONLINE</span></div><span className="font-label-caps text-label-caps text-on-surface-variant">US-EAST</span></div></div><nav className="flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary font-medium rounded-lg"><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="console-trace" href="#"><span className="material-symbols-outlined text-[20px]">terminal</span><span className="font-label-ui text-label-ui">Console Trace</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="execution-replay" href="#"><span className="material-symbols-outlined text-[20px]">replay</span><span className="font-label-ui text-label-ui">Execution Replay</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="agent-studio-and-knowledge-base" href="#"><span className="material-symbols-outlined text-[20px]">smart_toy</span><span className="font-label-ui text-label-ui">Agent Studio &amp; KB</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="secops-and-blast-radius" href="#"><span className="material-symbols-outlined text-[20px]">security</span><span className="font-label-ui text-label-ui">SecOps &amp; Blast Radius</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="architecture" href="#"><span className="material-symbols-outlined text-[20px]">hub</span><span className="font-label-ui text-label-ui">Architecture</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="pillars-and-security" href="#"><span className="material-symbols-outlined text-[20px]">shield</span><span className="font-label-ui text-label-ui">Pillars &amp; Security</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="live-flow-demo" href="#"><span className="material-symbols-outlined text-[20px]">account_tree</span><span className="font-label-ui text-label-ui">Live Flow Demo</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="pricing-and-economics" href="#"><span className="material-symbols-outlined text-[20px]">payments</span><span className="font-label-ui text-label-ui">Pricing &amp; Economics</span></a></nav></div><div className="flex flex-col gap-3 px-2"><div className="p-3 rounded-lg bg-surface-container flex flex-col gap-2"><div className="flex items-center justify-between"><span className="font-label-caps text-label-caps text-on-surface-variant">QUOTA USAGE</span><span className="font-label-caps text-label-caps text-primary font-bold">84%</span></div><div className="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden"><div className="bg-primary-container h-full w-[84%]"></div></div><span className="font-code-base text-code-base text-on-surface-variant">1.2M / 1.5M tokens</span></div></div></aside><div className="pl-64"><main className="relative pt-16 w-full px-8 bg-surface min-h-screen"><div className="flex flex-col w-full pb-16">
+      <aside className="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between py-6 px-4 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div className="flex flex-col gap-6"><div className="flex items-center gap-3 px-3"><div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">A</div><div className="flex flex-col"><a href="/" className="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none hover:text-primary transition-colors">AgentForge</a><span className="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Developer v2.4</span></div></div><div className="px-3"><div className="flex items-center justify-between px-2.5 py-1.5 rounded-full bg-surface-container-high"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span><span className="font-label-caps text-label-caps text-tertiary font-medium">CLUSTER ONLINE</span></div><span className="font-label-caps text-label-caps text-on-surface-variant">US-EAST</span></div></div><nav className="flex flex-col gap-1"><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/launch"><span className="material-symbols-outlined text-[20px]">terminal</span><span className="font-label-ui text-label-ui">Console Trace</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary-container text-on-primary font-medium transition-colors" href="/replay"><span className="material-symbols-outlined text-[20px]">replay</span><span className="font-label-ui text-label-ui">Execution Replay</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/studio"><span className="material-symbols-outlined text-[20px]">smart_toy</span><span className="font-label-ui text-label-ui">Agent Studio &amp; KB</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/security"><span className="material-symbols-outlined text-[20px]">security</span><span className="font-label-ui text-label-ui">SecOps &amp; Blast Radius</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/architecture"><span className="material-symbols-outlined text-[20px]">hub</span><span className="font-label-ui text-label-ui">Architecture</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/security"><span className="material-symbols-outlined text-[20px]">shield</span><span className="font-label-ui text-label-ui">Pillars &amp; Security</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/demo"><span className="material-symbols-outlined text-[20px]">account_tree</span><span className="font-label-ui text-label-ui">Live Flow Demo</span></a><a className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" href="/pricing"><span className="material-symbols-outlined text-[20px]">payments</span><span className="font-label-ui text-label-ui">Pricing &amp; Economics</span></a></nav></div><div className="flex flex-col gap-3 px-2"><div className="p-3 rounded-lg bg-surface-container flex flex-col gap-2"><div className="flex items-center justify-between"><span className="font-label-caps text-label-caps text-on-surface-variant">QUOTA USAGE</span><span className="font-label-caps text-label-caps text-primary font-bold">84%</span></div><div className="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden"><div className="bg-primary-container h-full w-[84%]"></div></div><span className="font-code-base text-code-base text-on-surface-variant">1.2M / 1.5M tokens</span></div></div></aside><div className="pl-64"><main className="relative pt-16 w-full px-8 bg-surface min-h-screen"><div className="flex flex-col w-full pb-16">
 
 <section className="flex flex-col gap-6 pt-6">
 
 <div className="flex flex-wrap items-center justify-between gap-4">
 <div className="flex items-center gap-3">
 <span className="font-label-caps text-label-caps tracking-wider text-on-surface-variant uppercase px-2.5 py-1 rounded-md bg-surface-container font-semibold">
-          TRACE #tr-8f3a9bc2 // REGRESSION STUDIO
+          TRACE #{traceId} // REGRESSION STUDIO
         </span>
 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/60 text-error font-label-caps text-label-caps font-semibold">
 <span className="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
@@ -35,11 +68,22 @@ export default function AgentForgeExecutionReplay() {
 
 <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 pb-2">
 <div className="flex flex-col gap-1.5 max-w-3xl">
+{/* Trace ID Search Bar */}
+<form onSubmit={handleSearch} className="flex items-center gap-2 mb-3">
+  <div className="relative">
+    <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[15px] text-on-surface-variant">search</span>
+    <input type="text" value={searchInput} onChange={e => setSearchInput(e.target.value)} placeholder="Load trace ID…" className="pl-8 pr-3 py-1.5 w-52 rounded-lg bg-surface-container-low border border-outline-variant/40 font-code-base text-[12px] text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors" />
+  </div>
+  <button type="submit" className="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-ui text-label-ui font-medium hover:opacity-90 transition-all text-[12px]">Load</button>
+  {loadingTrace && <span className="font-label-caps text-[10px] text-on-surface-variant animate-pulse">Fetching…</span>}
+  {traceError && <span className="font-label-caps text-[10px] text-error">{traceError}</span>}
+  {traceData && !loadingTrace && <span className="font-label-caps text-[10px] text-tertiary">{traceData.steps?.length ?? 0} steps ✓</span>}
+</form>
 <h1 className="font-headline-lg text-headline-lg tracking-tight text-on-surface font-semibold">
           Execution Replay &amp; Drift Analyzer
         </h1>
 <p className="font-body-md text-body-md text-on-surface-variant">
-          Comparing <span className="font-medium text-on-surface">Prod v1.4 (Gemini 1.5 Flash)</span> with candidate model <span className="font-medium text-primary">Staging v1.5 (Gemini 1.5 Pro)</span> on historical production session <code className="font-code-base text-code-base text-on-surface-variant bg-surface-container px-1 py-0.5 rounded">tr-8f3a9bc2</code>.
+          Comparing <span className="font-medium text-on-surface">Prod v1.4 (Gemini 3.5 Flash)</span> with candidate model <span className="font-medium text-primary">Staging v1.5 (Gemini 3.6 Flash)</span> on historical production session <code className="font-code-base text-code-base text-on-surface-variant bg-surface-container px-1 py-0.5 rounded">{traceId}</code>.
         </p>
 </div>
 
@@ -266,7 +310,7 @@ export default function AgentForgeExecutionReplay() {
 <span className="w-2.5 h-2.5 rounded-full bg-outline"></span>
 <span className="font-label-caps text-label-caps text-on-surface-variant font-bold tracking-wider">BASELINE OUTCOME (PROD v1.4)</span>
 </div>
-<span className="font-label-caps text-label-caps text-on-surface-variant">Gemini 1.5 Flash</span>
+<span className="font-label-caps text-label-caps text-on-surface-variant">Gemini 3.5 Flash</span>
 </div>
 <div className="flex items-center gap-2 pt-1">
 <span className="font-body-sm text-body-sm text-on-surface font-medium">Selected Tool:</span>

@@ -208,6 +208,28 @@ export default function AgentForgeLiveDemoAndTraceConsole() {
     <main className="w-full pt-16 bg-surface min-h-screen">
       <div className="flex flex-col w-full">
 
+        {/* ─── Breadcrumb Nav ──────────────────────────────────────── */}
+        <div className="w-full bg-surface-container-lowest border-b border-outline-variant/20 px-6 md:px-8 py-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-1 font-label-caps text-label-caps text-on-surface-variant text-[11px]">
+              <a href="/" className="hover:text-primary transition-colors">Platform</a>
+              <span className="material-symbols-outlined text-[13px] text-outline-variant">chevron_right</span>
+              <span className="text-primary font-semibold">Live Demo &amp; Trace Console</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <a href="/architecture" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all">
+                <span className="material-symbols-outlined text-[12px]">account_tree</span>Architecture
+              </a>
+              <a href="/escalation" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all">
+                <span className="material-symbols-outlined text-[12px]">assignment_late</span>Escalation Queue
+              </a>
+              <a href="/replay" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all">
+                <span className="material-symbols-outlined text-[12px]">replay</span>Execution Replay
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* ─── Header Bar ─────────────────────────────────────────── */}
         <div className="w-full bg-surface-container-low px-6 md:px-8 py-4 shadow-sm">
           <div className="max-w-7xl mx-auto flex flex-col xl:flex-row xl:items-center justify-between gap-4">

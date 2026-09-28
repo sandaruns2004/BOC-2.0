@@ -41,11 +41,11 @@ export default function AgentForgeAIAgentPlatform() {
         </p>
 
 <div className="mt-8 flex flex-wrap items-center justify-center gap-space-md">
-<a className="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:brightness-105 active:scale-[0.98] transition-all" href="#architecture">
+<a className="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:brightness-105 active:scale-[0.98] transition-all" href="/architecture">
 <span className="material-symbols-outlined text-[18px]">account_tree</span>
 <span className="">Explore Architecture</span>
 </a>
-<a className="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-label-ui font-medium shadow-sm hover:bg-surface-container-low hover:text-primary transition-all" href="#live-demo">
+<a className="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-label-ui font-medium shadow-sm hover:bg-surface-container-low hover:text-primary transition-all" href="#demo">
 <span className="material-symbols-outlined text-[18px]">play_circle</span>
 <span className="">Inspect Live Demo</span>
 </a>
@@ -775,13 +775,13 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="max-w-7xl mx-auto px-margin-sm md:px-margin">
 <div className="text-center max-w-3xl mx-auto mb-16">
 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps uppercase tracking-wider">
-            Google Cloud Platform Foundation
+            Hybrid Cloud Infrastructure
           </div>
 <h2 className="mt-3 font-headline-lg text-headline-lg text-on-surface">
-            Engineered Exclusively with Managed GCP
+            GCP Compute · AWS Async · Pinecone RAG
           </h2>
 <p className="mt-4 font-body-md text-body-md text-on-surface-variant">
-            No bespoke VM instances to patch. No self-hosted vector databases to maintain. AgentForge deploys fully on serverless, auto-scaling Google Cloud primitives.
+            No self-managed VMs. No self-hosted vector databases. AgentForge deploys on best-of-breed managed services — GCP Cloud Run for compute, AWS for async queuing and audit, Pinecone for tenant-isolated vector search.
           </p>
 </div>
 
@@ -803,14 +803,14 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
 <div className="flex items-center gap-3">
 <div className="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
-<span className="material-symbols-outlined text-[20px]">hub</span>
+<span className="material-symbols-outlined text-[20px]">api</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Apigee Gateway</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Amazon API Gateway</div>
 <div className="font-label-caps text-[10px] text-on-surface-variant">Security • Ingress</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Enterprise API security, OAuth token verification, and tenant rate limiting.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Tenant API key validation, per-tenant rate limiting, and request metering before any compute runs.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -823,7 +823,7 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="font-label-caps text-[10px] text-on-surface-variant">LLM Inference Engine</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Foundation model reasoning via Gemini 1.5 Pro and Gemini Flash.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Foundation model reasoning via Gemini 3.5 Flash (primary), 3.6 Flash (fallback), and Flash Lite (graceful degradation).</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -832,11 +832,11 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="material-symbols-outlined text-[20px]">manage_search</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Vertex Vector Search</div>
-<div className="font-label-caps text-[10px] text-on-surface-variant">High-Scale Vector DB</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Pinecone Vector DB</div>
+<div className="font-label-caps text-[10px] text-on-surface-variant">Tenant-Isolated RAG</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Sub-millisecond approximate nearest neighbor retrieval across billions of vectors.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Per-tenant namespace isolation with SHA-256 prefix. ANN retrieval for semantic knowledge base queries.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -855,14 +855,14 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
 <div className="flex items-center gap-3">
 <div className="w-10 h-10 rounded-xl bg-error-container/80 text-error flex items-center justify-center">
-<span className="material-symbols-outlined text-[20px]">bolt</span>
+<span className="material-symbols-outlined text-[20px]">move_to_inbox</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Memorystore Redis</div>
-<div className="font-label-caps text-[10px] text-on-surface-variant">Semantic Cache • State</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">AWS SQS</div>
+<div className="font-label-caps text-[10px] text-on-surface-variant">Escalation Queue • Async</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Ultra low-latency cache for recurring semantic queries and session states.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Decouples L3 human escalation events from the real-time inference path. 1M requests/month free.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -871,24 +871,24 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="material-symbols-outlined text-[20px]">key</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Secret Manager</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">AWS SSM Parameter Store</div>
 <div className="font-label-caps text-[10px] text-on-surface-variant">Credentials • KMS</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Centralized credential vaults for tenant third-party tool API keys.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Tenant-namespaced tool API key vault. Free Standard tier, AWS KMS encrypted at rest.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
 <div className="flex items-center gap-3">
 <div className="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
-<span className="material-symbols-outlined text-[20px]">move_to_inbox</span>
+<span className="material-symbols-outlined text-[20px]">receipt_long</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Pub/Sub</div>
-<div className="font-label-caps text-[10px] text-on-surface-variant">Async Message Bus</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">AWS CloudWatch</div>
+<div className="font-label-caps text-[10px] text-on-surface-variant">Log Aggregation • Alerts</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Decouples real-time user streaming from downstream telemetry sinks.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Structured JSON log streaming, per-tenant log streams, metric alarms, and SLO dashboards.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -910,11 +910,11 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="material-symbols-outlined text-[20px]">table_chart</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">BigQuery</div>
-<div className="font-label-caps text-[10px] text-on-surface-variant">Audit Data Warehouse</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">AWS DynamoDB</div>
+<div className="font-label-caps text-[10px] text-on-surface-variant">Audit Trail • Traces</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Immutable trajectory analytics, prompt lineage, and business intelligence.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Immutable decision trace storage. GSI queries by tenant + timestamp. 25GB free forever.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -923,11 +923,11 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="material-symbols-outlined text-[20px]">timeline</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Trace</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">W3C Trace Context</div>
 <div className="font-label-caps text-[10px] text-on-surface-variant">Distributed Tracing</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Visualizes latency bottlenecks across Gateway, Orchestrator, and LLM hops.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">traceparent propagated across all Cloud Run hops. CloudWatch X-Ray surfaces per-service latency breakdowns.</p>
 </div>
 
 <div className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all">
@@ -936,11 +936,11 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="material-symbols-outlined text-[20px]">speed</span>
 </div>
 <div>
-<div className="font-headline-sm text-[15px] font-semibold text-on-surface">Cloud Monitoring</div>
+<div className="font-headline-sm text-[15px] font-semibold text-on-surface">CloudWatch Monitoring</div>
 <div className="font-label-caps text-[10px] text-on-surface-variant">Alerts • SLOs</div>
 </div>
 </div>
-<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Real-time alert policies, error budgets, and tenant quota tracking.</p>
+<p className="mt-3 text-[12px] font-body-sm text-on-surface-variant">Real-time metric alarms, error budget tracking, anomaly detection, and per-tenant quota alerts.</p>
 </div>
 </div>
 </div>
@@ -968,8 +968,8 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="flex items-center gap-3">
 <span className="w-6 h-6 rounded bg-primary/10 text-primary font-code-base text-[11px] font-bold flex items-center justify-center">01</span>
 <div>
-<span className="font-label-ui text-label-ui font-semibold text-on-surface">Incoming WebSocket Message</span>
-<div className="text-[11px] font-body-sm text-on-surface-variant">User prompt arrives at Apigee edge</div>
+<span className="font-label-ui text-label-ui font-semibold text-on-surface">Incoming HTTPS Message</span>
+<div className="text-[11px] font-body-sm text-on-surface-variant">User prompt arrives at Amazon API Gateway edge</div>
 </div>
 </div>
 <span className="font-code-base text-[11px] text-tertiary font-medium">4ms</span>
@@ -1002,7 +1002,7 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="w-6 h-6 rounded bg-primary/10 text-primary font-code-base text-[11px] font-bold flex items-center justify-center">04</span>
 <div>
 <span className="font-label-ui text-label-ui font-semibold text-on-surface">Semantic Cache Probe</span>
-<div className="text-[11px] font-body-sm text-on-surface-variant">Memorystore Redis cache miss → proceed</div>
+<div className="text-[11px] font-body-sm text-on-surface-variant">Firestore in-memory cache miss → proceed to RAG</div>
 </div>
 </div>
 <span className="font-code-base text-[11px] text-tertiary font-medium">8ms</span>
@@ -1013,7 +1013,7 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="w-6 h-6 rounded bg-secondary/10 text-secondary font-code-base text-[11px] font-bold flex items-center justify-center">05</span>
 <div>
 <span className="font-label-ui text-label-ui font-semibold text-on-surface">Isolated RAG Knowledge Fetch</span>
-<div className="text-[11px] font-body-sm text-on-surface-variant">Top-3 chunks returned from Vertex Search</div>
+<div className="text-[11px] font-body-sm text-on-surface-variant">Top-3 chunks returned from Pinecone tenant namespace</div>
 </div>
 </div>
 <span className="font-code-base text-[11px] text-tertiary font-medium">38ms</span>
@@ -1023,7 +1023,7 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="flex items-center gap-3">
 <span className="w-6 h-6 rounded bg-secondary/10 text-secondary font-code-base text-[11px] font-bold flex items-center justify-center">06</span>
 <div>
-<span className="font-label-ui text-label-ui font-semibold text-on-surface">Gemini 1.5 Pro Reasoning Hop</span>
+<span className="font-label-ui text-label-ui font-semibold text-on-surface">Gemini 3.5 Flash Reasoning Hop</span>
 <div className="text-[11px] font-body-sm text-on-surface-variant">LLM emits ToolCall: ‘check_order_status’</div>
 </div>
 </div>
@@ -1067,8 +1067,8 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="flex items-center gap-3">
 <span className="w-6 h-6 rounded bg-surface-container-high text-primary font-code-base text-[11px] font-bold flex items-center justify-center">10</span>
 <div>
-<span className="font-label-ui text-label-ui font-semibold text-on-surface">Async BigQuery Audit Log Dispatch</span>
-<div className="text-[11px] font-body-sm text-on-surface-variant">Spans &amp; token costs persisted for compliance</div>
+<span className="font-label-ui text-label-ui font-semibold text-on-surface">Async DynamoDB Audit Trace Write</span>
+<div className="text-[11px] font-body-sm text-on-surface-variant">Spans &amp; token costs persisted via SQS → DynamoDB</div>
 </div>
 </div>
 <span className="font-code-base text-[11px] text-secondary font-medium">Async</span>
@@ -1355,7 +1355,7 @@ export default function AgentForgeAIAgentPlatform() {
           Skip the infrastructure headaches. Leverage Google Cloud native power, tenant isolation, and strict safety guardrails on day one.
         </p>
 <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-<a className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:brightness-105 transition-all" href="#demo">
+<a className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:brightness-105 transition-all" href="/demo">
 <span className="material-symbols-outlined text-[20px]">bolt</span>
 <span className="">Launch Live Console</span>
 </a>

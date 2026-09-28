@@ -28,14 +28,14 @@ The most dangerous failure mode in a multi-tenant AI platform is "data bleed" �
 ### How We Prevent It
 
 **Structural separation (not just policy-based):**
-- Each tenant has a **separate Vertex AI Vector Search index** — there is no shared index to accidentally query
-- Firestore uses the path `/tenants/{tenantId}/...` — a service account for Tenant A literally cannot construct a valid path to Tenant B's data
-- Secret Manager uses path-based namespacing: `/tenants/{tenantId}/tools/{toolName}/apiKey` — Tenant A's service account is IAM-bound to only read secrets under its own tenantId prefix
+- Each tenant has a **separate Pinecone namespace** with SHA-256 prefix isolation — there is no shared namespace to accidentally query across tenants
+- Firebase Firestore uses the path `/tenants/{tenantId}/...` — a Cloud Run service for Tenant A literally cannot construct a valid path to Tenant B's data
+- AWS SSM Parameter Store uses path-based namespacing: `/agentforge/{tenantId}/tools/{toolName}/apiKey` — Tenant A's IAM policy only allows reads under its own tenantId prefix
 - Cloud Run services receive the tenantId as a verified, gateway-injected header — they never trust a tenantId from the request body (which could be spoofed)
 
 **Query-time enforcement:**
 - Every Firestore query includes a `.where('tenantId', '==', verifiedTenantId)` filter — even if the path structure already isolates the data, the filter adds a defense-in-depth layer
-- Vector Search queries specify the tenant's index ID explicitly — the service account does not have permission to query any other index
+- Pinecone queries specify the tenant's namespace explicitly in the API call — it is structurally impossible to retrieve vectors from a different namespace
 
 **Testing:**
 - Our test suite includes "cross-tenant bleed tests": mock requests from Tenant A attempting to access Tenant B's data at every layer, verifying 403 Forbidden at each boundary
@@ -50,15 +50,14 @@ The most dangerous failure mode in a multi-tenant AI platform is "data bleed" �
 - External tool API calls from Tool Executor to third-party APIs: TLS 1.2 minimum enforced; connections to endpoints without valid certificates are rejected
 
 ### Data At Rest
-- Firestore: AES-256 encryption at rest (GCP default, Google-managed keys)
-- Vertex AI Vector Search indexes: encrypted at rest (GCP default)
-- Cloud Logging and BigQuery: AES-256 encryption at rest
-- Secret Manager: secrets are encrypted with **Cloud KMS customer-managed encryption keys (CMEK)** — this means even Google cannot read the secrets without the tenant's KMS key
-- Memorystore (Redis): encrypted at rest and in transit (AUTH enabled, TLS enabled)
+- Firebase Firestore: AES-256 encryption at rest (GCP default, Google-managed keys)
+- Pinecone indexes: encrypted at rest (Pinecone platform default, AES-256)
+- AWS CloudWatch Logs and AWS DynamoDB: AES-256 encryption at rest (AWS default, KMS-managed)
+- AWS SSM Parameter Store: secrets encrypted with **AWS KMS customer-managed keys** — this means even AWS cannot read the secrets without the tenant's KMS key
 
 ### Encryption Key Management
-- Platform-level encryption uses Google-managed keys (GMEK) — adequate for most data
-- Tenant API credentials (tool keys) use **Customer-Managed Encryption Keys (CMEK)** via Cloud KMS — each tenant can optionally bring their own KMS key, meaning only they can decrypt their secrets
+- Platform-level encryption uses provider-managed keys (GCP GMK, AWS KMS) — adequate for most data
+- Tenant API credentials (tool keys) use **AWS KMS Customer-Managed Keys** via SSM Parameter Store — each tenant can optionally bring their own KMS key, meaning only they can decrypt their secrets
 
 ---
 
@@ -70,13 +69,13 @@ The most dangerous failure mode in a multi-tenant AI platform is "data bleed" �
 - All tokens have a maximum 24-hour TTL; refresh tokens are rotated on each use
 
 ### Business Admin to Dashboard
-- Business admins authenticate via **Google OAuth 2.0 (via Cloud Identity)** or SAML SSO for enterprise customers
+- Business admins authenticate via **Google OAuth 2.0** or SAML SSO for enterprise customers
 - MFA is enforced for all admin accounts — no exceptions
-- Admin sessions are logged to Cloud Audit Logs (admin activity logs) — every configuration change, key rotation, and approval action is attributable to a specific admin identity
+- Admin sessions are logged to **AWS CloudWatch** (admin activity logs) — every configuration change, key rotation, and approval action is attributable to a specific admin identity
 
 ### Service-to-Service (Internal)
 - All Cloud Run services use **dedicated service accounts** with minimal IAM permissions (principle of least privilege)
-- Example: The Memory Layer service account can: read Vertex AI Vector Search, read/write its own Firestore path, write to Cloud Logging. It cannot: access Secret Manager, call Vertex AI LLM, or write to any other tenant's Firestore path
+- Example: The Memory Layer service account can: read Pinecone (via API key), read/write its own Firebase Firestore path, write to AWS CloudWatch. It cannot: access AWS SSM Parameter Store, call Gemini LLM directly (only via orchestration), or write to any other tenant's Firestore path
 - No service uses the default compute service account (which has overly broad permissions)
 - Service accounts are **Workload Identity Federation** bound to specific Cloud Run service identities — credentials cannot be exported or used outside the service
 
@@ -103,8 +102,8 @@ End users frequently include personal information in their messages to agents �
 - The original value is stored separately in Firestore (per-session, encrypted at rest with CMEK) so the Tool Executor can retrieve it if the agent genuinely needs it (e.g., to look up an order by email)
 
 **Log Sanitization:**
-- Cloud Logging agent traces do NOT include raw user message text — they include the scrubbed version and a reference to the secure PII store
-- BigQuery audit tables contain only scrubbed messages; PII lookups require a separate privileged query with explicit access justification
+- AWS CloudWatch audit traces do NOT include raw user message text — they include the scrubbed version and a reference to the secure PII store
+- AWS DynamoDB audit tables contain only scrubbed messages; PII lookups require a separate privileged query with explicit access justification
 
 **Data Minimization:**
 - Conversation histories are retained for 90 days by default, then automatically deleted via Firestore TTL policies
@@ -139,17 +138,17 @@ If an agent can call external APIs, a compromised or misbehaving agent could:
 
 **High-risk action gate:**
 - Tools marked as "high-risk" by the business admin (e.g., refund_customer, delete_record, send_email_to_all) require human approval before execution
-- The Tool Executor publishes the pending call to the Human Approval Queue (Pub/Sub)
-- The call is only executed after explicit admin approval
+- The Tool Executor publishes the pending call to the Human Approval Queue (**AWS SQS**) and writes the escalation to **Firebase Firestore** `escalations` collection
+- The call is only executed after explicit admin approval via `PATCH /api/escalation`
 
 ---
 
 ## 6. Access to Audit Logs
 
 - Business admins can view their own tenant's audit logs via the dashboard
-- They cannot view other tenants' logs — enforced via Cloud Logging log-based access conditions tied to tenant_id field
+- They cannot view other tenants' logs — enforced via **AWS CloudWatch** log-based access conditions tied to `tenant_id` field
 - Platform Ops can view all tenants' logs for incident response — all such access is itself logged (who accessed what, when, with what justification)
-- Audit logs in BigQuery are immutable: the service account that writes logs has INSERT-only permissions; no service can UPDATE or DELETE audit log rows
+- Audit logs in **AWS DynamoDB** are immutable: the service account that writes traces has PutItem-only permissions; no service can UpdateItem or DeleteItem on audit log rows
 
 ---
 
@@ -157,11 +156,11 @@ If an agent can call external APIs, a compromised or misbehaving agent could:
 
 | Requirement          | How We Address It                                                      |
 |----------------------|------------------------------------------------------------------------|
-| GDPR Right to Erasure | Per-tenant data deletion pipeline: deletes Firestore docs, removes vector embeddings, purges logs older than 30 days via API |
-| Data Residency       | GCP region selection at tenant onboarding; data stays in chosen region |
-| Audit Trail          | Immutable Cloud Logging + BigQuery; all admin actions are logged       |
-| Incident Response    | Cloud Monitoring alert → PagerDuty → on-call engineer within 15 min   |
-| Vulnerability Management | Cloud Security Command Center active for all GCP resources        |
+| GDPR Right to Erasure | Per-tenant data deletion pipeline: deletes Firestore docs, removes Pinecone namespace vectors, purges CloudWatch logs older than 30 days via API |
+| Data Residency       | GCP region selection (Cloud Run, Firestore) + AWS region selection (SQS, DynamoDB) at tenant onboarding; data stays in chosen regions |
+| Audit Trail          | Immutable AWS CloudWatch + DynamoDB; all admin actions are logged       |
+| Incident Response    | CloudWatch alert → PagerDuty → on-call engineer within 15 min         |
+| Vulnerability Management | GCP Security Command Center active for Cloud Run; AWS Security Hub for AWS services |
 
 ---
 
