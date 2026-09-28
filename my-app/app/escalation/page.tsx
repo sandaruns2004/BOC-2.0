@@ -45,7 +45,7 @@ export default function AgentForgeHumanEscalationQueue() {
 </div>
 <div className="mt-2 flex items-center gap-1 font-label-caps text-label-caps text-on-surface-variant">
 <span className="text-tertiary flex items-center text-[12px]"><span className="material-symbols-outlined text-[14px]">check</span>Target &lt; 5m</span>
-<span className="">┬╖ 99.2% on-time</span>
+<span className="">· 99.2% on-time</span>
 </div>
 </div>
 
@@ -74,9 +74,9 @@ export default function AgentForgeHumanEscalationQueue() {
 </div>
 <div className="mt-2 flex items-center gap-1.5 font-label-caps text-label-caps text-on-surface-variant truncate">
 <span className="text-primary font-medium">@sarah.ops</span>
-<span className="">┬╖</span>
+<span className="">·</span>
 <span className="text-primary font-medium">@alex.sec</span>
-<span className="">┬╖ +2 on-call</span>
+<span className="">· +2 on-call</span>
 </div>
 </div>
 </div>
@@ -110,18 +110,18 @@ export default function AgentForgeHumanEscalationQueue() {
 
 <div className="flex flex-col gap-2.5" id="inboxList">
 
-<article className="p-3.5 rounded-lg bg-[#F0FDF4] cursor-pointer shadow-sm relative transition-all" data-active="true"><div className="absolute left-0 top-3 bottom-3 w-1 bg-tertiary rounded-r"></div><div className="flex items-start justify-between gap-1 mb-1 pl-1"><span className="font-label-caps text-label-caps text-tertiary font-semibold">#ESC-9082 ┬╖ HIGH RISK</span><span className="font-label-caps text-label-caps px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-bold">1/2 SIG</span></div><h3 className="font-headline-sm text-[14px] text-on-surface font-semibold pl-1 leading-snug">Order #88392 Refund ($4,850.00)</h3><p className="font-body-sm text-body-sm text-on-surface-variant pl-1 mt-0.5 truncate">Acme Corp (#1042) ┬╖ Limit Exceeded</p><div className="mt-2.5 pl-1 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps"><span className="inline-flex items-center gap-1 text-tertiary font-medium"><span className="material-symbols-outlined text-[13px]">alarm</span> 04:12 SLA left</span><span className="text-on-surface-variant">Dual-Signoff 1/2</span></div></article>
+<article className="p-3.5 rounded-lg bg-[#F0FDF4] cursor-pointer shadow-sm relative transition-all" data-active="true"><div className="absolute left-0 top-3 bottom-3 w-1 bg-tertiary rounded-r"></div><div className="flex items-start justify-between gap-1 mb-1 pl-1"><span className="font-label-caps text-label-caps text-tertiary font-semibold">#ESC-9082 · HIGH RISK</span><span className="font-label-caps text-label-caps px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-bold">1/2 SIG</span></div><h3 className="font-headline-sm text-[14px] text-on-surface font-semibold pl-1 leading-snug">Order #88392 Refund ($4,850.00)</h3><p className="font-body-sm text-body-sm text-on-surface-variant pl-1 mt-0.5 truncate">Acme Corp (#1042) · Limit Exceeded</p><div className="mt-2.5 pl-1 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps"><span className="inline-flex items-center gap-1 text-tertiary font-medium"><span className="material-symbols-outlined text-[13px]">alarm</span> 04:12 SLA left</span><span className="text-on-surface-variant">Dual-Signoff 1/2</span></div></article>
 
 <article className="p-3.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer shadow-sm transition-colors">
 <div className="flex items-start justify-between gap-1 mb-1">
-<span className="font-label-caps text-label-caps text-secondary font-semibold">#ESC-9081 ┬╖ PRIVACY</span>
+<span className="font-label-caps text-label-caps text-secondary font-semibold">#ESC-9081 · PRIVACY</span>
 <span className="font-label-caps text-label-caps px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-medium">0/1 SIG</span>
 </div>
 <h3 className="font-headline-sm text-[14px] text-on-surface font-semibold leading-snug">
               Bulk Customer PII Export Request
             </h3>
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
-              FinTech Global (#2091) ┬╖ 4,100 records
+              FinTech Global (#2091) · 4,100 records
             </p>
 <div className="mt-2.5 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
 <span className="inline-flex items-center gap-1 text-on-surface-variant font-medium">
@@ -133,14 +133,14 @@ export default function AgentForgeHumanEscalationQueue() {
 
 <article className="p-3.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer shadow-sm transition-colors">
 <div className="flex items-start justify-between gap-1 mb-1">
-<span className="font-label-caps text-label-caps text-tertiary font-semibold">#ESC-9079 ┬╖ SECOPS</span>
+<span className="font-label-caps text-label-caps text-tertiary font-semibold">#ESC-9079 · SECOPS</span>
 <span className="font-label-caps text-label-caps px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-medium">0/2 SIG</span>
 </div>
 <h3 className="font-headline-sm text-[14px] text-on-surface font-semibold leading-snug">
               Direct SQL on Restricted Partition
             </h3>
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
-              HealthVault (#3044) ┬╖ Schema Guard
+              HealthVault (#3044) · Schema Guard
             </p>
 <div className="mt-2.5 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
 <span className="inline-flex items-center gap-1 text-on-surface-variant font-medium">
@@ -152,14 +152,14 @@ export default function AgentForgeHumanEscalationQueue() {
 
 <article className="p-3.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low cursor-pointer shadow-sm transition-colors">
 <div className="flex items-start justify-between gap-1 mb-1">
-<span className="font-label-caps text-label-caps text-on-surface-variant font-semibold">#ESC-9074 ┬╖ EGRESS</span>
+<span className="font-label-caps text-label-caps text-on-surface-variant font-semibold">#ESC-9074 · EGRESS</span>
 <span className="font-label-caps text-label-caps px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-medium">0/1 SIG</span>
 </div>
 <h3 className="font-headline-sm text-[14px] text-on-surface font-semibold leading-snug">
               Outbound Webhook Domain Alteration
             </h3>
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
-              Apex Logistics (#8901) ┬╖ Network Check
+              Apex Logistics (#8901) · Network Check
             </p>
 <div className="mt-2.5 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
 <span className="inline-flex items-center gap-1 text-on-surface-variant font-medium">
@@ -174,18 +174,18 @@ export default function AgentForgeHumanEscalationQueue() {
 <section className="flex flex-col gap-space-md">
 
 <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-<div className="flex flex-wrap items-center justify-between gap-space-sm mb-2"><div className="flex items-center gap-2"><span className="px-2.5 py-1 rounded-full bg-[#F0FDF4] text-tertiary font-label-caps text-label-caps font-bold inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>#ESC-9082 ┬╖ High Risk (Risk Index 0.94)</span><span className="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-caps text-label-caps">FinOps Isolation</span></div><div className="flex items-center gap-2 text-on-surface-variant font-code-base text-code-base"><span className="material-symbols-outlined text-[16px] text-tertiary">lock_clock</span><span className="">Interception Latency: 1.42ms</span></div></div>
+<div className="flex flex-wrap items-center justify-between gap-space-sm mb-2"><div className="flex items-center gap-2"><span className="px-2.5 py-1 rounded-full bg-[#F0FDF4] text-tertiary font-label-caps text-label-caps font-bold inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>#ESC-9082 · High Risk (Risk Index 0.94)</span><span className="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-caps text-label-caps">FinOps Isolation</span></div><div className="flex items-center gap-2 text-on-surface-variant font-code-base text-code-base"><span className="material-symbols-outlined text-[16px] text-tertiary">lock_clock</span><span className="">Interception Latency: 1.42ms</span></div></div>
 <h1 className="font-headline-lg text-[26px] md:text-headline-lg text-on-surface font-bold tracking-tight">
             Order Refund Policy Exceeded ($4,850.00 USD)
           </h1>
 
 <div className="mt-3 pt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-on-surface-variant font-label-ui text-label-ui bg-surface-container-low/50 p-2.5 rounded-lg">
 <div className="">Tenant: <span className="font-semibold text-on-surface">Acme Corp (#1042)</span></div>
-<span className="text-outline-variant">ΓÇó</span>
+<span className="text-outline-variant">•</span>
 <div className="">Agent: <span className="font-code-base text-code-base text-primary font-medium">SupportBot-v2.4</span></div>
-<span className="text-outline-variant">ΓÇó</span>
+<span className="text-outline-variant">•</span>
 <div className="">Trigger: <span className="font-code-base text-code-base text-tertiary font-medium">RULE-FIN-REFUND-MAX</span></div>
-<span className="text-outline-variant">ΓÇó</span>
+<span className="text-outline-variant">•</span>
 <div className="">Region: <span className="font-mono text-on-surface">us-east4</span></div>
 </div>
 </div>
@@ -200,7 +200,7 @@ export default function AgentForgeHumanEscalationQueue() {
 <span className="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">Determinism Score: 0.988</span>
 </div>
 <div className="bg-surface-container-low/70 rounded-lg p-4 font-body-md text-body-md text-on-surface leading-relaxed italic">
-            ΓÇ£User requested $4,850.00 refund for consignment #88392 citing shipment loss. Autonomic policy caps instant autonomous agent refunds at $500.00. Execution paused in memory awaiting human secondary dual-signoff.ΓÇ¥
+            “User requested $4,850.00 refund for consignment #88392 citing shipment loss. Autonomic policy caps instant autonomous agent refunds at $500.00. Execution paused in memory awaiting human secondary dual-signoff.”
           </div>
 
 <div className="mt-3 flex items-center justify-between">
@@ -253,7 +253,7 @@ export default function AgentForgeHumanEscalationQueue() {
               </p>
 </div>
 
-<div className="bg-[#F0FDF4] rounded-lg p-4 flex flex-col justify-between"><div className="flex items-center justify-between text-tertiary font-label-ui text-label-ui"><span className="font-semibold">Attempted Tool Execution</span><span className="material-symbols-outlined text-[16px]">warning</span></div><div className="my-2"><span className="font-headline-md text-[24px] text-tertiary font-bold">$4,850.00</span><span className="text-tertiary font-label-ui text-label-ui font-semibold">USD (+ $4,350.00 delta)</span></div><p className="font-body-sm text-body-sm text-on-surface-variant">Target: <span className="font-code-base text-code-base text-on-surface font-medium">Stripe API ┬╖ cus_99fa1_acme (ΓÇóΓÇóΓÇóΓÇó 4242)</span></p></div>
+<div className="bg-[#F0FDF4] rounded-lg p-4 flex flex-col justify-between"><div className="flex items-center justify-between text-tertiary font-label-ui text-label-ui"><span className="font-semibold">Attempted Tool Execution</span><span className="material-symbols-outlined text-[16px]">warning</span></div><div className="my-2"><span className="font-headline-md text-[24px] text-tertiary font-bold">$4,850.00</span><span className="text-tertiary font-label-ui text-label-ui font-semibold">USD (+ $4,350.00 delta)</span></div><p className="font-body-sm text-body-sm text-on-surface-variant">Target: <span className="font-code-base text-code-base text-on-surface font-medium">Stripe API · cus_99fa1_acme (•••• 4242)</span></p></div>
 </div>
 <div className="mt-3 p-3 rounded-lg bg-surface-container-low text-on-surface-variant font-body-sm text-body-sm flex items-center justify-between">
 <div className="flex items-center gap-2">
@@ -285,7 +285,7 @@ export default function AgentForgeHumanEscalationQueue() {
 <span className="font-normal text-on-surface-variant">(Platform Lead)</span>
 </div>
 <div className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-                  14:03:02 UTC ┬╖ Verified invoice tracking #88392
+                  14:03:02 UTC · Verified invoice tracking #88392
                 </div>
 <div className="font-label-caps text-label-caps text-tertiary font-mono mt-1 truncate">
                   SHA-256: 4f7c...88bc [Verified]

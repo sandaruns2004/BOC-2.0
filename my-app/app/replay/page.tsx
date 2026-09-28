@@ -17,7 +17,7 @@ export default function AgentForgeExecutionReplay() {
           Step 3 Diverged
         </span>
 <span className="font-code-base text-code-base text-on-surface-variant hidden md:inline">
-          Seed: 0x94ef41 ┬╖ Replay runtime: 410ms
+          Seed: 0x94ef41 · Replay runtime: 410ms
         </span>
 </div>
 
@@ -89,7 +89,7 @@ export default function AgentForgeExecutionReplay() {
 <span className="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">99.2%</span>
 <span className="font-label-caps text-label-caps text-tertiary font-medium">Optimal</span>
 </div>
-<p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Strict intent parity match (┬▒0.0%)</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Strict intent parity match (±0.0%)</p>
 </div>
 </div>
 
@@ -103,7 +103,7 @@ export default function AgentForgeExecutionReplay() {
 <span className="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">100%</span>
 <span className="font-label-caps text-label-caps text-tertiary font-medium">Enforced</span>
 </div>
-<p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">0 violations ┬╖ SOC2 Type II &amp; HIPAA</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">0 violations · SOC2 Type II &amp; HIPAA</p>
 </div>
 </div>
 
@@ -148,7 +148,7 @@ export default function AgentForgeExecutionReplay() {
 <button className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-all-steps">
           Expand All Steps
         </button>
-<span className="text-outline-variant">┬╖</span>
+<span className="text-outline-variant">·</span>
 <span className="font-label-caps text-label-caps text-on-surface-variant">4 NODES EVALUATED</span>
 </div>
 </div>
@@ -167,7 +167,7 @@ export default function AgentForgeExecutionReplay() {
 </div>
 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
 <span className="font-label-ui text-label-ui text-on-surface font-semibold truncate">Ingress Payload &amp; Intent Classification</span>
-<span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">ΓÇ£Cancel my subscription immediatelyΓÇ¥ ΓÇö Apigee DLP sanitized</span>
+<span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">“Cancel my subscription immediately” — Apigee DLP sanitized</span>
 </div>
 </div>
 <div className="flex items-center gap-3 flex-shrink-0">
@@ -184,7 +184,7 @@ export default function AgentForgeExecutionReplay() {
 <span className="text-tertiary font-label-caps text-label-caps">Deterministic Hash Match</span>
 </div>
 <p className="text-on-surface">payload = {"{"} "user_id": "usr_99342", "session": "s_live_29", "text": "Cancel my subscription immediately, I have switched providers.", "channel": "mobile_app" {"}"}</p>
-<p className="text-outline">Guard evaluation: PII Masked (0 exposures) ┬╖ Latency skew: +1ms</p>
+<p className="text-outline">Guard evaluation: PII Masked (0 exposures) · Latency skew: +1ms</p>
 </div>
 </div>
 </div>
@@ -201,7 +201,7 @@ export default function AgentForgeExecutionReplay() {
 </div>
 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
 <span className="font-label-ui text-label-ui text-on-surface font-semibold truncate">RAG Knowledge Base &amp; Context Enrichment</span>
-<span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">vs-tenant-2091 ┬╖ 4 chunks retrieved (Cosine: 0.94)</span>
+<span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">vs-tenant-2091 · 4 chunks retrieved (Cosine: 0.94)</span>
 </div>
 </div>
 <div className="flex items-center gap-3 flex-shrink-0">
@@ -359,7 +359,7 @@ export default function AgentForgeExecutionReplay() {
 </div>
 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
 <span className="font-label-ui text-label-ui text-on-surface font-semibold truncate">Layer 3 Safety &amp; Financial Guardrail Evaluation</span>
-<span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">Low-risk autonomous pass ┬╖ 0 human escalation overhead</span>
+<span className="hidden md:inline font-body-sm text-body-sm text-on-surface-variant truncate">Low-risk autonomous pass · 0 human escalation overhead</span>
 </div>
 </div>
 <div className="flex items-center gap-3 flex-shrink-0">
@@ -375,9 +375,9 @@ export default function AgentForgeExecutionReplay() {
 <span className="font-bold">Guardrail Checklist:</span>
 <span className="text-tertiary font-label-caps text-label-caps font-semibold">All 7 Rules Passed</span>
 </div>
-<p className="text-on-surface">ΓÇó Max discount allowance check: 20% Γëñ 25% policy max (PASS)</p>
-<p className="text-on-surface">ΓÇó Anti-hallucination fact verification: 1.0 (PASS)</p>
-<p className="text-on-surface">ΓÇó Irreversible state change approval check: DEFERRED (PASS)</p>
+<p className="text-on-surface">• Max discount allowance check: 20% ≤ 25% policy max (PASS)</p>
+<p className="text-on-surface">• Anti-hallucination fact verification: 1.0 (PASS)</p>
+<p className="text-on-surface">• Irreversible state change approval check: DEFERRED (PASS)</p>
 </div>
 </div>
 </div>

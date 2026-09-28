@@ -5,9 +5,9 @@ import { useLayoutEffect, useRef, type MouseEvent } from 'react';
 import { gsap } from 'gsap';
 
 const capabilities = [
-  { number: '01', title: 'Policy-first setup', text: 'Give every agent a model tier, permitted tools, and financial boundaries.', icon: 'Γ£ª' },
-  { number: '02', title: 'Safe execution', text: 'Inspect inputs, redact sensitive data, and pause risky actions automatically.', icon: 'Γîü' },
-  { number: '03', title: 'Decision clarity', text: 'Keep a complete, reviewable trace for each agent request and outcome.', icon: 'Γùî' },
+  { number: '01', title: 'Policy-first setup', text: 'Give every agent a model tier, permitted tools, and financial boundaries.', icon: '✦' },
+  { number: '02', title: 'Safe execution', text: 'Inspect inputs, redact sensitive data, and pause risky actions automatically.', icon: '⌁' },
+  { number: '03', title: 'Decision clarity', text: 'Keep a complete, reviewable trace for each agent request and outcome.', icon: '◌' },
 ];
 
 const workflow = [
@@ -57,10 +57,10 @@ export default function HomePage() {
           <h1>Build agents your business can <em>trust.</em></h1>
           <p>Design, test, govern, and explain every AI action from one focused operations workspace.</p>
           <div className="hero-actions">
-            <Link className="experience-button experience-button-primary" href="/demo">Try the live console <span>Γåù</span></Link>
+            <Link className="experience-button experience-button-primary" href="/demo">Try the live console <span>↗</span></Link>
             <Link className="experience-button experience-button-quiet" href="/studio">Explore agent studio</Link>
           </div>
-          <div className="trust-row"><span>Γùë</span> PII protection <span>Γùë</span> Human review <span>Γùë</span> Decision traces</div>
+          <div className="trust-row"><span>◉</span> PII protection <span>◉</span> Human review <span>◉</span> Decision traces</div>
         </div>
 
         <div className="hero-visual-shell" onMouseMove={tiltArtwork} onMouseLeave={resetArtwork}>
@@ -72,8 +72,8 @@ export default function HomePage() {
               Your browser does not support the video tag.
             </video>
           </div>
-          <div className="floating-chip chip-secure" data-float-one><span>Γ£ô</span> Guardrails on</div>
-          <div className="floating-chip chip-trace" data-float-two><span>Γùî</span> Full trace</div>
+          <div className="floating-chip chip-secure" data-float-one><span>✓</span> Guardrails on</div>
+          <div className="floating-chip chip-trace" data-float-two><span>◌</span> Full trace</div>
         </div>
       </section>
 
@@ -84,25 +84,25 @@ export default function HomePage() {
       </section>
 
       <section className="experience-section">
-        <div className="section-heading"><div><p>Purpose-built controls</p><h2>Keep intelligence moving.<br />Keep risk visible.</h2></div><span>01 ΓÇö FOUNDATION</span></div>
+        <div className="section-heading"><div><p>Purpose-built controls</p><h2>Keep intelligence moving.<br />Keep risk visible.</h2></div><span>01 — FOUNDATION</span></div>
         <div className="capability-grid">
           {capabilities.map((item) => <article className="capability-card" data-capability key={item.number}><div className="capability-top"><span>{item.number}</span><b>{item.icon}</b></div><h3>{item.title}</h3><p>{item.text}</p><div className="capability-line"></div></article>)}
         </div>
       </section>
 
       <section className="experience-section workflow-section">
-        <div className="section-heading"><div><p>A clearer workflow</p><h2>From configuration<br />to confident action.</h2></div><span>02 ΓÇö OPERATE</span></div>
+        <div className="section-heading"><div><p>A clearer workflow</p><h2>From configuration<br />to confident action.</h2></div><span>02 — OPERATE</span></div>
         <div className="workflow-grid">
           {workflow.map((item) => <Link className="workflow-card" data-workflow-card href={item.href} key={item.step}>
             <div className="workflow-image"><img src={item.image} alt={item.alt} /><span>{item.step}</span></div>
-            <div className="workflow-content"><div><h3>{item.title}</h3><p>{item.text}</p></div><b>Γåù</b></div>
+            <div className="workflow-content"><div><h3>{item.title}</h3><p>{item.text}</p></div><b>↗</b></div>
           </Link>)}
         </div>
       </section>
 
       <section className="closing-panel">
         <div><p>Ready to operate</p><h2>Make AI actions<br />accountable by default.</h2></div>
-        <div><p>Launch a test request and see the guardrails, trace, and approval workflow in action.</p><Link className="experience-button experience-button-light" href="/demo">Open live console <span>Γåù</span></Link></div>
+        <div><p>Launch a test request and see the guardrails, trace, and approval workflow in action.</p><Link className="experience-button experience-button-light" href="/demo">Open live console <span>↗</span></Link></div>
       </section>
     </main>
   );

@@ -25,17 +25,17 @@ export default function AgentForgeSecurityIncident() {
 <span className="material-symbols-outlined text-[16px] text-primary">smart_toy</span>
               Agent: <strong className="text-on-surface font-medium">TreasuryReconciler-v1.9</strong>
 </span>
-<span className="text-outline-variant">ΓÇó</span>
+<span className="text-outline-variant">•</span>
 <span className="flex items-center gap-1.5">
 <span className="material-symbols-outlined text-[16px] text-on-surface-variant">apartment</span>
               Tenant: <strong className="text-on-surface font-medium">FinTech Global (#2091)</strong>
 </span>
-<span className="text-outline-variant">ΓÇó</span>
+<span className="text-outline-variant">•</span>
 <span className="flex items-center gap-1.5">
 <span className="material-symbols-outlined text-[16px] text-on-surface-variant">radar</span>
               Detector: <strong className="text-on-surface font-medium">Apigee Anomaly v4</strong>
 </span>
-<span className="text-outline-variant">ΓÇó</span>
+<span className="text-outline-variant">•</span>
 <span className="flex items-center gap-1.5">
 <span className="material-symbols-outlined text-[16px] text-tertiary">timer</span>
               Elapsed: <strong className="font-label-caps text-on-surface font-medium">00:04:18</strong>
@@ -59,7 +59,7 @@ export default function AgentForgeSecurityIncident() {
 
 <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-<div className="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"><div className="flex items-center justify-between"><span className="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider">POTENTIAL FINANCIAL EXPOSURE</span><span className="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center"><span className="material-symbols-outlined text-[18px]">attach_money</span></span></div><div className="mt-4"><div className="font-headline-md text-headline-md font-display-hero text-tertiary tracking-tight font-bold">$1,840,000</div><p className="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>14 Queued disbursements halted ΓÇó $0 USD leaked via Layer 3 Ceiling</p></div><div className="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps"><span className="">Outbound Gate</span><span className="text-tertiary font-semibold">100% Intercepted</span></div></div>
+<div className="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"><div className="flex items-center justify-between"><span className="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider">POTENTIAL FINANCIAL EXPOSURE</span><span className="w-8 h-8 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center"><span className="material-symbols-outlined text-[18px]">attach_money</span></span></div><div className="mt-4"><div className="font-headline-md text-headline-md font-display-hero text-tertiary tracking-tight font-bold">$1,840,000</div><p className="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>14 Queued disbursements halted • $0 USD leaked via Layer 3 Ceiling</p></div><div className="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps"><span className="">Outbound Gate</span><span className="text-tertiary font-semibold">100% Intercepted</span></div></div>
 
 <div className="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
 <div className="flex items-center justify-between">
@@ -72,7 +72,7 @@ export default function AgentForgeSecurityIncident() {
 <div className="font-headline-md text-headline-md font-display-hero text-on-surface tracking-tight font-bold">4,912</div>
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5">
 <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-            410x nominal burst spike ΓÇó Intercept latency &lt;10ms
+            410x nominal burst spike • Intercept latency &lt;10ms
           </p>
 </div>
 <div className="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
@@ -92,7 +92,7 @@ export default function AgentForgeSecurityIncident() {
 <div className="font-headline-md text-headline-md font-display-hero text-tertiary tracking-tight font-bold">Level 4 / Contained</div>
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 flex items-center gap-1.5">
 <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-            gVisor sandbox boundary held ΓÇó Zero data records exfiltrated
+            gVisor sandbox boundary held • Zero data records exfiltrated
           </p>
 </div>
 <div className="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-label-caps text-label-caps">
@@ -160,7 +160,7 @@ export default function AgentForgeSecurityIncident() {
 
 <div className="flex flex-col items-center gap-1 md:hidden"><span className="material-symbols-outlined text-outline">south</span><span className="font-label-caps text-label-caps bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded">Token Revoked (14ms)</span></div>
 
-<div className="hidden md:flex flex-col items-center -mt-8"><span className="font-label-caps text-label-caps bg-surface-container-lowest text-tertiary px-2.5 py-1 rounded-full shadow-sm">Token Revoked ΓÇó 14ms</span></div>
+<div className="hidden md:flex flex-col items-center -mt-8"><span className="font-label-caps text-label-caps bg-surface-container-lowest text-tertiary px-2.5 py-1 rounded-full shadow-sm">Token Revoked • 14ms</span></div>
 
 <div className="flex flex-col items-center text-center group cursor-pointer" onclick="showNodeInspect('stripe')">
 <div className="relative flex items-center justify-center">
@@ -296,7 +296,7 @@ export default function AgentForgeSecurityIncident() {
 
 <div className="hidden flex-col space-y-4 pt-4" id="tab-content-payloads">
 <div className="flex items-center justify-between">
-<span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Payload Inspector ΓÇö Intercept Envelope</span>
+<span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Payload Inspector — Intercept Envelope</span>
 <button className="font-label-ui text-label-ui text-primary hover:underline flex items-center gap-1" onclick="copyPayload()">
 <span className="material-symbols-outlined text-[16px]">content_copy</span>
 <span id="copy-btn-text" className="">Copy Raw JSON</span>

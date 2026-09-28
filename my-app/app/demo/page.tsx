@@ -85,7 +85,7 @@ export default function AgentForgeLiveDemoandTraceConsole() {
 <div className="min-w-0 flex-1">
 <div className="font-label-ui text-label-ui font-semibold text-on-surface flex items-center justify-between">
 <span>Order #88392 Dynamic Refund</span>
-<span className="font-code-base text-code-base text-primary opacity-0 group-hover:opacity-100 transition-opacity">Select ΓåÆ</span>
+<span className="font-code-base text-code-base text-primary opacity-0 group-hover:opacity-100 transition-opacity">Select →</span>
 </div>
 <p className="font-body-sm text-body-sm text-on-surface-variant truncate">Query CRM order details and trigger autonomous micro-refund policy</p>
 </div>
@@ -95,7 +95,7 @@ export default function AgentForgeLiveDemoandTraceConsole() {
 <div className="min-w-0 flex-1">
 <div className="font-label-ui text-label-ui font-semibold text-on-surface flex items-center justify-between">
 <span>Restock SKU-4991 Pipeline</span>
-<span className="font-code-base text-code-base text-secondary opacity-0 group-hover:opacity-100 transition-opacity">Select ΓåÆ</span>
+<span className="font-code-base text-code-base text-secondary opacity-0 group-hover:opacity-100 transition-opacity">Select →</span>
 </div>
 <p className="font-body-sm text-body-sm text-on-surface-variant truncate">Scan logistics telemetry and notify fulfillment warehouse operator</p>
 </div>
@@ -277,7 +277,7 @@ export default function AgentForgeLiveDemoandTraceConsole() {
 <div className="flex items-center gap-2 min-w-0">
 <span className="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center font-code-base text-code-base text-on-surface font-semibold text-[11px]">3</span>
 <span className="font-semibold text-on-surface truncate">Tenant RAG Vector Search (Vertex AI Matching Engine)</span>
-<span className="font-label-caps text-label-caps px-1.5 py-0.2 bg-primary/10 text-primary rounded">3 Chunks ┬╖ Sim 0.91</span>
+<span className="font-label-caps text-label-caps px-1.5 py-0.2 bg-primary/10 text-primary rounded">3 Chunks · Sim 0.91</span>
 </div>
 <span className="font-code-base text-code-base text-on-surface font-medium shrink-0">42ms</span>
 </div>

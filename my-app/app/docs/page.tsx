@@ -15,7 +15,7 @@ export default function AgentForgeDocsandSDKReference() {
 <span className="material-symbols-outlined text-outline text-[17px]">search</span>
 <span className="font-body-sm text-body-sm text-on-surface-variant/80">Search docs...</span>
 </div>
-<kbd className="font-code-base text-[11px] bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant font-medium">ΓîÿK</kbd>
+<kbd className="font-code-base text-[11px] bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant font-medium">⌘K</kbd>
 </div>
 </div>
 
@@ -340,7 +340,7 @@ stream = client.agents.stream(
 </div>
 <div className="flex items-center gap-4">
 <span>Latency: 284ms</span>
-<span>ΓÇó</span>
+<span>•</span>
 <span>gVisor microVM Isolated</span>
 </div>
 </div>
