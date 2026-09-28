@@ -10,16 +10,19 @@ import {
   collection,
   query,
   where,
-  orderBy,
-  limit as firestoreLimit,
   getDocs,
 } from 'firebase/firestore';
+import { parseBoundedInteger, parseTenantId } from '@/lib/request-validation';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const tenantId = searchParams.get('tenantId') ?? 'acme_corp';
+  const tenantId = parseTenantId(searchParams.get('tenantId'));
   const traceId = searchParams.get('traceId');
-  const limitParam = parseInt(searchParams.get('limit') ?? '20', 10);
+  const limitParam = parseBoundedInteger(searchParams.get('limit'), 20, 1, 100);
+
+  if (!tenantId) {
+    return NextResponse.json({ error: 'Invalid tenantId.' }, { status: 400 });
+  }
 
   try {
     if (traceId) {
@@ -29,13 +32,16 @@ export async function GET(req: NextRequest) {
         where('traceId', '==', traceId)
       );
       const snapshot = await getDocs(q);
-      const allSteps = snapshot.docs.map((d) => ({
+      const allSteps = snapshot.docs.map((d): Record<string, unknown> & {
+        stepOrder?: number;
+        timestamp?: string | null;
+      } => ({
         id: d.id,
         ...d.data(),
         timestamp: d.data().timestamp?.toDate?.()?.toISOString() ?? null,
       }));
       
-      const steps = allSteps.sort((a, b) => (a.stepOrder as number) - (b.stepOrder as number));
+      const steps = allSteps.sort((a, b) => (a.stepOrder ?? 0) - (b.stepOrder ?? 0));
 
       return NextResponse.json({ traceId, steps, stepCount: steps.length });
     }

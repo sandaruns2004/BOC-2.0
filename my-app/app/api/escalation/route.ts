@@ -10,17 +10,21 @@ import {
   collection,
   query,
   where,
-  orderBy,
   getDocs,
   addDoc,
   serverTimestamp,
 } from 'firebase/firestore';
+import { isRecord, isText, parseTenantId } from '@/lib/request-validation';
 
 // GET — Fetch the escalation queue for a tenant
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const tenantId = searchParams.get('tenantId') ?? 'acme_corp';
+  const tenantId = parseTenantId(searchParams.get('tenantId'));
   const status = searchParams.get('status') ?? 'pending';
+
+  if (!tenantId || !['pending', 'approved', 'rejected'].includes(status)) {
+    return NextResponse.json({ error: 'Invalid tenantId or status.' }, { status: 400 });
+  }
 
   try {
     // Simplified query to avoid requiring Firestore composite indexes for the MVP
@@ -32,7 +36,10 @@ export async function GET(req: NextRequest) {
     const snapshot = await getDocs(q);
     
     // Filter and sort in memory
-    const allEscalations = snapshot.docs.map((doc) => ({
+    const allEscalations = snapshot.docs.map((doc): Record<string, unknown> & {
+      status?: string;
+      createdAt?: string | null;
+    } => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate?.()?.toISOString() ?? null,
@@ -61,13 +68,29 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { tenantId, toolName, toolParameters, riskLevel, userMessage } = body;
+    const tenantId = parseTenantId(body.tenantId);
+    const { toolName, toolParameters, riskLevel, userMessage } = body;
+
+    if (!tenantId || !isText(toolName, 100) || (userMessage !== undefined && !isText(userMessage, 8_000))) {
+      return NextResponse.json(
+        { error: 'tenantId and toolName are required; userMessage must be at most 8,000 characters.' },
+        { status: 400 }
+      );
+    }
+
+    if (toolParameters !== undefined && !isRecord(toolParameters)) {
+      return NextResponse.json({ error: 'toolParameters must be an object.' }, { status: 400 });
+    }
+
+    if (riskLevel !== undefined && !['low', 'high', 'critical'].includes(riskLevel)) {
+      return NextResponse.json({ error: 'Invalid riskLevel.' }, { status: 400 });
+    }
 
     const escalationId = `ESC-${Math.floor(Math.random() * 9000) + 1000}`;
 
     const docRef = await addDoc(collection(db, 'escalations'), {
       escalationId,
-      tenantId: tenantId ?? 'acme_corp',
+      tenantId,
       toolName,
       toolParameters,
       riskLevel: riskLevel ?? 'high',

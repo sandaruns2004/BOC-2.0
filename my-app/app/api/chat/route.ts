@@ -22,8 +22,13 @@ import {
 import { logTraceStep, logCompletedTrace } from '@/lib/trace-logger';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { isRecord, isText, parseTenantId } from '@/lib/request-validation';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const MAX_MESSAGE_LENGTH = 8_000;
+const MODEL_BY_PREFERENCE = {
+  flash: 'gemini-2.5-flash',
+  pro: 'gemini-2.5-pro',
+} as const;
 
 export async function POST(req: NextRequest) {
   const startTime = Date.now();
@@ -46,18 +51,33 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
   }
 
-  const {
-    message,
-    tenantId = 'acme_corp',
-    sessionId = uuidv4(),
-    agentConfig = {},
-  } = requestBody;
+  const { message, agentConfig = {} } = requestBody;
+  const tenantId = parseTenantId(requestBody.tenantId);
+  const sessionId = typeof requestBody.sessionId === 'string' && requestBody.sessionId.length <= 128
+    ? requestBody.sessionId
+    : uuidv4();
 
-  if (!message || typeof message !== 'string' || message.trim().length === 0) {
+  if (!tenantId || !isText(message, MAX_MESSAGE_LENGTH)) {
     return NextResponse.json(
-      { error: 'Message is required and must be a non-empty string.' },
+      { error: `Message is required and must be at most ${MAX_MESSAGE_LENGTH.toLocaleString()} characters. Tenant ID must be valid.` },
       { status: 400 }
     );
+  }
+
+  if (!isRecord(agentConfig)) {
+    return NextResponse.json({ error: 'agentConfig must be an object.' }, { status: 400 });
+  }
+
+  if (agentConfig.systemPrompt !== undefined && !isText(agentConfig.systemPrompt, 8_000)) {
+    return NextResponse.json({ error: 'systemPrompt must be between 1 and 8,000 characters.' }, { status: 400 });
+  }
+
+  if (agentConfig.refundLimit !== undefined && (!Number.isFinite(agentConfig.refundLimit) || agentConfig.refundLimit < 0 || agentConfig.refundLimit > 100_000)) {
+    return NextResponse.json({ error: 'refundLimit must be between 0 and 100,000.' }, { status: 400 });
+  }
+
+  if (agentConfig.modelPreference !== undefined && !['flash', 'pro'].includes(agentConfig.modelPreference)) {
+    return NextResponse.json({ error: 'Invalid modelPreference.' }, { status: 400 });
   }
 
   const systemPrompt =
@@ -68,6 +88,7 @@ export async function POST(req: NextRequest) {
      describe what you would do and the amount involved.`;
 
   const refundLimit = agentConfig.refundLimit ?? 100;
+  const modelName = MODEL_BY_PREFERENCE[agentConfig.modelPreference ?? 'flash'];
 
   // ────────────────────────────────────────────────────────────────
   // STEP 1 — L1 INPUT GUARDRAILS
@@ -118,8 +139,16 @@ export async function POST(req: NextRequest) {
   let completionTokens = 0;
 
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json(
+        { error: 'The AI engine is not configured. Set GEMINI_API_KEY and restart the service.', traceId },
+        { status: 503 }
+      );
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: 'gemini-3.5-flash',
+      model: modelName,
       systemInstruction: systemPrompt,
     });
 
@@ -150,7 +179,7 @@ export async function POST(req: NextRequest) {
     durationMs: llmDuration,
     status: 'pass',
     details: {
-      model: 'gemini-3.5-flash',
+      model: modelName,
       promptTokens,
       completionTokens,
       piiWasScrubbed: guardrailResult.piiFound,
@@ -161,7 +190,9 @@ export async function POST(req: NextRequest) {
   // STEP 3 — L2 OUTPUT GUARDRAILS
   // ────────────────────────────────────────────────────────────────
   const l2Start = Date.now();
-  const detectedToolCall = detectToolCall(llmResponse);
+  // Evaluate the requested action as well as the model wording. This avoids a
+  // safety bypass when a model paraphrases a destructive request without its amount.
+  const detectedToolCall = detectToolCall(`${message}\n${llmResponse}`);
   const outputGuardrail = runOutputGuardrails(detectedToolCall, refundLimit);
   const l2Duration = Date.now() - l2Start;
 
@@ -198,7 +229,7 @@ export async function POST(req: NextRequest) {
         riskLevel: outputGuardrail.riskLevel || null,
         riskReason: outputGuardrail.reason || null,
         agentSummary: llmResponse,
-        userMessage: message, // Store original (not scrubbed) for admin review
+        userMessage: guardrailResult.scrubbedMessage,
         status: 'pending',
         adminId: null,
         adminNote: null,
@@ -224,11 +255,11 @@ export async function POST(req: NextRequest) {
     logCompletedTrace({
       traceId, sessionId, tenantId,
       totalDurationMs: totalDuration,
-      modelUsed: 'gemini-3.5-flash',
+      modelUsed: modelName,
       promptTokens, completionTokens,
       piiDetected: guardrailResult.piiFound,
       escalated: true, blocked: false,
-      toolCalled: detectedToolCall?.name || null,
+      toolCalled: detectedToolCall?.name,
     });
 
     return NextResponse.json({
@@ -245,7 +276,7 @@ export async function POST(req: NextRequest) {
       },
       meta: {
         totalDurationMs: totalDuration,
-        model: 'gemini-3.5-flash',
+        model: modelName,
         promptTokens,
         completionTokens,
       },
@@ -261,11 +292,11 @@ export async function POST(req: NextRequest) {
   logCompletedTrace({
     traceId, sessionId, tenantId,
     totalDurationMs: totalDuration,
-    modelUsed: 'gemini-3.5-flash',
+    modelUsed: modelName,
     promptTokens, completionTokens,
     piiDetected: guardrailResult.piiFound,
     escalated: false, blocked: false,
-    toolCalled: detectedToolCall?.name || null,
+    toolCalled: detectedToolCall?.name,
   });
 
   return NextResponse.json({
@@ -281,7 +312,7 @@ export async function POST(req: NextRequest) {
     },
     meta: {
       totalDurationMs: totalDuration,
-      model: 'gemini-3.5-flash',
+      model: modelName,
       promptTokens,
       completionTokens,
     },
