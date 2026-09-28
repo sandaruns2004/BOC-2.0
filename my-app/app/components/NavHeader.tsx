@@ -26,10 +26,7 @@ export default function NavHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  // (Removed problematic pathname useEffect, closing handled by onClick on mobile links)
 
   function isActive(href: string, exact: boolean) {
     if (exact) return pathname === href;
@@ -100,14 +97,14 @@ export default function NavHeader() {
               View on GitHub
             </a>
             <Link
-              href="/launch"
+              href="/login"
               className={`inline-flex items-center px-3.5 py-1.5 rounded-lg font-label-ui text-label-ui font-medium shadow-sm transition-all ${
-                pathname === '/launch'
+                pathname === '/login'
                   ? 'bg-primary text-on-primary shadow-primary/30'
                   : 'bg-gradient-to-r from-primary to-secondary text-on-primary hover:opacity-95 hover:shadow-primary/25'
               }`}
             >
-              Launch Console
+              Admin Login
             </Link>
 
             {/* Mobile Hamburger */}
@@ -130,6 +127,7 @@ export default function NavHeader() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={() => setMobileOpen(false)}
                 className={`font-label-ui text-label-ui px-4 py-2.5 rounded-xl transition-all ${
                   isActive(link.href, link.exact)
                     ? 'bg-surface-container text-primary font-semibold'
@@ -142,34 +140,18 @@ export default function NavHeader() {
             <div className="border-t border-outline-variant/20 mt-2 pt-2 flex flex-col gap-1">
               <Link
                 href="/docs"
+                onClick={() => setMobileOpen(false)}
                 className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-4 py-2.5 rounded-xl hover:bg-surface-container-low transition-all"
               >
                 Explore Docs
               </Link>
               <Link
-                href="/studio"
-                className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-4 py-2.5 rounded-xl hover:bg-surface-container-low transition-all"
-              >
-                Agent Studio
-              </Link>
-              <Link
-                href="/escalation"
-                className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-4 py-2.5 rounded-xl hover:bg-surface-container-low transition-all"
-              >
-                Escalation Queue
-              </Link>
-              <Link
-                href="/replay"
-                className="font-label-ui text-label-ui text-on-surface-variant hover:text-on-surface px-4 py-2.5 rounded-xl hover:bg-surface-container-low transition-all"
-              >
-                Execution Replay
-              </Link>
-              <Link
-                href="/launch"
+                href="/login"
+                onClick={() => setMobileOpen(false)}
                 className="mt-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold"
               >
-                <span className="material-symbols-outlined text-[16px]">rocket_launch</span>
-                Launch Console
+                <span className="material-symbols-outlined text-[16px]">admin_panel_settings</span>
+                Admin Login
               </Link>
             </div>
           </div>
