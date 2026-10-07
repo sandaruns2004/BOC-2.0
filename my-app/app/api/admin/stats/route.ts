@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getCountFromServer, getAggregateFromServer, sum } from 'firebase/firestore';
+import { collection, query, where, getCountFromServer, getDocs } from 'firebase/firestore';
 
 export async function GET() {
   try {
@@ -24,12 +24,16 @@ export async function GET() {
 
     // 3. Token Usage Approximation (API keys + Chat history invocations)
     const keysQ = query(collection(db, 'api_keys'), where('tenantId', '==', tenantId));
-    const keysSnap = await getAggregateFromServer(keysQ, { totalUsage: sum('usageCount') });
+    const keysSnap = await getDocs(keysQ);
+    let totalUsage = 0;
+    keysSnap.forEach(doc => {
+      totalUsage += (doc.data().usageCount || 0);
+    });
     
     const chatQ = query(collection(db, 'chat_history'), where('tenantId', '==', tenantId));
     const chatSnap = await getCountFromServer(chatQ);
     
-    const tokenUsage = (keysSnap.data().totalUsage || 0) + chatSnap.data().count;
+    const tokenUsage = totalUsage + chatSnap.data().count;
 
     // 4. Escalations
     const escQ = query(collection(db, 'escalations'), where('tenantId', '==', tenantId));
