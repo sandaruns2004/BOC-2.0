@@ -16,7 +16,13 @@ export default function AdminReports() {
             <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
               <span className="material-symbols-outlined text-[24px]">receipt_long</span>
             </div>
-            <button className="text-primary font-medium text-sm hover:underline">Generate CSV</button>
+            <a 
+              href="/api/admin/reports/billing" 
+              download 
+              className="text-primary font-medium text-sm hover:underline cursor-pointer"
+            >
+              Generate CSV
+            </a>
           </div>
           <h3 className="font-semibold text-on-surface text-lg">Billing & Token Usage</h3>
           <p className="text-on-surface-variant text-sm mt-1">Detailed breakdown of tokens consumed by the Gemini 1.5 Pro model.</p>
@@ -27,7 +33,13 @@ export default function AdminReports() {
             <div className="w-12 h-12 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center">
               <span className="material-symbols-outlined text-[24px]">gavel</span>
             </div>
-            <button className="text-primary font-medium text-sm hover:underline">Generate PDF</button>
+            <a 
+              href="/api/admin/reports/audit" 
+              download 
+              className="text-primary font-medium text-sm hover:underline cursor-pointer"
+            >
+              Generate CSV
+            </a>
           </div>
           <h3 className="font-semibold text-on-surface text-lg">Compliance Audit Trail</h3>
           <p className="text-on-surface-variant text-sm mt-1">Full log of AI actions and human escalations for regulatory review.</p>
