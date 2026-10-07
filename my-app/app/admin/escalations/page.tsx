@@ -1,6 +1,47 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/app/components/AuthProvider';
+
 export default function AdminEscalations() {
+  const { user } = useAuth();
+  const [escalations, setEscalations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?.tenantId) return;
+
+    async function loadEscalations() {
+      try {
+        const res = await fetch(`/api/escalation?tenantId=${user.tenantId}&status=pending`);
+        if (res.ok) {
+          const data = await res.json();
+          setEscalations(data.escalations || []);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadEscalations();
+  }, [user]);
+
+  async function handleDecision(id: string, decision: 'approved' | 'rejected') {
+    try {
+      const res = await fetch('/api/escalation', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, decision, adminId: user?.userId })
+      });
+      if (res.ok) {
+        setEscalations(prev => prev.filter(e => e.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
@@ -10,15 +51,60 @@ export default function AdminEscalations() {
         </div>
       </div>
 
-      <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm p-12 flex flex-col items-center justify-center text-center">
-        <div className="w-20 h-20 mx-auto rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant mb-6 border border-outline-variant/30">
-          <span className="material-symbols-outlined text-[40px]">task_alt</span>
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <span className="material-symbols-outlined animate-spin text-[32px] text-primary">progress_activity</span>
         </div>
-        <h2 className="text-headline-sm font-semibold text-on-surface mb-2">No Active Escalations</h2>
-        <p className="text-on-surface-variant text-sm max-w-md">
-          The AI agent is currently handling all queries within confidence thresholds. Any action requiring human review will appear here.
-        </p>
-      </div>
+      ) : escalations.length === 0 ? (
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm p-12 flex flex-col items-center justify-center text-center">
+          <div className="w-20 h-20 mx-auto rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant mb-6 border border-outline-variant/30">
+            <span className="material-symbols-outlined text-[40px]">task_alt</span>
+          </div>
+          <h2 className="text-headline-sm font-semibold text-on-surface mb-2">No Active Escalations</h2>
+          <p className="text-on-surface-variant text-sm max-w-md">
+            The AI agent is currently handling all queries within confidence thresholds. Any action requiring human review will appear here.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {escalations.map((esc) => (
+            <div key={esc.id} className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="bg-error/10 text-error px-2 py-0.5 rounded text-xs font-semibold uppercase">{esc.riskLevel} RISK</span>
+                    <span className="text-sm font-medium text-on-surface-variant">ID: {esc.escalationId}</span>
+                  </div>
+                  <h3 className="text-title-md font-semibold text-on-surface">Tool Request: {esc.toolName}</h3>
+                </div>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => handleDecision(esc.id, 'rejected')}
+                    className="px-4 py-2 border border-outline-variant/30 rounded-lg text-error hover:bg-error/5 font-medium transition-colors"
+                  >
+                    Reject
+                  </button>
+                  <button 
+                    onClick={() => handleDecision(esc.id, 'approved')}
+                    className="px-4 py-2 bg-primary text-on-primary rounded-lg hover:bg-primary/90 font-medium transition-colors shadow-sm"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
+              
+              <div className="bg-surface-container-low p-4 rounded-lg font-mono text-sm text-on-surface overflow-x-auto whitespace-pre-wrap">
+                {JSON.stringify(esc.toolParameters, null, 2)}
+              </div>
+              {esc.userMessage && (
+                <div className="mt-4 text-sm text-on-surface-variant">
+                  <strong>User Message:</strong> {esc.userMessage}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
