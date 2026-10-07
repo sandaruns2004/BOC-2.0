@@ -7,15 +7,23 @@ import { doc, getDoc } from 'firebase/firestore';
 export async function GET() {
   const session = await getSession();
   
-  if (session && session.userId && session.role === 'user') {
+  if (session && session.userId) {
     try {
-      const userDoc = await getDoc(doc(db, 'users', session.userId));
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
+      let docData = null;
+      if (session.role === 'user') {
+        const userDoc = await getDoc(doc(db, 'users', session.userId));
+        if (userDoc.exists()) docData = userDoc.data();
+      } else if (session.role === 'admin') {
+        const adminDoc = await getDoc(doc(db, 'business_admins', session.userId));
+        if (adminDoc.exists()) docData = adminDoc.data();
+      }
+
+      if (docData) {
         const mergedUser = { 
           ...session, 
-          name: userData.name || session.name, 
-          email: userData.email || session.email 
+          name: docData.name || session.name, 
+          email: docData.email || session.email,
+          tenantId: docData.tenantId || session.tenantId 
         };
         console.log('Merged session user:', mergedUser);
         return NextResponse.json({ user: mergedUser });

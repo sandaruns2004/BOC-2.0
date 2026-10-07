@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/app/components/AuthProvider';
 
 const OPS_NAV = [
   {
@@ -19,8 +20,12 @@ const OPS_NAV = [
 export default function OpsSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+
+  const displayEmail = user?.email || 'ops@agentforge.ai';
+  const displayInitial = 'P';
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -120,11 +125,11 @@ export default function OpsSidebar() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-primary text-[18px]">engineering</span>
+                <span className="text-primary font-bold text-sm">{displayInitial}</span>
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-label-ui text-[12px] font-semibold text-on-surface truncate">Platform Admin</p>
-                <p className="font-body-sm text-[10px] text-on-surface-variant truncate">ops@agentforge.ai</p>
+                <p className="font-body-sm text-[10px] text-on-surface-variant truncate">{displayEmail}</p>
               </div>
             </div>
             <button

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/app/components/AuthProvider';
 
 const ADMIN_NAV = [
   {
@@ -27,8 +28,13 @@ const ADMIN_NAV = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+
+  const displayName = user?.name || 'Business Admin';
+  const displayEmail = user?.email || 'admin@company.com';
+  const displayInitial = displayName.charAt(0).toUpperCase();
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -128,11 +134,11 @@ export default function AdminSidebar() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-primary text-[18px]">person</span>
+                <span className="text-primary font-bold text-sm">{displayInitial}</span>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-label-ui text-[12px] font-semibold text-on-surface truncate">Business Admin</p>
-                <p className="font-body-sm text-[10px] text-on-surface-variant truncate">Sign Out</p>
+                <p className="font-label-ui text-[12px] font-semibold text-on-surface truncate">{displayName}</p>
+                <p className="font-body-sm text-[10px] text-on-surface-variant truncate">{displayEmail}</p>
               </div>
             </div>
             <button
