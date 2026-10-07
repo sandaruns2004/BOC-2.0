@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcryptjs';
 
 const COLLECTIONS = [
   'business_admins',
@@ -31,10 +32,18 @@ export async function GET() {
     // 2. SEED ADMINS & USERS
     const tenantId = 'tnt_sample01';
     
+    // Hash passwords to match credentials.txt
+    const salt = await bcrypt.genSalt(10);
+    const opsHash = await bcrypt.hash('AgentForge2026!', salt);
+    const adminHash = await bcrypt.hash('Admin1234!', salt);
+    const userHash = await bcrypt.hash('User1234!', salt);
+    
     // Master Admin (Ops)
     await setDoc(doc(db, 'business_admins', 'ops_admin_id'), {
       email: 'admin@agentforge.ai',
       role: 'ops',
+      isActive: true,
+      passwordHash: opsHash,
       createdAt: new Date().toISOString()
     });
 
@@ -44,6 +53,8 @@ export async function GET() {
       tenantId: tenantId,
       companyName: 'Test Company',
       role: 'admin',
+      isActive: true,
+      passwordHash: adminHash,
       createdAt: new Date().toISOString()
     });
 
@@ -52,6 +63,8 @@ export async function GET() {
       email: 'jane@testcorp.com',
       tenantId: tenantId,
       status: 'active',
+      isActive: true,
+      passwordHash: userHash,
       role: 'user',
       createdAt: new Date().toISOString()
     });
@@ -60,6 +73,8 @@ export async function GET() {
       email: 'bob@testcorp.com',
       tenantId: tenantId,
       status: 'pending',
+      isActive: false,
+      passwordHash: userHash,
       role: 'user',
       createdAt: new Date().toISOString()
     });
