@@ -9,24 +9,25 @@ export default function AdminEscalations() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (authLoading) return;
-
     async function loadEscalations() {
       try {
-        const tId = user?.tenantId || 'tnt_sample01'; // Fallback to handle stale session state locally
+        console.log('Fetching escalations...');
+        const tId = user?.tenantId || 'tnt_sample01'; 
         const res = await fetch(`/api/escalation?tenantId=${tId}&status=pending`);
+        console.log('Fetch response status:', res.status);
         if (res.ok) {
           const data = await res.json();
+          console.log('Fetched escalations:', data.escalations);
           setEscalations(data.escalations || []);
         }
       } catch (e) {
-        console.error(e);
+        console.error('Failed to load escalations:', e);
       } finally {
         setLoading(false);
       }
     }
     loadEscalations();
-  }, [user, authLoading]);
+  }, [user]);
 
   async function handleDecision(id: string, decision: 'approved' | 'rejected') {
     try {
@@ -73,29 +74,29 @@ export default function AdminEscalations() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="bg-error/10 text-error px-2 py-0.5 rounded text-xs font-semibold uppercase">{esc.riskLevel} RISK</span>
-                    <span className="text-sm font-medium text-on-surface-variant">ID: {esc.escalationId}</span>
+                    <span className="bg-error/10 text-error px-2 py-0.5 rounded text-xs font-semibold uppercase">{esc.urgency || esc.riskLevel || 'Medium'} RISK</span>
+                    <span className="text-sm font-medium text-on-surface-variant">ID: {esc.id}</span>
                   </div>
-                  <h3 className="text-title-md font-semibold text-on-surface">Tool Request: {esc.toolName}</h3>
+                  <h3 className="text-title-md font-semibold text-on-surface">Agent Escalation Request</h3>
                 </div>
                 <div className="flex gap-2">
                   <button 
                     onClick={() => handleDecision(esc.id, 'rejected')}
                     className="px-4 py-2 border border-outline-variant/30 rounded-lg text-error hover:bg-error/5 font-medium transition-colors"
                   >
-                    Reject
+                    Dismiss
                   </button>
                   <button 
                     onClick={() => handleDecision(esc.id, 'approved')}
                     className="px-4 py-2 bg-primary text-on-primary rounded-lg hover:bg-primary/90 font-medium transition-colors shadow-sm"
                   >
-                    Approve
+                    Resolve
                   </button>
                 </div>
               </div>
               
               <div className="bg-surface-container-low p-4 rounded-lg font-mono text-sm text-on-surface overflow-x-auto whitespace-pre-wrap">
-                {JSON.stringify(esc.toolParameters, null, 2)}
+                {esc.reason || JSON.stringify(esc.toolParameters, null, 2)}
               </div>
               {esc.userMessage && (
                 <div className="mt-4 text-sm text-on-surface-variant">
