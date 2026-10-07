@@ -154,8 +154,8 @@ export async function DELETE(req: Request) {
 
     // 2. Delete from Pinecone
     if (pc && process.env.PINECONE_INDEX_NAME) {
+      const index = pc.index(process.env.PINECONE_INDEX_NAME);
       try {
-        const index = pc.index(process.env.PINECONE_INDEX_NAME);
         // Try new SDK signature first
         await (index as any).deleteMany({ filter: { docId: docId } });
       } catch (e: any) {
