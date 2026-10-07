@@ -36,7 +36,7 @@ export default function AgentForgeDocsandSDKReference() {
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold px-2 mb-1">Core Endpoints</span>
 <a className="py-1.5 px-3 flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-code-base text-[12px] transition-colors" href="#endpoint-invoke">
 <span className="text-[10px] font-bold px-1 rounded bg-primary text-on-primary">POST</span>
-<span>/v2/agent/invoke</span>
+<span>/api/v1/chat</span>
 </a>
 <a className="py-1.5 px-3 flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-code-base text-[12px] transition-colors" href="#endpoint-inspect">
 <span className="text-[10px] font-bold px-1 rounded bg-secondary text-on-secondary">POST</span>
@@ -189,14 +189,12 @@ stream = client.agents.stream(
   process.stdout.write(event.tokenDelta);
 {"}"}</code></pre>
 
-<pre className="p-5 font-code-base text-sm leading-relaxed overflow-x-auto text-slate-200 hidden" id="code-curl"><code>curl -X POST https://us-central1.agentforge.api/v2/agent/invoke \
-  -H <span className="text-emerald-400">"Authorization: Bearer $FORGE_SECRET_KEY"</span> \
-  -H <span className="text-emerald-400">"X-Agent-Tenant-Id: tnt-fintech-boc-09"</span> \
+<pre className="p-5 font-code-base text-sm leading-relaxed overflow-x-auto text-slate-200 hidden" id="code-curl"><code>curl -X POST https://api.agentforge.ai/api/v1/chat \
+  -H <span className="text-emerald-400">"Authorization: Bearer af_sk_a3b8f29e1c4d..."</span> \
   -H <span className="text-emerald-400">"Content-Type: application/json"</span> \
   -d <span className="text-amber-400">'{"{"}
-    "agent_id": "ag-boc-treasury-reconciler",
-    "prompt": "Audit ledger discrepancies for batch #8492",
-    "stream": false
+    "message": "What is our company refund policy?",
+    "history": []
   {"}"}'</span></code></pre>
 </div>
 </section>
@@ -205,7 +203,7 @@ stream = client.agents.stream(
 <div className="flex flex-wrap items-center justify-between gap-3">
 <div className="flex items-center gap-3">
 <span className="px-2.5 py-1 rounded bg-primary text-on-primary font-code-base text-xs font-bold">POST</span>
-<span className="font-code-base text-headline-sm font-semibold text-on-surface">/v2/agent/invoke</span>
+<span className="font-code-base text-headline-sm font-semibold text-on-surface">/api/v1/chat</span>
 </div>
 <span className="px-3 py-1 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface-variant font-medium">Synchronous Block</span>
 </div>
@@ -227,15 +225,7 @@ stream = client.agents.stream(
                   Bearer &lt;FORGE_SECRET_KEY&gt;
                 </div>
 </div>
-<div className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
-<div className="flex items-center gap-3">
-<span className="font-code-base text-sm font-semibold text-on-surface">X-Agent-Tenant-Id</span>
-<span className="font-label-caps text-[10px] text-error font-medium px-2 py-0.5 rounded bg-error-container">required</span>
-</div>
-<div className="font-body-sm text-body-sm text-on-surface-variant font-mono text-xs md:text-right">
-                  Unique tenant workspace identifier (UUIDv4)
-                </div>
-</div>
+
 <div className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
 <div className="flex items-center gap-3">
 <span className="font-code-base text-sm font-semibold text-on-surface">X-Correlation-Trace</span>

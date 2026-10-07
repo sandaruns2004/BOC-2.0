@@ -1,20 +1,45 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
+import { db } from '@/lib/firebase';
+import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { embedText, generateText } from '@/lib/rag';
 import { Pinecone } from '@pinecone-database/pinecone';
-import { db } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 
 const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY }) : null;
 
 export async function POST(req: Request) {
-  const session = await getSession();
-  if (!session || session.role !== 'user') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
-    const { message, history } = await req.json();
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Missing or invalid Authorization header' }, { status: 401 });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    // Validate API key
+    const q = query(collection(db, 'api_keys'), where('key', '==', token));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
+    }
+
+    const keyDoc = snapshot.docs[0];
+    const keyData = keyDoc.data();
+
+    if (!keyData.isActive) {
+      return NextResponse.json({ error: 'API key is inactive' }, { status: 401 });
+    }
+
+    const tenantId = keyData.tenantId;
+
+    // Update usage
+    await updateDoc(doc(db, 'api_keys', keyDoc.id), {
+      usageCount: (keyData.usageCount || 0) + 1,
+      lastUsed: new Date().toISOString()
+    });
+
+    const body = await req.json();
+    const { message, history } = body;
 
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -34,7 +59,7 @@ export async function POST(req: Request) {
           includeMetadata: true,
           // CRITICAL: Tenant Isolation Filter
           filter: {
-            tenantId: { $eq: session.tenantId }
+            tenantId: { $eq: tenantId }
           }
         });
 
@@ -66,51 +91,11 @@ ${contextText || "No specific company knowledge base documents found."}
     conversation += `User: ${message}\nAssistant:`;
 
     // Call Gemini Model with function calling
-    const reply = await generateText(conversation, session.tenantId);
+    const reply = await generateText(conversation, tenantId);
 
-    try {
-      await addDoc(collection(db, 'chat_history'), {
-        userId: session.userId,
-        tenantId: session.tenantId,
-        message: message,
-        reply: reply,
-        createdAt: new Date().toISOString()
-      });
-    } catch (dbErr) {
-      console.error('Failed to save history:', dbErr);
-    }
-    
     return NextResponse.json({ reply });
   } catch (error: any) {
-    console.error('Chat error:', error);
+    console.error('API v1 Chat error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
-export async function GET() {
-  const session = await getSession();
-  if (!session || session.role !== 'user') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  try {
-    const { getDocs, query, where } = await import('firebase/firestore');
-    const q = query(
-      collection(db, 'chat_history'),
-      where('userId', '==', session.userId)
-    );
-    const snapshot = await getDocs(q);
-    const history = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
-    
-    // Sort in memory to avoid requiring a composite index in Firestore
-    history.sort((a, b) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-    
-    return NextResponse.json({ history });
-  } catch (error: any) {
-    console.error('Failed to fetch history:', error);
-    // If index is missing, return empty array gracefully
-    return NextResponse.json({ history: [] });
   }
 }
