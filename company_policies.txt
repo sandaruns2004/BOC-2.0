@@ -1,0 +1,33 @@
+ACME CORP - EMPLOYEE HANDBOOK & KNOWLEDGE BASE
+Last Updated: October 2026
+
+1. TRAVEL & EXPENSE POLICY
+1.1 Flights: All employees must book economy class tickets for domestic travel. For international travel exceeding 8 hours, business class may be booked with prior approval from a VP.
+1.2 Hotels: The maximum nightly hotel rate is $250 in major cities (New York, San Francisco, London, Tokyo) and $150 elsewhere.
+1.3 Meals: Employees are allotted a daily per diem of $75 for meals while traveling. Receipts are only required for individual meals exceeding $25.
+1.4 Reimbursement: All expenses must be submitted via the Concur platform within 30 days of the trip's conclusion.
+
+2. IT SECURITY & DEVICE POLICY
+2.1 Passwords: Must be at least 14 characters long, containing upper, lower, numbers, and symbols. Passwords expire every 90 days.
+2.2 Hardware: Employees are issued a standard MacBook Pro or Dell XPS. Upgrades require manager approval and a valid business case (e.g., software engineering, video editing).
+2.3 Data Classification:
+- Public: Safe for external release (e.g., marketing materials).
+- Internal: Safe for all employees, but not external (e.g., company all-hands slides).
+- Confidential: Restricted to specific teams (e.g., unreleased financial data, HR records).
+2.4 USB Drives: The use of unencrypted personal USB drives on company laptops is strictly prohibited.
+
+3. HUMAN RESOURCES & TIME OFF
+3.1 PTO: Full-time employees accrue 20 days of Paid Time Off annually. Up to 5 days may roll over to the following calendar year.
+3.2 Sick Leave: Employees receive 10 days of paid sick leave per year.
+3.3 Parental Leave: Acme Corp offers 16 weeks of fully paid parental leave for primary and secondary caregivers following the birth or adoption of a child.
+3.4 Core Hours: While we operate on a flexible schedule, all employees are expected to be online and available for meetings during the core hours of 10:00 AM to 3:00 PM in their local timezone.
+
+4. PRODUCT & ENGINEERING
+4.1 Deployment: No production deployments are allowed on Fridays without explicitly documented VP approval (The "No-Deploy Friday" rule).
+4.2 Code Reviews: All pull requests must be approved by at least two senior engineers before merging to the main branch.
+4.3 SLAs: The engineering team maintains a 99.99% uptime SLA for external APIs. Priority 1 (P1) incidents require an initial response within 15 minutes.
+
+5. ESCALATION MATRIX
+5.1 Tier 1: General queries and basic troubleshooting (handled by AgentForge AI).
+5.2 Tier 2: Account lockouts and billing disputes (Human Operations Team).
+5.3 Tier 3: Security breaches and infrastructure outages (On-call Engineering Team).
