@@ -104,7 +104,7 @@ export default function NavHeader() {
                   : 'bg-gradient-to-r from-primary to-secondary text-on-primary hover:opacity-95 hover:shadow-primary/25'
               }`}
             >
-              Admin Login
+              Login
             </Link>
 
             {/* Mobile Hamburger */}
@@ -150,8 +150,8 @@ export default function NavHeader() {
                 onClick={() => setMobileOpen(false)}
                 className="mt-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold"
               >
-                <span className="material-symbols-outlined text-[16px]">admin_panel_settings</span>
-                Admin Login
+                <span className="material-symbols-outlined text-[16px]">login</span>
+                Login
               </Link>
             </div>
           </div>
