@@ -22,7 +22,7 @@ export async function GET() {
     const chatSnap = await getDocs(chatQ);
 
     // Initialize 7-day timeline with 0s
-    const timeline = [];
+    const timeline: { date: string, tokens: number, chats: number }[] = [];
     const now = new Date();
     
     // Create an object to quickly map date strings to their index in the timeline
