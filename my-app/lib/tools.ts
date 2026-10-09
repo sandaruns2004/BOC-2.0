@@ -62,7 +62,7 @@ export async function sendEmail({ tenantId, userId, to, subject, body }: { tenan
 export async function generateReport({ tenantId, userId, topic, details }: { tenantId: string, userId: string, topic: string, details: string }) {
   console.log(`[Tool: generateReport] Generating report on ${topic}`);
   try {
-    // 1. Generate PDF
+    // 1. Generate PDF in memory
     const doc = new jsPDF();
     doc.setFontSize(20);
     doc.text(`Report: ${topic}`, 20, 20);
@@ -72,21 +72,20 @@ export async function generateReport({ tenantId, userId, topic, details }: { ten
     const splitText = doc.splitTextToSize(details, 170);
     doc.text(splitText, 20, 30);
     
-    // 2. Save to local public folder instead of Firebase Storage (which was returning 404)
-    const fs = await import('fs');
-    const path = await import('path');
-    
-    const reportsDir = path.join(process.cwd(), 'public', 'reports', tenantId, userId);
-    fs.mkdirSync(reportsDir, { recursive: true });
-    
-    const fileName = `report_${Date.now()}.pdf`;
-    const filePath = path.join(reportsDir, fileName);
-    
     const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
-    fs.writeFileSync(filePath, pdfBuffer);
+    const pdfBase64 = pdfBuffer.toString('base64');
     
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const downloadUrl = `${appUrl}/reports/${tenantId}/${userId}/${fileName}`;
+    // 2. Save base64 to Firestore (bypasses Vercel read-only filesystem & Firebase Storage rules)
+    const reportRef = await addDoc(collection(db, 'reports'), {
+      tenantId,
+      userId,
+      topic,
+      pdfBase64,
+      createdAt: new Date().toISOString()
+    });
+    
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://agentforgev2.vercel.app';
+    const downloadUrl = `${appUrl}/api/report?id=${reportRef.id}`;
     
     // 3. Log Action
     await addDoc(collection(db, 'agent_actions'), {
