@@ -13,6 +13,7 @@ const OPS_NAV = [
       { label: 'Manage Admins',      href: '/ops/admins',    icon: 'manage_accounts', desc: 'Create & manage tenants' },
       { label: 'Platform Reports',   href: '/ops/reports',   icon: 'analytics', desc: 'Usage & billing' },
       { label: 'System Health',      href: '/ops/system',    icon: 'monitor_heart', desc: 'Infrastructure status' },
+      { label: 'Agent Activity',     href: '/ops/agents',    icon: 'robot_2', desc: 'Global agent logs' },
     ],
   },
 ];

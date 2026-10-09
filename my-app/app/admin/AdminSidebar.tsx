@@ -20,6 +20,7 @@ const ADMIN_NAV = [
     items: [
       { label: 'Escalations',     href: '/admin/escalations', icon: 'warning',            desc: 'Human review queue' },
       { label: 'Analytics',       href: '/admin/analytics',   icon: 'monitoring',         desc: 'Usage & costs' },
+      { label: 'Agent Activity',  href: '/admin/agents',      icon: 'robot_2',            desc: 'Agent usage & logs' },
       { label: 'Export Reports',  href: '/admin/reports',     icon: 'download',           desc: 'Download CSV/PDF' },
     ],
   },

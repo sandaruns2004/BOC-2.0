@@ -109,7 +109,17 @@ export default function PortalChat() {
                     ? 'bg-surface-container-highest text-on-surface rounded-tr-sm' 
                     : 'bg-primary/10 text-on-surface rounded-tl-sm border border-primary/20'
                 }`}>
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+                  <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                    {msg.content.split(/(https?:\/\/[^\s]+)/g).map((part, i) => 
+                      part.match(/https?:\/\/[^\s]+/) ? (
+                        <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-primary underline font-medium hover:text-primary/80 transition-colors">
+                          {part.length > 50 ? part.substring(0, 50) + '...' : part}
+                        </a>
+                      ) : (
+                        <span key={i}>{part}</span>
+                      )
+                    )}
+                  </p>
                 </div>
               </div>
             </div>

@@ -61,6 +61,19 @@ const sendEmailDeclaration: FunctionDeclaration = {
   }
 };
 
+const generateReportDeclaration: FunctionDeclaration = {
+  name: "generateReport",
+  description: "Generates a PDF report on a specific topic based on details provided and returns a download link.",
+  parameters: {
+    type: SchemaType.OBJECT,
+    properties: {
+      topic: { type: SchemaType.STRING, description: "The title or topic of the report." },
+      details: { type: SchemaType.STRING, description: "The full content and details to include in the report." }
+    },
+    required: ["topic", "details"]
+  }
+};
+
 const escalateToHumanDeclaration: FunctionDeclaration = {
   name: "escalateToHuman",
   description: "Escalates the current issue to a human operator when the AI cannot resolve it.",
@@ -84,10 +97,10 @@ const checkSystemStatusDeclaration: FunctionDeclaration = {
 };
 
 const tools = [{
-  functionDeclarations: [sendEmailDeclaration, escalateToHumanDeclaration, checkSystemStatusDeclaration]
+  functionDeclarations: [sendEmailDeclaration, generateReportDeclaration, escalateToHumanDeclaration, checkSystemStatusDeclaration]
 }];
 
-export async function generateText(prompt: string, tenantId?: string): Promise<string> {
+export async function generateText(prompt: string, tenantId?: string, userId?: string): Promise<string> {
   const modelsToTry = [
     'gemini-flash-lite-latest',
     'gemini-3.1-flash-lite',
@@ -120,7 +133,9 @@ export async function generateText(prompt: string, tenantId?: string): Promise<s
 
         try {
           if (functionName === 'sendEmail') {
-            functionResponse = await ToolImplementations.sendEmail(args as any);
+            functionResponse = await ToolImplementations.sendEmail({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
+          } else if (functionName === 'generateReport') {
+            functionResponse = await ToolImplementations.generateReport({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
           } else if (functionName === 'escalateToHuman') {
             functionResponse = await ToolImplementations.escalateToHuman({ ...args, tenantId: tenantId || 'unknown' } as any);
           } else if (functionName === 'checkSystemStatus') {
