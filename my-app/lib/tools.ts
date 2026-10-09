@@ -113,12 +113,12 @@ export async function queryDatabase({ tenantId, userId, collectionName, searchQu
   catch { return { success: false, error: 'Unable to retrieve your orders.' }; }
 }
 
-export async function escalateToHuman({ tenantId, userId, reason, urgency, requestId }: { tenantId: string; userId?: string; reason: string; urgency: 'low' | 'medium' | 'high'; requestId?: string }) {
+export async function escalateToHuman({ tenantId, userId, reason, urgency, requestId, userMessage, reviewRule }: { tenantId: string; userId?: string; reason: string; urgency: 'low' | 'medium' | 'high'; requestId?: string; userMessage?: string; reviewRule?: string }) {
   const id = requestId ? tenantId + '_' + userId + '_' + requestId : crypto.randomUUID();
   const reference = doc(db, 'escalations', id);
   await runTransaction(db, async transaction => {
     const previous = await transaction.get(reference);
-    if (!previous.exists()) transaction.set(reference, { tenantId, userId: userId || null, reason, urgency, status: 'pending', createdAt: new Date().toISOString() });
+    if (!previous.exists()) transaction.set(reference, { tenantId, userId: userId || null, reason, urgency, userMessage: userMessage || reason, reviewRule: reviewRule || 'The assistant requested human review.', status: 'pending', createdAt: new Date().toISOString() });
   });
   return { success: true, escalationId: id, message: 'Your request is pending manager review. No refund has been issued.' };
 }

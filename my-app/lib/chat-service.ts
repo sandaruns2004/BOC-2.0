@@ -32,7 +32,7 @@ export async function chat(input: ChatInput, identity: ChatIdentity, onAction?: 
   let result: ChatResult;
   if (refundRequiresReview(input.message, company?.refundLimit || 50000)) {
     if (!identity.userId) return { reply: 'Please sign in before requesting a refund review.', actions, sources: [] };
-    const ticket = await escalateToHuman({ tenantId: identity.tenantId, userId: identity.userId, reason: input.message, urgency: 'high', requestId: input.requestId });
+    const ticket = await escalateToHuman({ tenantId: identity.tenantId, userId: identity.userId, reason: 'Refund request requires a manager decision before further action.', userMessage: input.message, reviewRule: `Refunds above LKR ${(company?.refundLimit || 50000).toLocaleString('en-US')}, foreign-currency refund requests, or requests for a manager require review.`, urgency: 'high', requestId: input.requestId });
     used('escalateToHuman'); result = { reply: ticket.message, actions, sources: [], escalationId: ticket.escalationId };
   } else {
     const orderId = input.message.match(/(?:WW|NV)-\d{4}/i)?.[0].toUpperCase();

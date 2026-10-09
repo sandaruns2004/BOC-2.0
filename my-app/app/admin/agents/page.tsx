@@ -1,8 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/app/components/AuthProvider';
+import { companyForTenant } from '@/lib/demo-config';
 
 export default function AdminAgentsPage() {
+  const { user } = useAuth();
+  const company = user?.tenantId ? companyForTenant(user.tenantId) : undefined;
   const [data, setData] = useState<{ actions: any[], stats: any } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,10 +29,16 @@ export default function AdminAgentsPage() {
   }, []);
 
   return (
-    <div className="p-8">
+    <div className="p-8 text-on-surface">
       <div className="mb-8">
-        <h1 className="text-headline-lg font-bold text-on-surface">Agent Analytics</h1>
-        <p className="text-on-surface-variant font-body-md mt-1">Monitor the usage and success rates of autonomous agents.</p>
+        <h1 className="text-headline-lg font-bold text-on-surface">Website Agent & Activity</h1>
+        <p className="text-on-surface-variant font-body-md mt-1">Your customers chat on your company website. Manage its knowledge, customer access, and actions here.</p>
+      </div>
+      <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-6 mb-8">
+        <h2 className="text-title-md font-semibold">Customer website integration</h2>
+        <p className="text-sm text-on-surface-variant mt-2">Walkwave demonstrates an embedded chat bubble. Nova demonstrates a custom interface backed by the enterprise API. Both use customer identity to look up that customer’s orders.</p>
+        <div className="flex flex-wrap gap-4 mt-4"><Link className="text-primary underline" href="/admin/documents">Manage policy documents</Link><Link className="text-primary underline" href="/admin/settings">Connect company database</Link><Link className="text-primary underline" href="/admin/api-keys">Manage enterprise API keys</Link>{company && <Link className="text-primary underline" href={company.path} target="_blank" rel="noopener noreferrer">View {company.name} demo</Link>}</div>
+        <p className="text-xs text-on-surface-variant mt-4">Use a separate browser profile for the customer demo: choosing a demo customer changes that profile’s login. This prototype demonstrates the integration; a general-purpose installation script is not implemented.</p>
       </div>
 
       {loading ? (
@@ -83,7 +94,7 @@ export default function AdminAgentsPage() {
                         <td className="py-3 px-6 text-on-surface-variant truncate max-w-xs">
                           {action.agentType === 'email' 
                             ? `To: ${action.actionDetails?.to}` 
-                            : `Topic: ${action.actionDetails?.topic}`}
+                            : action.agentType === 'database' ? `Collection: ${action.actionDetails?.collectionName}; ${action.actionDetails?.resultCount ?? 0} matching orders` : `Topic: ${action.actionDetails?.topic || '—'}`}
                         </td>
                         <td className="py-3 px-6">
                           <span className={`px-2 py-1 rounded text-xs font-semibold ${

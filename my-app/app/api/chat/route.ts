@@ -1,13 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { db } from '@/lib/firebase';
-import { collection, getDocsFromServer, query, where } from 'firebase/firestore';
+import { collection, doc, getDocFromServer, getDocsFromServer, query, where } from 'firebase/firestore';
 import { chat, validateChatInput } from '@/lib/chat-service';
 import { companyForTenant } from '@/lib/demo-config';
 export const maxDuration = 60;
 export async function POST(req: Request) {
   const session = await getSession();
   if (session?.role !== 'user' || !session.tenantId) return NextResponse.json({ error: 'Please sign in to chat.' }, { status: 401 });
+  try {
+    const customer = await getDocFromServer(doc(db, 'users', session.userId));
+    if (!customer.exists() || customer.data().tenantId !== session.tenantId || customer.data().isActive !== true) return NextResponse.json({ error: 'Your customer account is disabled or unavailable.' }, { status: 403 });
+  } catch { return NextResponse.json({ error: 'Unable to verify your customer account.' }, { status: 503 }); }
   let input;
   try {
     const body = await req.json();

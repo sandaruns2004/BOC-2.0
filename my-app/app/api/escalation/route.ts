@@ -10,7 +10,13 @@ export async function GET(req: Request) {
   try {
     const snapshot = await getDocsFromServer(query(collection(db, 'escalations'), where('tenantId', '==', session.tenantId)));
     const toDate = (value: unknown) => typeof value === 'string' ? value : (value as { toDate?: () => Date })?.toDate?.().toISOString() || null;
-    const escalations = snapshot.docs.map(d => ({ ...d.data(), id: d.id, createdAt: toDate(d.data().createdAt), decidedAt: toDate(d.data().decidedAt) })).filter(d => (d as Record<string, unknown>).status === (url.searchParams.get('status') || 'pending')).sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+    const matching = snapshot.docs.filter(d => d.data().status === (url.searchParams.get('status') || 'pending')).sort((a, b) => String(b.data().createdAt).localeCompare(String(a.data().createdAt))).slice(0, 100);
+    const escalations = await Promise.all(matching.map(async d => {
+      const data = d.data();
+      const customer = typeof data.userId === 'string' && !data.userId.includes('/') ? await getDocFromServer(doc(db, 'users', data.userId)) : null;
+      const profile = customer?.data();
+      return { ...data, id: d.id, createdAt: toDate(data.createdAt), decidedAt: toDate(data.decidedAt), customerName: profile && profile.tenantId === session.tenantId ? profile.name : null, customerEmail: profile && profile.tenantId === session.tenantId ? profile.email : null };
+    }));
     return NextResponse.json({ escalations, count: escalations.length });
   } catch { return NextResponse.json({ error: 'Unable to load escalations.' }, { status: 500 }); }
 }

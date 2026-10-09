@@ -309,7 +309,7 @@ export default function AgentForgeAIAgentPlatform() {
 </div>
 <div className="mt-8 pt-4 bg-surface-container-low p-3 rounded-lg flex items-center justify-between text-on-surface-variant font-code-base text-[12px]">
 <span className="">Access Portal</span>
-<span className="text-primary font-medium">/admin/console →</span>
+<span className="text-primary font-medium">/admin/dashboard →</span>
 </div>
 </div>
 
@@ -321,26 +321,26 @@ export default function AgentForgeAIAgentPlatform() {
 </div>
 <span className="font-code-base text-[11px] px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant">Execution Flow</span>
 </div>
-<h3 className="mt-6 font-headline-md text-headline-md text-on-surface font-semibold">End User / Client</h3>
-<p className="mt-2 font-body-md text-body-md text-on-surface-variant">Delivers friction-free, context-aware responses with verified factual grounding.</p>
+<h3 className="mt-6 font-headline-md text-headline-md text-on-surface font-semibold">Agent on Your Website</h3>
+<p className="mt-2 font-body-md text-body-md text-on-surface-variant">Customers get support inside your website through a chat bubble or your own interface connected to the enterprise API.</p>
 <div className="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface">
 <div className="flex items-start gap-2.5">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
-<span className="">Sub-600ms streaming responses with contextual multi-turn recall</span>
+<span className="">Answer questions using your uploaded company policies</span>
 </div>
 <div className="flex items-start gap-2.5">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
-<span className="">Interactive tool confirmations for high-impact actions (e.g. order change)</span>
+<span className="">Check customer-owned orders and request email updates</span>
 </div>
 <div className="flex items-start gap-2.5">
 <span className="material-symbols-outlined text-tertiary text-[18px] shrink-0">check_circle</span>
-<span className="">Automatic PII masking ensures private client information is safe</span>
+<span className="">Send refund requests to a manager for review</span>
 </div>
 </div>
 </div>
 <div className="mt-8 pt-4 bg-surface-container-low p-3 rounded-lg flex items-center justify-between text-on-surface-variant font-code-base text-[12px]">
 <span className="">Runtime Endpoint</span>
-<span className="text-secondary font-medium">wss://gateway.agentforge.ai</span>
+<span className="text-secondary font-medium">Widget / Enterprise API</span>
 </div>
 </div>
 
@@ -1042,7 +1042,7 @@ export default function AgentForgeAIAgentPlatform() {
           Skip the infrastructure headaches. Leverage Google Cloud native power, tenant isolation, and strict safety guardrails on day one.
         </p>
 <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-<a className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:brightness-105 transition-all" href="/demo">
+<a className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-label-ui text-label-ui font-semibold shadow-lg shadow-primary/25 hover:brightness-105 transition-all" href="/admin/dashboard">
 <span className="material-symbols-outlined text-[20px]">bolt</span>
 <span className="">Launch Live Console</span>
 </a>
