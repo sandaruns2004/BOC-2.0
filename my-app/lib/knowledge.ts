@@ -10,8 +10,14 @@ export async function extractDocument(file: File) {
   if (!file.name.toLowerCase().endsWith('.pdf')) throw new Error('Please upload a PDF or TXT file.');
   // Load the native canvas polyfills before PDF.js, and only for PDF uploads.
   // Chat and knowledge retrieval must not depend on the PDF parser starting up.
-  const { CanvasFactory, getData } = await import('pdf-parse/worker');
-  const { PDFParse } = await import('pdf-parse');
+  const workerImport = await import('pdf-parse/worker');
+  const mainImport = await import('pdf-parse');
+  console.log('Worker Import:', Object.keys(workerImport));
+  console.log('Main Import:', Object.keys(mainImport));
+  const CanvasFactory = workerImport.CanvasFactory || workerImport.default?.CanvasFactory;
+  const getData = workerImport.getData || workerImport.default?.getData;
+  const PDFParse = mainImport.PDFParse || mainImport.default?.PDFParse || mainImport.default;
+
   PDFParse.setWorker(getData());
   const parser = new PDFParse({ data: bytes, CanvasFactory });
   try { return (await parser.getText()).text; }
