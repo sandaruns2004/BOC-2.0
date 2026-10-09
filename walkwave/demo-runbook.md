@@ -23,7 +23,7 @@ The existing `/demo` link now redirects to Walkwave.
 | Nova Electronics | tnt_nova_demo | Alice / nova_alice | NV-1001 / Nova Air Headphones | Delivered |
 | Nova Electronics | tnt_nova_demo | Sam / nova_sam | NV-1002 / NovaBook 14 | Shipped |
 
-Orders live in the separate `demo_orders` collection in the configured company Firestore database. Both tenant and customer ownership are checked by the server. Demo account selection creates a session only for specifically seeded demo users, and requires `ENABLE_DEMO=true`.
+Orders live in the separate `demo_orders` collection in the configured company Firestore database. Both tenant and customer ownership are checked by the server. Demo account selection creates a session only for specifically seeded demo users, and is enabled by default for these public fictional storefronts.
 
 ## Presentation
 
@@ -74,4 +74,4 @@ Settings: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SM
 - `npm run demo:verify -- --send-email`: also sends one real shipping email to `DEMO_EMAIL_TO` and verifies that repeating the request does not send twice.
 - `npm run demo:setup`: creates/updates only the named demo records and policies. It does not clear collections. It also configures the demo company's allowed order collection and writes generated PDFs. Restart the server if setup adds environment values.
 
-Demo setup and verification are intended for this named sample environment. No deployment has been performed. For a later hosted demo, configure its environment values separately and set `DEMO_API_BASE_URL` to the deployed application's trusted base URL. Keep demo selection disabled outside an intentional demo deployment.
+Demo setup and verification are intended for this named sample environment. No deployment has been performed. For a later hosted demo, configure its environment values separately and set `DEMO_API_BASE_URL` to the deployed application's trusted base URL. These routes intentionally expose only the allowlisted demo customers. Remove the public demo routes before using this prototype for real customers.
