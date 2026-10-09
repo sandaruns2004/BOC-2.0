@@ -1,4 +1,3 @@
-import { PDFParse } from 'pdf-parse';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { collection, doc, getDocsFromServer, query, setDoc, where } from 'firebase/firestore';
 import { db } from './firebase';
@@ -9,7 +8,12 @@ export async function extractDocument(file: File) {
   const bytes = new Uint8Array(await file.arrayBuffer());
   if (file.name.toLowerCase().endsWith('.txt')) return new TextDecoder().decode(bytes);
   if (!file.name.toLowerCase().endsWith('.pdf')) throw new Error('Please upload a PDF or TXT file.');
-  const parser = new PDFParse({ data: bytes });
+  // Load the native canvas polyfills before PDF.js, and only for PDF uploads.
+  // Chat and knowledge retrieval must not depend on the PDF parser starting up.
+  const { CanvasFactory, getData } = await import('pdf-parse/worker');
+  const { PDFParse } = await import('pdf-parse');
+  PDFParse.setWorker(getData());
+  const parser = new PDFParse({ data: bytes, CanvasFactory });
   try { return (await parser.getText()).text; }
   finally { await parser.destroy(); }
 }
