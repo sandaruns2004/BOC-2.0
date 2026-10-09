@@ -27,7 +27,7 @@ Orders live in the separate `demo_orders` collection in the configured company F
 
 ## Presentation
 
-1. Open Walkwave and select Jane. Click the bottom-right bubble.
+1. Open Walkwave and click the bottom-right bubble. Jane is selected automatically for the demo; there is no customer-selection step.
 2. Ask `What is your return policy?` The response identifies its indexed policy source.
 3. Ask `Have my shoes shipped?` Expect WW-1001, Shipped, and its sample tracking reference.
 4. Ask `What is the status of WW-1002?` Expect a non-disclosing not-found response.
@@ -35,7 +35,7 @@ Orders live in the separate `demo_orders` collection in the configured company F
 6. Ask `I want a refund of LKR 75,000`. This triggers a real manager-review ticket. No payment occurs.
 7. In a separate browser profile/window, sign in as the Walkwave manager, open Escalations, and click Refresh tickets. Reject the new ticket. The customer's bubble checks status every five seconds.
 8. Open Nova and select Alice. Ask for the order status in the custom concierge interface. Expand Inspect API response to show the actual structured response.
-9. Optionally select Sam or Bob to show different customer-owned data.
+9. Optionally select Sam on Nova to show different customer-owned data. Walkwave opens directly with Jane, or reuses an existing Walkwave customer session.
 
 The two pages share a cookie within one browser profile. Selecting a customer changes that profile's session. Use separate browser profiles for simultaneous company/admin sessions; the server rejects requests from stale customer selections.
 
