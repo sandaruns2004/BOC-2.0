@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import WidgetSettings from './WidgetSettings';
 
 export default function AdminSettingsPage() {
   const [allowedCollections, setAllowedCollections] = useState('');
@@ -84,9 +85,11 @@ export default function AdminSettingsPage() {
   return (
     <div className="p-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-headline-lg font-bold text-on-surface">Tenant Settings</h1>
-        <p className="text-on-surface-variant font-body-md mt-1">Connect the company database used for customer order lookup.</p>
+        <h1 className="text-headline-lg font-bold text-on-surface">Company settings</h1>
+        <p className="text-on-surface-variant font-body-md mt-1">Install your website assistant and connect your customer order database.</p>
       </div>
+
+      <WidgetSettings />
 
       {loading ? (
         <div className="flex justify-center items-center h-32">

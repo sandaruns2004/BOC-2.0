@@ -44,14 +44,28 @@ export async function indexDocument(input: { id: string; tenantId: string; admin
 }
 
 export async function retrieveKnowledge(tenantId: string, message: string) {
-  if (!process.env.PINECONE_API_KEY || !process.env.PINECONE_INDEX_NAME) throw new Error('Company knowledge search is not configured.');
-  const vector = await embedText(message);
-  if (!vector.length) throw new Error('Unable to search company knowledge. Please try again.');
-  const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch });
-  const result = await pc.index(process.env.PINECONE_INDEX_NAME).query({ vector, topK: 5, includeMetadata: true, filter: { tenantId: { $eq: tenantId } } });
-  // Only accept records that still belong to an indexed document. Old orphan vectors cannot override a new policy.
   const snapshot = await getDocsFromServer(query(collection(db, 'documents'), where('tenantId', '==', tenantId)));
   const documents = new Map(snapshot.docs.filter(d => d.data().status === 'indexed').map(d => [d.id, d.data()]));
-  const matches = result.matches.filter(m => typeof m.metadata?.docId === 'string' && documents.has(m.metadata.docId));
-  return { text: matches.map(m => String(m.metadata?.content || '')).join('\n\n'), sources: [...new Set(matches.map(m => String(m.metadata?.title || documents.get(String(m.metadata?.docId))?.title || 'Company policy')))] };
+  if (!documents.size) return { text: '', sources: [] as string[] };
+  if (process.env.PINECONE_API_KEY && process.env.PINECONE_INDEX_NAME) {
+    try {
+      const vector = await embedText(message);
+      if (!vector.length) throw new Error('Embedding unavailable.');
+      const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch });
+      const result = await pc.index(process.env.PINECONE_INDEX_NAME).query({ vector, topK: 5, includeMetadata: true, filter: { tenantId: { $eq: tenantId } } });
+      // Orphan vectors never override the company's current indexed documents.
+      const matches = result.matches.filter(m => typeof m.metadata?.docId === 'string' && documents.has(m.metadata.docId));
+      if (matches.length) return { text: matches.map(m => String(m.metadata?.content || '')).join('\n\n'), sources: [...new Set(matches.map(m => String(m.metadata?.title || documents.get(String(m.metadata?.docId))?.title || 'Company policy')))] };
+    } catch { console.warn('Policy search unavailable; using the company’s stored indexed document text.'); }
+  }
+  // Small-company fallback uses real persisted text, with a bounded prompt size.
+  // Disabled/deleted documents and documents from another company are excluded.
+  const selected: { title: string; text: string }[] = [];
+  let remaining = 20000;
+  for (const data of [...documents.values()].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))) {
+    if (typeof data.text !== 'string' || !data.text.trim() || remaining <= 0) continue;
+    const text = data.text.slice(0, remaining); remaining -= text.length;
+    selected.push({ title: String(data.title || 'Company policy'), text });
+  }
+  return { text: selected.map(d => d.text).join('\n\n'), sources: [...new Set(selected.map(d => d.title))] };
 }

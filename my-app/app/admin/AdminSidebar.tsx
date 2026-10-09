@@ -12,7 +12,7 @@ const ADMIN_NAV = [
       { label: 'Dashboard',       href: '/admin/dashboard',   icon: 'dashboard',          desc: 'Tenant overview' },
       { label: 'Users & Access',  href: '/admin/users',       icon: 'group',              desc: 'Manage end users' },
       { label: 'Knowledge Base',  href: '/admin/documents',   icon: 'library_books',      desc: 'PDF policies & RAG' },
-      { label: 'Agent Settings',  href: '/admin/settings',    icon: 'settings',           desc: 'Configure Database Agent' },
+      { label: 'Company Settings', href: '/admin/settings',  icon: 'settings',           desc: 'Website widget & database' },
       { label: 'API Keys',        href: '/admin/api-keys',    icon: 'key',                desc: 'System integrations' },
     ],
   },
