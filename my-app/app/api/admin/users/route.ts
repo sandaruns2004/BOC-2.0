@@ -4,6 +4,9 @@ import { db } from '@/lib/firebase';
 import { collection, getDocsFromServer, getDocFromServer, doc, setDoc, query, where } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
+import { syncCompanyCustomers } from '@/lib/customer-sync';
+
+export const maxDuration = 60;
 
 export async function GET() {
   const session = await getSession();
@@ -12,12 +15,17 @@ export async function GET() {
   }
 
   try {
+    const admin = (await getDocFromServer(doc(db, 'business_admins', session.userId))).data();
+    if (!session.tenantId || admin?.isActive !== true || admin.tenantId !== session.tenantId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    let sync;
+    try { sync = await syncCompanyCustomers(session.tenantId); }
+    catch { sync = { enabled: true, status: 'error', error: 'Customer sync failed. Check Company Settings. Previously imported users are still shown.' }; }
     const q = query(collection(db, 'users'), where('tenantId', '==', session.tenantId));
     const snapshot = await getDocsFromServer(q);
-    const users = snapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name, email: doc.data().email, isActive: doc.data().isActive, createdAt: doc.data().createdAt, isDemo: doc.data().isDemo === true, source: 'AgentForge' }));
+    const users = snapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name, email: doc.data().email, isActive: doc.data().isActive, createdAt: doc.data().createdAt, isDemo: doc.data().isDemo === true, source: doc.data().source || 'AgentForge', externalCustomerId: doc.data().externalCustomerId || null }));
     users.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-    return NextResponse.json({ users }, { headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json({ users, sync }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Unable to load users.' }, { status: 500 });
   }
@@ -75,9 +83,11 @@ export async function PATCH(req: Request) {
 
     const existing = await getDocFromServer(doc(db, 'users', userId));
     if (!existing.exists() || existing.data().tenantId !== session.tenantId) return NextResponse.json({ error: 'User not found.' }, { status: 404 });
-    await setDoc(doc(db, 'users', userId), { isActive }, { merge: true });
+    const imported = existing.data().source === 'Company database';
+    const effectiveActive = imported ? isActive && existing.data().externalActive === true : isActive;
+    await setDoc(doc(db, 'users', userId), { isActive: effectiveActive, ...(imported ? { accessDisabled: !isActive } : {}) }, { merge: true });
 
-    return NextResponse.json({ success: true, isActive });
+    return NextResponse.json({ success: true, isActive: effectiveActive });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Unable to update user.' }, { status: 500 });
   }

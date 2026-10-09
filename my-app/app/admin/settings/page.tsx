@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import WidgetSettings from './WidgetSettings';
+import CustomerSyncSettings from './CustomerSyncSettings';
 
 export default function AdminSettingsPage() {
   const [allowedCollections, setAllowedCollections] = useState('');
@@ -152,6 +153,7 @@ export default function AdminSettingsPage() {
           </form>
         </div>
       )}
+      <CustomerSyncSettings />
     </div>
   );
 }

@@ -9,6 +9,8 @@
     "lint": "eslint",
     "demo:dev": "node --use-system-ca node_modules/next/dist/bin/next dev --port 3000",
     "demo:setup": "node --use-system-ca scripts/setup-demo.cjs",
+    "demo:seed-customers": "node --use-system-ca scripts/seed-walkwave-customers.cjs",
+    "demo:verify-customer-sync": "node --use-system-ca scripts/verify-customer-sync.cjs",
     "demo:verify": "node --use-system-ca scripts/verify-demo.cjs",
     "demo:verify-widget": "node --use-system-ca scripts/verify-widget.cjs",
     "demo:widget-site": "node --use-system-ca scripts/widget-test-site.cjs"

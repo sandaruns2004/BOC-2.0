@@ -1,7 +1,7 @@
 import { db } from './firebase';
 import { collection, addDoc, query, where, getDocsFromServer, doc, getDocFromServer, limit, runTransaction } from 'firebase/firestore';
-import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { companyDatabase } from './company-database';
+export { companyDatabase } from './company-database';
 import { jsPDF } from 'jspdf';
 import nodemailer from 'nodemailer';
 
@@ -84,19 +84,14 @@ export interface CustomerOrder {
   estimatedDelivery: string | null; currency: string; totalAmount: number;
 }
 
-export async function companyDatabase(tenantId: string) {
-  const settings = await getDocFromServer(doc(db, 'tenant_settings', tenantId));
-  const config = settings.data()?.databaseConfig?.firebaseConfig;
-  if (!config) return db;
-  const appName = 'tenant-' + tenantId;
-  const app = getApps().find(app => app.name === appName) || initializeApp(config, appName);
-  return getFirestore(app);
-}
-
 export async function getCustomerOrders(tenantId: string, userId: string, orderId?: string): Promise<CustomerOrder[]> {
   if (!tenantId || !userId || userId === 'unknown') throw new Error('Sign in to access your orders.');
   const target = await companyDatabase(tenantId);
-  const conditions = [where('tenantId', '==', tenantId), where('customerId', '==', userId)];
+  const user = (await getDocFromServer(doc(db, 'users', userId))).data();
+  if (!user || user.tenantId !== tenantId || user.isActive !== true) throw new Error('Customer is not authorized for this company.');
+  if (user.externalCustomerId && user.externalProjectId !== target.app.options.projectId) throw new Error('The customer database connection changed. Sync customers again before checking orders.');
+  const customerId = typeof user.externalCustomerId === 'string' ? user.externalCustomerId : userId;
+  const conditions = [where('tenantId', '==', tenantId), where('customerId', '==', customerId)];
   if (orderId) conditions.push(where('orderId', '==', orderId));
   const result = await getDocsFromServer(query(collection(target, 'demo_orders'), ...conditions, limit(10)));
   const orders = result.docs.map(d => {
