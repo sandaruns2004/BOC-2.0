@@ -41,7 +41,7 @@ The two pages share a cookie within one browser profile. Selecting a customer ch
 
 ## Manager login
 
-The homepage's Launch Live Console opens `/admin/dashboard` (or the admin login when signed out). The Website Agent section explains the company website widget/API integration and shows actual agent actions. It does not require customers to use an AgentForge portal.
+Open `/admin/dashboard` directly (or `/admin/login` when signed out). The homepage console CTA and Tech Stack section have been removed. The Website Agent section explains the company website widget/API integration and shows actual agent actions. It does not require customers to use an AgentForge portal.
 
 Users & Access displays existing customer identities, including the prepared demo accounts, and supports enabling/disabling access. External company login database integration is deferred until after the hackathon. Run `node --use-system-ca scripts/verify-admin-demo.cjs` to check the admin flows.
 

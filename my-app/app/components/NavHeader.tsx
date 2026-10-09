@@ -9,7 +9,6 @@ const NAV_LINKS = [
   { label: 'Personas',     href: '/#personas',   exact: false },
   { label: 'Architecture', href: '/architecture', exact: true  },
   { label: 'Pillars',      href: '/#pillars',    exact: false },
-  { label: 'Tech Stack',   href: '/#tech-stack', exact: false },
   { label: 'Demo',         href: '/demo',         exact: true  },
   { label: 'Pricing',      href: '/pricing',      exact: true  },
 ];

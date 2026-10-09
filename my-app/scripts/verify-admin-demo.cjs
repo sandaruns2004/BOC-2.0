@@ -8,7 +8,7 @@ async function request(path, method = 'GET', body, cookie) {
   return { res, data: res.headers.get('content-type')?.includes('text/event-stream') ? text.split('\n\n').filter(Boolean).map(line => JSON.parse(line.slice(6))).find(event => event.type === 'result') : JSON.parse(text) };
 }
 async function run() {
-  const home = await (await fetch(base)).text(); assert.match(home, /href="\/admin\/dashboard"[^]*?Launch Live Console/); console.log('PASS: live console points to admin dashboard');
+  const home = await (await fetch(base)).text(); assert.ok(!home.includes('Launch Live Console')); assert.ok(!home.includes('id="tech-stack"')); console.log('PASS: removed homepage CTA and tech stack section stay absent');
   const login = await request('/api/auth/admin-login', 'POST', { email: 'admin@walkwave.example', password: process.env.WALKWAVE_ADMIN_PASSWORD }); assert.equal(login.res.status, 200); const manager = login.res.headers.get('set-cookie').split(';')[0];
   let r = await request('/api/admin/users', 'GET', undefined, manager); assert.equal(r.res.status, 200); assert.ok(r.data.users.some(u => u.id === 'walkwave_jane')); assert.ok(r.data.users.some(u => u.id === 'walkwave_bob')); assert.ok(!r.data.users.some(u => u.id === 'nova_alice')); assert.ok(r.data.users.every(u => !Object.hasOwn(u, 'passwordHash'))); console.log('PASS: existing company users include prepared demos without credentials');
   r = await request('/api/admin/users', 'PATCH', { userId: 'nova_alice', isActive: false }, manager); assert.equal(r.res.status, 404); console.log('PASS: another company customer cannot be disabled');
