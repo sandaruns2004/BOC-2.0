@@ -14,9 +14,12 @@ export async function extractDocument(file: File) {
   const mainImport = await import('pdf-parse');
   console.log('Worker Import:', Object.keys(workerImport));
   console.log('Main Import:', Object.keys(mainImport));
-  const CanvasFactory = workerImport.CanvasFactory || workerImport.default?.CanvasFactory;
-  const getData = workerImport.getData || workerImport.default?.getData;
-  const PDFParse = mainImport.PDFParse || mainImport.default?.PDFParse || mainImport.default;
+  const workerDefault = (workerImport as typeof workerImport & { default?: Partial<typeof workerImport> }).default;
+  const mainDefault = (mainImport as typeof mainImport & { default?: Partial<typeof mainImport> | typeof mainImport.PDFParse }).default;
+  const CanvasFactory = workerImport.CanvasFactory || workerDefault?.CanvasFactory;
+  const getData = workerImport.getData || workerDefault?.getData;
+  const PDFParse = mainImport.PDFParse || (typeof mainDefault === 'function' ? mainDefault : mainDefault?.PDFParse);
+  if (!CanvasFactory || !getData || !PDFParse) throw new Error('The PDF parser could not be loaded.');
 
   PDFParse.setWorker(getData());
   const parser = new PDFParse({ data: bytes, CanvasFactory });
