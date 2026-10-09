@@ -5,13 +5,11 @@ import * as ToolImplementations from './tools';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms))
-  ]);
+  let timer: ReturnType<typeof setTimeout>;
+  return Promise.race([promise, new Promise<T>((_, reject) => { timer = setTimeout(() => reject(new Error('AI response timed out. Please try again.')), ms); })]).finally(() => clearTimeout(timer));
 };
 
-const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY }) : null;
+const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch }) : null;
 
 export async function embedText(text: string): Promise<number[]> {
   try {
@@ -113,81 +111,29 @@ const tools = [{
   functionDeclarations: [sendEmailDeclaration, generateReportDeclaration, escalateToHumanDeclaration, checkSystemStatusDeclaration, queryDatabaseDeclaration]
 }];
 
-export async function generateText(prompt: string, tenantId?: string, userId?: string, onAgentUsed?: (agent: string) => void): Promise<{ text: string, agentsUsed: string[] }> {
-  const modelsToTry = [
-    'gemini-flash-lite-latest',
-    'gemini-3.1-flash-lite',
-    'gemini-flash-latest',
-    'gemini-3.5-flash',
-    'gemini-2.5-flash',
-    'gemini-3.8-flash',
-    'gemini-pro-latest'
-  ];
-
-  let lastError = null;
-
-  for (const modelName of modelsToTry) {
-    try {
-      console.log(`[RAG] Attempting to generate text with model: ${modelName}`);
-      const model = genAI.getGenerativeModel({ model: modelName, tools });
-      const chat = model.startChat();
-      
-      let result = await withTimeout(chat.sendMessage(prompt), 8000);
-      let response = result.response;
-      
-      let agentsUsed: string[] = [];
-      let calls = response.functionCalls ? response.functionCalls() : undefined;
-      while (calls && calls.length > 0) {
-        const call = calls[0];
-        const functionName = call.name;
-        const args = call.args;
-        
-        let functionResponse: any;
-        console.log(`[RAG] LLM requested function call: ${functionName}`);
-        
-        if (!agentsUsed.includes(functionName)) {
-          agentsUsed.push(functionName);
-          if (onAgentUsed) {
-            onAgentUsed(functionName);
-          }
-        }
-
-        try {
-          if (functionName === 'sendEmail') {
-            functionResponse = await ToolImplementations.sendEmail({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
-          } else if (functionName === 'generateReport') {
-            functionResponse = await ToolImplementations.generateReport({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
-          } else if (functionName === 'queryDatabase') {
-            functionResponse = await ToolImplementations.queryDatabase({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
-          } else if (functionName === 'escalateToHuman') {
-            functionResponse = await ToolImplementations.escalateToHuman({ ...args, tenantId: tenantId || 'unknown' } as any);
-          } else if (functionName === 'checkSystemStatus') {
-            functionResponse = await ToolImplementations.checkSystemStatus();
-          } else {
-            functionResponse = { error: `Function ${functionName} not found` };
-          }
-        } catch (err: any) {
-          functionResponse = { error: err.message };
-        }
-        
-        result = await withTimeout(chat.sendMessage([{
-          functionResponse: {
-            name: functionName,
-            response: functionResponse
-          }
-        }]), 8000);
-        response = result.response;
-        calls = response.functionCalls ? response.functionCalls() : undefined;
-      }
-      
-      return { text: response.text(), agentsUsed };
-    } catch (e: any) {
-      console.warn(`[RAG] Model ${modelName} failed:`, e.message);
-      lastError = e;
-      // loop continues to try the next model
+export async function generateText(prompt: string, tenantId?: string, userId?: string, onAgentUsed?: (agent: string) => void, options: { systemInstruction?: string; allowedTools?: string[] } = {}): Promise<{ text: string; agentsUsed: string[] }> {
+  const declarations = tools[0].functionDeclarations.filter(t => !options.allowedTools || options.allowedTools.includes(t.name));
+  const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-flash-lite-latest', ...(declarations.length ? { tools: [{ functionDeclarations: declarations }] } : {}), systemInstruction: options.systemInstruction || 'You are a company assistant. Never invent operational data or claim an action succeeded when its tool failed.' });
+  const chat = model.startChat();
+  let result = await withTimeout(chat.sendMessage(prompt), 20000);
+  const agentsUsed: string[] = [];
+  for (let round = 0; round < 5; round++) {
+    const calls = result.response.functionCalls();
+    if (!calls?.length) return { text: result.response.text(), agentsUsed };
+    const responses = [];
+    for (const call of calls) {
+      if (!declarations.some(d => d.name === call.name)) throw new Error('Requested tool is not allowed.');
+      let response: unknown;
+      const args = call.args as Record<string, unknown>;
+      if (call.name === 'queryDatabase') response = await ToolImplementations.queryDatabase({ tenantId: tenantId || '', userId: userId || '', collectionName: String(args.collectionName || ''), searchQuery: String(args.searchQuery || '') });
+      else if (call.name === 'escalateToHuman') response = await ToolImplementations.escalateToHuman({ tenantId: tenantId || '', userId, reason: String(args.reason || ''), urgency: 'high' });
+      else if (call.name === 'checkSystemStatus') response = await ToolImplementations.checkSystemStatus();
+      else response = { success: false, error: 'Use the explicit email or report workflow to authorize this action.' };
+      if (!agentsUsed.includes(call.name)) { agentsUsed.push(call.name); onAgentUsed?.(call.name); }
+      responses.push({ functionResponse: { name: call.name, response: response as object } });
     }
+    // Do not retry the entire conversation after a tool action: that could duplicate emails or tickets.
+    result = await withTimeout(chat.sendMessage(responses), 20000);
   }
-
-  console.error('[RAG] All text generation models failed. Last error:', lastError);
-  return { text: 'I encountered an error while trying to process your request. The AI backend may be temporarily overloaded.', agentsUsed: [] };
+  throw new Error('The assistant reached its action limit. Please ask a simpler question.');
 }

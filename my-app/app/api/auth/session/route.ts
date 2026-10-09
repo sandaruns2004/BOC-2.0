@@ -25,7 +25,6 @@ export async function GET() {
           email: docData.email || session.email,
           tenantId: docData.tenantId || session.tenantId 
         };
-        console.log('Merged session user:', mergedUser);
         return NextResponse.json({ user: mergedUser });
       }
     } catch (e) {
@@ -33,6 +32,5 @@ export async function GET() {
     }
   }
   
-  console.log('Returning stale session:', session);
   return NextResponse.json({ user: session });
 }

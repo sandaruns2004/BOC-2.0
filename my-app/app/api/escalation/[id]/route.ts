@@ -1,123 +1,21 @@
-// ============================================================
-// AgentForge — Escalation Decision API
-// PATCH /api/escalation/[id]  — Approve or Reject an escalation
-// GET   /api/escalation/[id]  — Get a single escalation's details
-// ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { getSession } from '@/lib/session';
 import { db } from '@/lib/firebase';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-} from 'firebase/firestore';
-
-// GET — Fetch a single escalation by its escalationId (e.g. ESC-9082)
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+import { doc, getDocFromServer } from 'firebase/firestore';
+import { PATCH as decide } from '../route';
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = await getSession();
+  if (!session?.tenantId || !['admin', 'user'].includes(session.role)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const { id } = await params;
-
+  if (id.includes('/')) return NextResponse.json({ error: 'Invalid ID.' }, { status: 400 });
   try {
-    // First try to find by escalationId field
-    const q = query(
-      collection(db, 'escalations'),
-      where('escalationId', '==', id)
-    );
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      return NextResponse.json(
-        { error: `Escalation ${id} not found.` },
-        { status: 404 }
-      );
-    }
-
-    const docData = snapshot.docs[0];
-    return NextResponse.json({
-      id: docData.id,
-      ...docData.data(),
-      createdAt: docData.data().createdAt?.toDate?.()?.toISOString() ?? null,
-      decidedAt: docData.data().decidedAt?.toDate?.()?.toISOString() ?? null,
-    });
-  } catch (error) {
-    console.error('[Escalation API] GET by ID failed:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch escalation.' },
-      { status: 500 }
-    );
-  }
+    const ticket = await getDocFromServer(doc(db, 'escalations', id));
+    if (!ticket.exists() || ticket.data().tenantId !== session.tenantId || (session.role === 'user' && ticket.data().userId !== session.userId)) return NextResponse.json({ error: 'Ticket not found.' }, { status: 404 });
+    return NextResponse.json({ id, status: ticket.data().status, reason: ticket.data().reason, adminNote: ticket.data().adminNote || '' });
+  } catch { return NextResponse.json({ error: 'Unable to load ticket.' }, { status: 500 }); }
 }
-
-// PATCH — Approve or Reject an escalation
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-
-  let body: {
-    decision: 'approved' | 'rejected';
-    adminId?: string;
-    adminNote?: string;
-  };
-
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON body.' }, { status: 400 });
-  }
-
-  const { decision, adminId = 'admin@agentforge.ai', adminNote = '' } = body;
-
-  if (!['approved', 'rejected'].includes(decision)) {
-    return NextResponse.json(
-      { error: "Decision must be either 'approved' or 'rejected'." },
-      { status: 400 }
-    );
-  }
-
-  try {
-    // Find the document by escalationId field
-    const q = query(
-      collection(db, 'escalations'),
-      where('escalationId', '==', id)
-    );
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      return NextResponse.json(
-        { error: `Escalation ${id} not found.` },
-        { status: 404 }
-      );
-    }
-
-    const docRef = doc(db, 'escalations', snapshot.docs[0].id);
-
-    await updateDoc(docRef, {
-      status: decision,
-      adminId,
-      adminNote,
-      decidedAt: serverTimestamp(),
-    });
-
-    return NextResponse.json({
-      escalationId: id,
-      status: decision,
-      adminId,
-      message: `Escalation ${id} has been ${decision}.`,
-    });
-  } catch (error) {
-    console.error('[Escalation API] PATCH failed:', error);
-    return NextResponse.json(
-      { error: 'Failed to update escalation.' },
-      { status: 500 }
-    );
-  }
+  const body = await req.json();
+  return decide(new Request(req.url, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...body, id }) }));
 }

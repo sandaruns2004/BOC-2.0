@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "demo:dev": "node --use-system-ca node_modules/next/dist/bin/next dev --port 3000",
+    "demo:setup": "node --use-system-ca scripts/setup-demo.cjs",
+    "demo:verify": "node --use-system-ca scripts/verify-demo.cjs"
   },
   "dependencies": {
     "@aws-sdk/client-cloudwatch-logs": "^3.1141.0",

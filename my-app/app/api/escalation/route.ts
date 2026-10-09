@@ -1,131 +1,29 @@
-// ============================================================
-// AgentForge — Escalation Queue API
-// GET   /api/escalation  — List all pending escalations
-// POST  /api/escalation  — Create a manual escalation
-// PATCH /api/escalation  — Approve or reject an escalation
-// ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
-  doc,
-  updateDoc,
-  serverTimestamp,
-} from 'firebase/firestore';
-
-// GET — Fetch the escalation queue for a tenant
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const tenantId = searchParams.get('tenantId') ?? 'acme_corp';
-  const status = searchParams.get('status') ?? 'pending';
-
+import { getSession } from '@/lib/session';
+import { collection, query, where, getDocsFromServer, doc, getDocFromServer, updateDoc } from 'firebase/firestore';
+export async function GET(req: Request) {
+  const session = await getSession();
+  if (session?.role !== 'admin' || !session.tenantId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const url = new URL(req.url);
+  if (url.searchParams.has('tenantId') && url.searchParams.get('tenantId') !== session.tenantId) return NextResponse.json({ error: 'Company access denied.' }, { status: 403 });
   try {
-    const q = query(
-      collection(db, 'escalations'),
-      where('tenantId', '==', tenantId)
-    );
-
-    const snapshot = await getDocs(q);
-
-    const allEscalations = snapshot.docs.map((d) => ({
-      id: d.id,
-      ...d.data(),
-      createdAt: d.data().createdAt?.toDate?.()?.toISOString() ?? null,
-      decidedAt: d.data().decidedAt?.toDate?.()?.toISOString() ?? null,
-    }));
-
-    const escalations = allEscalations
-      .filter((e: any) => e.status === status)
-      .sort((a: any, b: any) => {
-        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return timeB - timeA;
-      });
-
+    const snapshot = await getDocsFromServer(query(collection(db, 'escalations'), where('tenantId', '==', session.tenantId)));
+    const toDate = (value: unknown) => typeof value === 'string' ? value : (value as { toDate?: () => Date })?.toDate?.().toISOString() || null;
+    const escalations = snapshot.docs.map(d => ({ ...d.data(), id: d.id, createdAt: toDate(d.data().createdAt), decidedAt: toDate(d.data().decidedAt) })).filter(d => (d as Record<string, unknown>).status === (url.searchParams.get('status') || 'pending')).sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
     return NextResponse.json({ escalations, count: escalations.length });
-  } catch (error) {
-    console.error('[Escalation API] GET failed:', error);
-    return NextResponse.json({ error: 'Failed to fetch escalations.' }, { status: 500 });
-  }
+  } catch { return NextResponse.json({ error: 'Unable to load escalations.' }, { status: 500 }); }
 }
-
-// POST — Manually create an escalation
-export async function POST(req: NextRequest) {
+export async function PATCH(req: Request) {
+  const session = await getSession();
+  if (session?.role !== 'admin' || !session.tenantId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   try {
-    const body = await req.json();
-    const { tenantId, toolName, toolParameters, riskLevel, userMessage } = body;
-
-    const escalationId = `ESC-${Math.floor(Math.random() * 9000) + 1000}`;
-
-    const docRef = await addDoc(collection(db, 'escalations'), {
-      escalationId,
-      tenantId: tenantId ?? 'acme_corp',
-      toolName,
-      toolParameters,
-      riskLevel: riskLevel ?? 'high',
-      userMessage,
-      status: 'pending',
-      adminId: null,
-      adminNote: null,
-      decidedAt: null,
-      createdAt: serverTimestamp(),
-    });
-
-    return NextResponse.json({ escalationId, docId: docRef.id }, { status: 201 });
-  } catch (error) {
-    console.error('[Escalation API] POST failed:', error);
-    return NextResponse.json({ error: 'Failed to create escalation.' }, { status: 500 });
-  }
-}
-
-// PATCH — Approve or reject a pending escalation
-// Body: { id: string, decision: 'approved' | 'rejected', adminNote?: string, adminId?: string }
-export async function PATCH(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { id, decision, adminNote, adminId } = body;
-
-    if (!id || !decision) {
-      return NextResponse.json(
-        { error: 'Missing required fields: id and decision.' },
-        { status: 400 }
-      );
-    }
-
-    if (!['approved', 'rejected'].includes(decision)) {
-      return NextResponse.json(
-        { error: 'decision must be "approved" or "rejected".' },
-        { status: 400 }
-      );
-    }
-
-    const escalationRef = doc(db, 'escalations', id);
-
-    await updateDoc(escalationRef, {
-      status: decision,
-      adminNote: adminNote ?? null,
-      adminId: adminId ?? 'admin',
-      decidedAt: serverTimestamp(),
-    });
-
-    console.log(`[Escalation API] ${id} → ${decision}`);
-
-    return NextResponse.json({
-      success: true,
-      id,
-      decision,
-      message: `Escalation ${decision} successfully.`,
-    });
-  } catch (error) {
-    console.error('[Escalation API] PATCH failed:', error);
-    return NextResponse.json(
-      { error: 'Failed to update escalation decision.' },
-      { status: 500 }
-    );
-  }
+    const { id, decision, adminNote } = await req.json();
+    if (typeof id !== 'string' || id.includes('/') || !['approved', 'rejected'].includes(decision)) return NextResponse.json({ error: 'Valid ticket ID and decision required.' }, { status: 400 });
+    const reference = doc(db, 'escalations', id); const ticket = await getDocFromServer(reference);
+    if (!ticket.exists() || ticket.data().tenantId !== session.tenantId) return NextResponse.json({ error: 'Ticket not found.' }, { status: 404 });
+    if (ticket.data().status !== 'pending') return NextResponse.json({ error: 'This ticket was already reviewed.' }, { status: 409 });
+    await updateDoc(reference, { status: decision, adminId: session.userId, adminNote: typeof adminNote === 'string' ? adminNote.slice(0, 1000) : '', decidedAt: new Date().toISOString() });
+    return NextResponse.json({ success: true, id, decision });
+  } catch { return NextResponse.json({ error: 'Unable to update ticket.' }, { status: 500 }); }
 }

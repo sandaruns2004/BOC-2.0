@@ -1,101 +1,31 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { embedText, generateText } from '@/lib/rag';
-import { Pinecone } from '@pinecone-database/pinecone';
-
-const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY }) : null;
-
+import { collection, query, where, getDocsFromServer, doc, getDocFromServer, updateDoc, increment } from 'firebase/firestore';
+import { chat, validateChatInput } from '@/lib/chat-service';
+export const maxDuration = 60;
 export async function POST(req: Request) {
   try {
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Missing or invalid Authorization header' }, { status: 401 });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    // Validate API key
-    const q = query(collection(db, 'api_keys'), where('key', '==', token));
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
-    }
-
-    const keyDoc = snapshot.docs[0];
-    const keyData = keyDoc.data();
-
-    if (!keyData.isActive) {
-      return NextResponse.json({ error: 'API key is inactive' }, { status: 401 });
-    }
-
-    const tenantId = keyData.tenantId;
-
-    // Update usage
-    await updateDoc(doc(db, 'api_keys', keyDoc.id), {
-      usageCount: (keyData.usageCount || 0) + 1,
-      lastUsed: new Date().toISOString()
-    });
-
+    const authorization = req.headers.get('Authorization');
+    if (!authorization?.startsWith('Bearer ')) return NextResponse.json({ error: 'Bearer API key required.' }, { status: 401 });
+    const snapshot = await getDocsFromServer(query(collection(db, 'api_keys'), where('key', '==', authorization.slice(7))));
+    const key = snapshot.docs[0];
+    if (!key || key.data().isActive !== true) return NextResponse.json({ error: 'Invalid or inactive API key.' }, { status: 401 });
+    const tenantId = key.data().tenantId;
+    if (typeof tenantId !== 'string' || !tenantId) return NextResponse.json({ error: 'API key has no company mapping.' }, { status: 401 });
     const body = await req.json();
-    const { message, history } = body;
-
-    if (!message) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+    let input;
+    try { input = validateChatInput(body); } catch (e) { return NextResponse.json({ error: e instanceof Error ? e.message : 'Invalid input.' }, { status: 400 }); }
+    let userId: string | undefined; let email: string | undefined;
+    // Only a trusted company backend holding the secret API key can supply its verified customer mapping.
+    if (body.customerId !== undefined) {
+      if (typeof body.customerId !== 'string' || !/^[a-zA-Z0-9_-]{1,100}$/.test(body.customerId)) return NextResponse.json({ error: 'Invalid customer identity.' }, { status: 400 });
+      const user = await getDocFromServer(doc(db, 'users', body.customerId));
+      if (!user.exists() || user.data().tenantId !== tenantId || user.data().isActive !== true) return NextResponse.json({ error: 'Customer is not authorized for this company.' }, { status: 403 });
+      userId = body.customerId; email = user.data().email;
     }
-
-    let contextText = '';
-
-    // RAG: Retrieve context from Pinecone with Tenant Isolation
-    if (pc && process.env.PINECONE_INDEX_NAME) {
-      const index = pc.index(process.env.PINECONE_INDEX_NAME);
-      const queryEmbedding = await embedText(message);
-      
-      if (queryEmbedding.length > 0) {
-        const queryResponse = await index.query({
-          vector: queryEmbedding,
-          topK: 3,
-          includeMetadata: true,
-          // CRITICAL: Tenant Isolation Filter
-          filter: {
-            tenantId: { $eq: tenantId }
-          }
-        });
-
-        if (queryResponse.matches && queryResponse.matches.length > 0) {
-          contextText = queryResponse.matches
-            .map(match => match.metadata?.content)
-            .join('\n\n');
-        }
-      }
-    }
-
-    // Prepare prompt
-    const systemPrompt = `You are a helpful and polite AI assistant for a specific tenant within the AgentForge platform.
-Your task is to answer the user's questions based primarily on the provided Knowledge Base context.
-If the answer is not in the context, you can use your general knowledge, but state that you are answering outside the specific company knowledge base.
-Do not mention "tenant", "Pinecone", or "AgentForge" in your responses to the user.
-
-KNOWLEDGE BASE CONTEXT:
-${contextText || "No specific company knowledge base documents found."}
-`;
-
-    // Flatten history for basic LLM call
-    let conversation = systemPrompt + "\n\n--- Conversation History ---\n";
-    if (history && history.length > 0) {
-      history.slice(-5).forEach((msg: any) => {
-        conversation += `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}\n`;
-      });
-    }
-    conversation += `User: ${message}\nAssistant:`;
-
-    // Call Gemini Model with function calling
-    const reply = await generateText(conversation, tenantId);
-
-    return NextResponse.json({ reply });
-  } catch (error: any) {
-    console.error('API v1 Chat error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
+    const result = await chat(input, { tenantId, userId, email });
+    try { await updateDoc(doc(db, 'api_keys', key.id), { usageCount: increment(1), lastUsed: new Date().toISOString() }); }
+    catch { console.error('API usage logging failed after the request completed.'); }
+    return NextResponse.json({ ...result, requestId: input.requestId });
+  } catch (error) { console.error('Enterprise chat failed:', error); return NextResponse.json({ error: 'Unable to complete the API request.' }, { status: 500 }); }
 }

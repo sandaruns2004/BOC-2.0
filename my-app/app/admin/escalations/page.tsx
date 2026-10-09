@@ -7,6 +7,8 @@ export default function AdminEscalations() {
   const { user, loading: authLoading } = useAuth();
   const [escalations, setEscalations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(0);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadEscalations() {
@@ -27,7 +29,7 @@ export default function AdminEscalations() {
       }
     }
     loadEscalations();
-  }, [user]);
+  }, [user, refresh]);
 
   async function handleDecision(id: string, decision: 'approved' | 'rejected') {
     try {
@@ -38,6 +40,8 @@ export default function AdminEscalations() {
       });
       if (res.ok) {
         setEscalations(prev => prev.filter(e => e.id !== id));
+      } else {
+        setError((await res.json()).error || 'Unable to review ticket.');
       }
     } catch (e) {
       console.error(e);
@@ -51,7 +55,9 @@ export default function AdminEscalations() {
           <h1 className="text-headline-lg font-bold text-on-surface">Escalations Queue</h1>
           <p className="text-on-surface-variant font-body-md mt-1">Human-in-the-loop review for agent actions lacking confidence.</p>
         </div>
+        <button className="px-4 py-2 border rounded-lg" onClick={() => setRefresh(r => r + 1)}>Refresh tickets</button>
       </div>
+      {error && <p role="alert" className="text-error mb-4">{error}</p>}
 
       {loading ? (
         <div className="flex justify-center py-12">
@@ -84,13 +90,13 @@ export default function AdminEscalations() {
                     onClick={() => handleDecision(esc.id, 'rejected')}
                     className="px-4 py-2 border border-outline-variant/30 rounded-lg text-error hover:bg-error/5 font-medium transition-colors"
                   >
-                    Dismiss
+                    Reject
                   </button>
                   <button 
                     onClick={() => handleDecision(esc.id, 'approved')}
                     className="px-4 py-2 bg-primary text-on-primary rounded-lg hover:bg-primary/90 font-medium transition-colors shadow-sm"
                   >
-                    Resolve
+                    Approve
                   </button>
                 </div>
               </div>

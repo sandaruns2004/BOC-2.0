@@ -88,6 +88,8 @@ export default function PortalChat() {
                       return { ...msg, agentsUsed: newAgents };
                     } else if (data.type === 'text') {
                       return { ...msg, content: data.content };
+                    } else if (data.type === 'error') {
+                      return { ...msg, content: data.message || 'Unable to complete this request.' };
                     }
                   }
                   return msg;

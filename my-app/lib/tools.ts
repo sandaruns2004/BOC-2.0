@@ -1,61 +1,21 @@
-import { db, storage } from './firebase';
-import { collection, addDoc, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
-import { initializeApp, getApp, getApps } from 'firebase/app';
+import { db } from './firebase';
+import { collection, addDoc, query, where, getDocsFromServer, doc, getDocFromServer, limit, runTransaction } from 'firebase/firestore';
+import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { jsPDF } from 'jspdf';
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
-
-export async function sendEmail({ tenantId, userId, to, subject, body }: { tenantId: string, userId: string, to: string, subject: string, body: string }) {
-  console.log(`[Tool: sendEmail] Sending email to ${to} with subject: ${subject}`);
-  
+export async function sendEmail({ tenantId, userId, to, subject, body }: { tenantId: string; userId: string; to: string; subject: string; body: string }) {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return { success: false, error: 'Walkwave email is not configured yet. Your message has not been sent.' };
+  const transporter = nodemailer.createTransport({ host: process.env.SMTP_HOST || 'smtp.gmail.com', port: Number(process.env.SMTP_PORT || 587), secure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT === '465', auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }, connectionTimeout: 10000, socketTimeout: 15000 });
   try {
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_FROM || '"AgentForge" <noreply@agentforge.local>',
-      to,
-      subject,
-      text: body,
-      html: `<p>${body.replace(/\n/g, '<br/>')}</p>`
-    });
-    
-    // Log action in Firebase
-    await addDoc(collection(db, 'agent_actions'), {
-      tenantId,
-      userId,
-      agentType: 'email',
-      actionDetails: { to, subject },
-      status: 'success',
-      messageId: info.messageId,
-      createdAt: new Date().toISOString()
-    });
-
-    return { success: true, message: `Email successfully sent to ${to}.` };
-  } catch (error: any) {
-    console.error(`[Tool: sendEmail] Error:`, error);
-    try {
-      await addDoc(collection(db, 'agent_actions'), {
-        tenantId,
-        userId,
-        agentType: 'email',
-        actionDetails: { to, subject },
-        status: 'error',
-        error: error.message,
-        createdAt: new Date().toISOString()
-      });
-    } catch (logErr) {
-       console.error("Failed to log error to agent_actions", logErr);
-    }
-    return { success: false, error: error.message };
+    const info = await transporter.sendMail({ from: process.env.SMTP_FROM || process.env.SMTP_USER, to, subject, text: body });
+    if (info.rejected?.length) throw new Error('The mail server rejected the recipient.');
+    try { await addDoc(collection(db, 'agent_actions'), { tenantId, userId, agentType: 'email', actionDetails: { to, subject }, status: 'success', messageId: info.messageId, createdAt: new Date().toISOString() }); } catch { console.error('Email sent, but action logging failed. Do not resend automatically.'); }
+    return { success: true, message: 'The mail server accepted your email. Check your inbox or spam folder.' };
+  } catch {
+    try { await addDoc(collection(db, 'agent_actions'), { tenantId, userId, agentType: 'email', actionDetails: { to, subject }, status: 'error', createdAt: new Date().toISOString() }); } catch { /* preserve send failure */ }
+    return { success: false, error: 'Unable to send the email. Check the SMTP configuration and try again.' };
   }
 }
 
@@ -119,99 +79,48 @@ export async function generateReport({ tenantId, userId, topic, details }: { ten
   }
 }
 
-export async function queryDatabase({ tenantId, userId, collectionName, searchQuery }: { tenantId: string, userId: string, collectionName: string, searchQuery: string }) {
-  console.log(`[Tool: queryDatabase] Querying collection ${collectionName} for ${searchQuery}`);
-  try {
-    let targetDb = db;
-    let targetQuery;
-
-    // 1. Fetch tenant settings to check for external database config
-    const settingsRef = doc(db, 'tenant_settings', tenantId);
-    const settingsSnap = await getDoc(settingsRef);
-    
-    if (settingsSnap.exists() && settingsSnap.data().databaseConfig?.firebaseConfig) {
-      const fbConfig = settingsSnap.data().databaseConfig.firebaseConfig;
-      const appName = `tenant-${tenantId}`;
-      let tenantApp;
-      if (getApps().find(app => app.name === appName)) {
-        tenantApp = getApp(appName);
-      } else {
-        tenantApp = initializeApp(fbConfig, appName);
-      }
-      targetDb = getFirestore(tenantApp);
-      // Query external DB without tenant isolation (they own the whole DB)
-      targetQuery = query(collection(targetDb, collectionName));
-      console.log(`[Tool: queryDatabase] Using external Firebase project: ${fbConfig.projectId}`);
-    } else {
-      // Query platform DB with tenant isolation
-      targetQuery = query(collection(targetDb, collectionName), where('tenantId', '==', tenantId));
-    }
-
-    const snapshot = await getDocs(targetQuery);
-    
-    // We only return up to 10 results to not overwhelm the LLM context
-    const results = snapshot.docs.slice(0, 10).map(d => ({ id: d.id, ...d.data() }));
-
-    // Log Action to Platform DB (not tenant DB)
-    await addDoc(collection(db, 'agent_actions'), {
-      tenantId,
-      userId,
-      agentType: 'database',
-      actionDetails: { collectionName, searchQuery, resultCount: results.length, external: targetDb !== db },
-      status: 'success',
-      createdAt: new Date().toISOString()
-    });
-
-    if (results.length === 0) {
-      return { success: true, message: `No matching records found in ${collectionName}.`, data: [] };
-    }
-
-    return { 
-      success: true, 
-      message: `Found ${results.length} records.`,
-      data: results 
-    };
-  } catch (error: any) {
-    console.error(`[Tool: queryDatabase] Error:`, error);
-    try {
-      await addDoc(collection(db, 'agent_actions'), {
-        tenantId,
-        userId,
-        agentType: 'database',
-        actionDetails: { collectionName, searchQuery },
-        status: 'error',
-        error: error.message,
-        createdAt: new Date().toISOString()
-      });
-    } catch (logErr) {}
-    return { success: false, error: error.message };
-  }
+export interface CustomerOrder {
+  orderId: string; productName: string; shippingStatus: string; trackingNumber: string | null;
+  estimatedDelivery: string | null; currency: string; totalAmount: number;
 }
 
-export async function escalateToHuman({ tenantId, reason, urgency }: { tenantId: string, reason: string, urgency: 'low' | 'medium' | 'high' }) {
-  console.log(`[Tool: escalateToHuman] Escalating for tenant ${tenantId}. Reason: ${reason}`);
-  try {
-    const docRef = await addDoc(collection(db, 'escalations'), {
-      tenantId,
-      reason,
-      urgency,
-      status: 'pending',
-      createdAt: new Date().toISOString()
-    });
-    return { success: true, escalationId: docRef.id, message: `Issue escalated to human operators. Reference ID: ${docRef.id}` };
-  } catch (e: any) {
-    return { success: false, error: e.message };
-  }
+export async function companyDatabase(tenantId: string) {
+  const settings = await getDocFromServer(doc(db, 'tenant_settings', tenantId));
+  const config = settings.data()?.databaseConfig?.firebaseConfig;
+  if (!config) return db;
+  const appName = 'tenant-' + tenantId;
+  const app = getApps().find(app => app.name === appName) || initializeApp(config, appName);
+  return getFirestore(app);
 }
 
-export async function checkSystemStatus() {
-  console.log(`[Tool: checkSystemStatus] Checking status...`);
-  // Simulated check
-  return { 
-    success: true, 
-    status: 'Operational',
-    uptime: '99.99%',
-    latency: '34ms',
-    message: 'All systems are currently operational and within SLA limits.'
-  };
+export async function getCustomerOrders(tenantId: string, userId: string, orderId?: string): Promise<CustomerOrder[]> {
+  if (!tenantId || !userId || userId === 'unknown') throw new Error('Sign in to access your orders.');
+  const target = await companyDatabase(tenantId);
+  const conditions = [where('tenantId', '==', tenantId), where('customerId', '==', userId)];
+  if (orderId) conditions.push(where('orderId', '==', orderId));
+  const result = await getDocsFromServer(query(collection(target, 'demo_orders'), ...conditions, limit(10)));
+  const orders = result.docs.map(d => {
+    const o = d.data();
+    return { orderId: String(o.orderId), productName: String(o.productName), shippingStatus: String(o.shippingStatus), trackingNumber: o.trackingNumber || null, estimatedDelivery: o.estimatedDelivery || null, currency: String(o.currency || 'LKR'), totalAmount: Number(o.totalAmount || 0) };
+  });
+  await addDoc(collection(db, 'agent_actions'), { tenantId, userId, agentType: 'database', actionDetails: { collectionName: 'demo_orders', resultCount: orders.length }, status: 'success', createdAt: new Date().toISOString() });
+  return orders;
 }
+
+export async function queryDatabase({ tenantId, userId, collectionName, searchQuery }: { tenantId: string; userId: string; collectionName: string; searchQuery: string }) {
+  if (collectionName !== 'demo_orders') return { success: false, error: 'Only customer-owned demo orders are available to this assistant.' };
+  try { return { success: true, data: await getCustomerOrders(tenantId, userId, searchQuery.match(/(?:WW|NV)-\d{4}/i)?.[0].toUpperCase()) }; }
+  catch { return { success: false, error: 'Unable to retrieve your orders.' }; }
+}
+
+export async function escalateToHuman({ tenantId, userId, reason, urgency, requestId }: { tenantId: string; userId?: string; reason: string; urgency: 'low' | 'medium' | 'high'; requestId?: string }) {
+  const id = requestId ? tenantId + '_' + userId + '_' + requestId : crypto.randomUUID();
+  const reference = doc(db, 'escalations', id);
+  await runTransaction(db, async transaction => {
+    const previous = await transaction.get(reference);
+    if (!previous.exists()) transaction.set(reference, { tenantId, userId: userId || null, reason, urgency, status: 'pending', createdAt: new Date().toISOString() });
+  });
+  return { success: true, escalationId: id, message: 'Your request is pending manager review. No refund has been issued.' };
+}
+
+export async function checkSystemStatus() { return { success: true, status: 'Demo environment', message: 'This is a sample integration, not a production health measurement.' }; }
