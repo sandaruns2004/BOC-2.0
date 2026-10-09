@@ -3,7 +3,7 @@ import { getSession } from '@/lib/session';
 import { embedText, generateText } from '@/lib/rag';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { db } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc } from 'firebase/firestore';
 
 const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY }) : null;
 
@@ -51,12 +51,28 @@ export async function POST(req: Request) {
       }
     }
 
+    // Fetch Tenant Database Settings
+    let dbSchemaStr = 'No specific database schema configured.';
+    try {
+      const docRef = doc(db, 'tenant_settings', session.tenantId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists() && docSnap.data().databaseConfig) {
+        const config = docSnap.data().databaseConfig;
+        dbSchemaStr = `Allowed Collections: ${config.allowedCollections}\nSchema Details: ${config.dataSchemaDescription}`;
+      }
+    } catch (e) {
+      console.warn('Failed to fetch tenant database config:', e);
+    }
+
     // Prepare prompt
     const systemPrompt = `You are a helpful and polite AI assistant for a specific tenant within the AgentForge platform.
-Your task is to answer the user's questions based primarily on the provided Knowledge Base context.
+Your task is to answer the user's questions based primarily on the provided Knowledge Base context and the specific Database collections you have access to.
 If the answer is not in the context, you can use your general knowledge, but state that you are answering outside the specific company knowledge base.
 If the user asks you to generate a report or send an email and you don't have enough data, please invent reasonable mock data to fulfill their request and demonstrate your agent capabilities.
 Do not mention "tenant", "Pinecone", or "AgentForge" in your responses to the user.
+
+TENANT DATABASE CONFIGURATION:
+${dbSchemaStr}
 
 KNOWLEDGE BASE CONTEXT:
 ${contextText || "No specific company knowledge base documents found."}
@@ -71,22 +87,51 @@ ${contextText || "No specific company knowledge base documents found."}
     }
     conversation += `User: ${message}\nAssistant:`;
 
-    // Call Gemini Model with function calling
-    const reply = await generateText(conversation, session.tenantId, session.userId);
+    // Stream SSE Response
+    const stream = new ReadableStream({
+      async start(controller) {
+        const sendEvent = (data: any) => {
+          controller.enqueue(new TextEncoder().encode(`data: ${JSON.stringify(data)}\n\n`));
+        };
 
-    try {
-      await addDoc(collection(db, 'chat_history'), {
-        userId: session.userId,
-        tenantId: session.tenantId,
-        message: message,
-        reply: reply,
-        createdAt: new Date().toISOString()
-      });
-    } catch (dbErr) {
-      console.error('Failed to save history:', dbErr);
-    }
-    
-    return NextResponse.json({ reply });
+        try {
+          const result = await generateText(conversation, session.tenantId, session.userId, (agentName) => {
+            // Emits an event immediately when an agent is triggered by the LLM
+            sendEvent({ type: 'agent', name: agentName });
+          });
+
+          // Once text generation is fully complete, send the final text
+          sendEvent({ type: 'text', content: result.text });
+
+          try {
+            await addDoc(collection(db, 'chat_history'), {
+              userId: session.userId,
+              tenantId: session.tenantId,
+              message: message,
+              reply: result.text,
+              agentsUsed: result.agentsUsed,
+              createdAt: new Date().toISOString()
+            });
+          } catch (dbErr) {
+            console.error('Failed to save history:', dbErr);
+          }
+
+          controller.close();
+        } catch (err: any) {
+          sendEvent({ type: 'error', message: err.message || 'Internal server error' });
+          controller.close();
+        }
+      }
+    });
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+      },
+    });
+
   } catch (error: any) {
     console.error('Chat error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

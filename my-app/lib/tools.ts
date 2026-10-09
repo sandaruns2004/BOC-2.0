@@ -1,5 +1,7 @@
 import { db, storage } from './firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { initializeApp, getApp, getApps } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { jsPDF } from 'jspdf';
 import nodemailer from 'nodemailer';
@@ -109,6 +111,75 @@ export async function generateReport({ tenantId, userId, topic, details }: { ten
         userId,
         agentType: 'report',
         actionDetails: { topic },
+        status: 'error',
+        error: error.message,
+        createdAt: new Date().toISOString()
+      });
+    } catch (logErr) {}
+    return { success: false, error: error.message };
+  }
+}
+
+export async function queryDatabase({ tenantId, userId, collectionName, searchQuery }: { tenantId: string, userId: string, collectionName: string, searchQuery: string }) {
+  console.log(`[Tool: queryDatabase] Querying collection ${collectionName} for ${searchQuery}`);
+  try {
+    let targetDb = db;
+    let targetQuery;
+
+    // 1. Fetch tenant settings to check for external database config
+    const settingsRef = doc(db, 'tenant_settings', tenantId);
+    const settingsSnap = await getDoc(settingsRef);
+    
+    if (settingsSnap.exists() && settingsSnap.data().databaseConfig?.firebaseConfig) {
+      const fbConfig = settingsSnap.data().databaseConfig.firebaseConfig;
+      const appName = `tenant-${tenantId}`;
+      let tenantApp;
+      if (getApps().find(app => app.name === appName)) {
+        tenantApp = getApp(appName);
+      } else {
+        tenantApp = initializeApp(fbConfig, appName);
+      }
+      targetDb = getFirestore(tenantApp);
+      // Query external DB without tenant isolation (they own the whole DB)
+      targetQuery = query(collection(targetDb, collectionName));
+      console.log(`[Tool: queryDatabase] Using external Firebase project: ${fbConfig.projectId}`);
+    } else {
+      // Query platform DB with tenant isolation
+      targetQuery = query(collection(targetDb, collectionName), where('tenantId', '==', tenantId));
+    }
+
+    const snapshot = await getDocs(targetQuery);
+    
+    // We only return up to 10 results to not overwhelm the LLM context
+    const results = snapshot.docs.slice(0, 10).map(d => ({ id: d.id, ...d.data() }));
+
+    // Log Action to Platform DB (not tenant DB)
+    await addDoc(collection(db, 'agent_actions'), {
+      tenantId,
+      userId,
+      agentType: 'database',
+      actionDetails: { collectionName, searchQuery, resultCount: results.length, external: targetDb !== db },
+      status: 'success',
+      createdAt: new Date().toISOString()
+    });
+
+    if (results.length === 0) {
+      return { success: true, message: `No matching records found in ${collectionName}.`, data: [] };
+    }
+
+    return { 
+      success: true, 
+      message: `Found ${results.length} records.`,
+      data: results 
+    };
+  } catch (error: any) {
+    console.error(`[Tool: queryDatabase] Error:`, error);
+    try {
+      await addDoc(collection(db, 'agent_actions'), {
+        tenantId,
+        userId,
+        agentType: 'database',
+        actionDetails: { collectionName, searchQuery },
         status: 'error',
         error: error.message,
         createdAt: new Date().toISOString()

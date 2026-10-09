@@ -7,6 +7,7 @@ interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  agentsUsed?: string[];
   createdAt: string;
 }
 
@@ -43,26 +44,70 @@ export default function PortalChat() {
         body: JSON.stringify({ message: userMessage.content, history: messages }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: data.reply,
-          createdAt: new Date().toISOString()
-        };
-        setMessages(prev => [...prev, aiMessage]);
-      } else {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: 'Sorry, I encountered an error processing your request.',
-          createdAt: new Date().toISOString()
-        };
-        setMessages(prev => [...prev, aiMessage]);
+      if (!res.ok) throw new Error('Network response was not ok');
+      
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error('No reader available');
+      
+      const decoder = new TextDecoder();
+      const aiMessageId = (Date.now() + 1).toString();
+      
+      // Initialize an empty AI message immediately
+      setMessages(prev => [...prev, {
+        id: aiMessageId,
+        role: 'assistant',
+        content: '',
+        agentsUsed: [],
+        createdAt: new Date().toISOString()
+      }]);
+
+      let done = false;
+      let buffer = '';
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          // Keep the last incomplete line in the buffer
+          buffer = lines.pop() || '';
+          
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6));
+                
+                setMessages(prev => prev.map(msg => {
+                  if (msg.id === aiMessageId) {
+                    if (data.type === 'agent') {
+                      const newAgents = [...(msg.agentsUsed || [])];
+                      if (!newAgents.includes(data.name)) {
+                        newAgents.push(data.name);
+                      }
+                      return { ...msg, agentsUsed: newAgents };
+                    } else if (data.type === 'text') {
+                      return { ...msg, content: data.content };
+                    }
+                  }
+                  return msg;
+                }));
+              } catch (e) {
+                console.error("Error parsing SSE JSON:", e);
+              }
+            }
+          }
+        }
       }
     } catch (err) {
       console.error(err);
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: 'Sorry, I encountered an error processing your request.',
+        agentsUsed: [],
+        createdAt: new Date().toISOString()
+      }]);
     } finally {
       setLoading(false);
     }
@@ -109,6 +154,24 @@ export default function PortalChat() {
                     ? 'bg-surface-container-highest text-on-surface rounded-tr-sm' 
                     : 'bg-primary/10 text-on-surface rounded-tl-sm border border-primary/20'
                 }`}>
+                  {msg.agentsUsed && msg.agentsUsed.length > 0 && (
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                      {msg.agentsUsed.map(agent => {
+                        let icon = 'robot_2';
+                        let label = agent;
+                        if (agent === 'sendEmail') { icon = 'mail'; label = 'Email Agent'; }
+                        if (agent === 'generateReport') { icon = 'picture_as_pdf'; label = 'Report Agent'; }
+                        if (agent === 'queryDatabase') { icon = 'database'; label = 'Database Agent'; }
+                        
+                        return (
+                          <div key={agent} className="inline-flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-xs font-semibold text-primary border border-primary/20 shadow-sm">
+                            <span className="material-symbols-outlined text-[14px]">{icon}</span>
+                            {label}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                   <p className="text-sm whitespace-pre-wrap leading-relaxed">
                     {msg.content.split(/(https?:\/\/[^\s]+)/g).map((part, i) => 
                       part.match(/https?:\/\/[^\s]+/) ? (

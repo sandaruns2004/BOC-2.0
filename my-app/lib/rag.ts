@@ -96,11 +96,24 @@ const checkSystemStatusDeclaration: FunctionDeclaration = {
   }
 };
 
+const queryDatabaseDeclaration: FunctionDeclaration = {
+  name: "queryDatabase",
+  description: "Queries the tenant-specific Firebase database to retrieve data records.",
+  parameters: {
+    type: SchemaType.OBJECT,
+    properties: {
+      collectionName: { type: SchemaType.STRING, description: "The name of the database collection to query (e.g., sales, inventory)." },
+      searchQuery: { type: SchemaType.STRING, description: "A natural language query for logging." }
+    },
+    required: ["collectionName", "searchQuery"]
+  }
+};
+
 const tools = [{
-  functionDeclarations: [sendEmailDeclaration, generateReportDeclaration, escalateToHumanDeclaration, checkSystemStatusDeclaration]
+  functionDeclarations: [sendEmailDeclaration, generateReportDeclaration, escalateToHumanDeclaration, checkSystemStatusDeclaration, queryDatabaseDeclaration]
 }];
 
-export async function generateText(prompt: string, tenantId?: string, userId?: string): Promise<string> {
+export async function generateText(prompt: string, tenantId?: string, userId?: string, onAgentUsed?: (agent: string) => void): Promise<{ text: string, agentsUsed: string[] }> {
   const modelsToTry = [
     'gemini-flash-lite-latest',
     'gemini-3.1-flash-lite',
@@ -122,6 +135,7 @@ export async function generateText(prompt: string, tenantId?: string, userId?: s
       let result = await withTimeout(chat.sendMessage(prompt), 8000);
       let response = result.response;
       
+      let agentsUsed: string[] = [];
       let calls = response.functionCalls ? response.functionCalls() : undefined;
       while (calls && calls.length > 0) {
         const call = calls[0];
@@ -130,12 +144,21 @@ export async function generateText(prompt: string, tenantId?: string, userId?: s
         
         let functionResponse: any;
         console.log(`[RAG] LLM requested function call: ${functionName}`);
+        
+        if (!agentsUsed.includes(functionName)) {
+          agentsUsed.push(functionName);
+          if (onAgentUsed) {
+            onAgentUsed(functionName);
+          }
+        }
 
         try {
           if (functionName === 'sendEmail') {
             functionResponse = await ToolImplementations.sendEmail({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
           } else if (functionName === 'generateReport') {
             functionResponse = await ToolImplementations.generateReport({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
+          } else if (functionName === 'queryDatabase') {
+            functionResponse = await ToolImplementations.queryDatabase({ ...args, tenantId: tenantId || 'unknown', userId: userId || 'unknown' } as any);
           } else if (functionName === 'escalateToHuman') {
             functionResponse = await ToolImplementations.escalateToHuman({ ...args, tenantId: tenantId || 'unknown' } as any);
           } else if (functionName === 'checkSystemStatus') {
@@ -157,7 +180,7 @@ export async function generateText(prompt: string, tenantId?: string, userId?: s
         calls = response.functionCalls ? response.functionCalls() : undefined;
       }
       
-      return response.text();
+      return { text: response.text(), agentsUsed };
     } catch (e: any) {
       console.warn(`[RAG] Model ${modelName} failed:`, e.message);
       lastError = e;
@@ -166,5 +189,5 @@ export async function generateText(prompt: string, tenantId?: string, userId?: s
   }
 
   console.error('[RAG] All text generation models failed. Last error:', lastError);
-  return 'I encountered an error while trying to process your request. The AI backend may be temporarily overloaded.';
+  return { text: 'I encountered an error while trying to process your request. The AI backend may be temporarily overloaded.', agentsUsed: [] };
 }
