@@ -9,7 +9,7 @@ const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PIN
 
 export async function POST(req: Request) {
   const session = await getSession();
-  if (!session || session.role !== 'user') {
+  if (!session || session.role !== 'user' || !session.tenantId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

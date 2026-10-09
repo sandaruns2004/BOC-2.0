@@ -173,8 +173,8 @@ export default function PortalChat() {
                     </div>
                   )}
                   <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                    {msg.content.split(/(https?:\/\/[^\s]+)/g).map((part, i) => 
-                      part.match(/https?:\/\/[^\s]+/) ? (
+                    {msg.content.split(/(https?:\/\/[^\s()]+)/g).map((part, i) => 
+                      part.match(/https?:\/\/[^\s()]+/) ? (
                         <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-primary underline font-medium hover:text-primary/80 transition-colors">
                           {part.length > 50 ? part.substring(0, 50) + '...' : part}
                         </a>
