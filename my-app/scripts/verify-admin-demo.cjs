@@ -10,9 +10,8 @@ async function request(path, method = 'GET', body, cookie) {
 async function run() {
   const home = await (await fetch(base)).text(); assert.match(home, /href="\/admin\/dashboard"[^]*?Launch Live Console/); console.log('PASS: live console points to admin dashboard');
   const login = await request('/api/auth/admin-login', 'POST', { email: 'admin@walkwave.example', password: process.env.WALKWAVE_ADMIN_PASSWORD }); assert.equal(login.res.status, 200); const manager = login.res.headers.get('set-cookie').split(';')[0];
-  let r = await request('/api/admin/users', 'GET', undefined, manager); assert.equal(r.res.status, 200); assert.equal(r.data.connectionError, ''); assert.deepEqual(r.data.connectedUsers.map(u => u.id).sort(), ['walkwave_bob', 'walkwave_jane']); assert.ok(r.data.users.every(u => !Object.hasOwn(u, 'passwordHash'))); console.log('PASS: company directory reads only Walkwave profiles without credentials');
+  let r = await request('/api/admin/users', 'GET', undefined, manager); assert.equal(r.res.status, 200); assert.ok(r.data.users.some(u => u.id === 'walkwave_jane')); assert.ok(r.data.users.some(u => u.id === 'walkwave_bob')); assert.ok(!r.data.users.some(u => u.id === 'nova_alice')); assert.ok(r.data.users.every(u => !Object.hasOwn(u, 'passwordHash'))); console.log('PASS: existing company users include prepared demos without credentials');
   r = await request('/api/admin/users', 'PATCH', { userId: 'nova_alice', isActive: false }, manager); assert.equal(r.res.status, 404); console.log('PASS: another company customer cannot be disabled');
-  r = await request('/api/admin/users', 'POST', { action: 'connectDirectory', collectionName: '../users' }, manager); assert.equal(r.res.status, 400); console.log('PASS: invalid customer collection rejected');
   const customerLogin = await request('/api/demo/login', 'POST', { company: 'walkwave', customerId: 'walkwave_jane' }); const customer = customerLogin.res.headers.get('set-cookie').split(';')[0];
   try {
     r = await request('/api/admin/users', 'PATCH', { userId: 'walkwave_jane', isActive: false }, manager); assert.equal(r.res.status, 200);

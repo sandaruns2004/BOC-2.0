@@ -43,7 +43,7 @@ The two pages share a cookie within one browser profile. Selecting a customer ch
 
 The homepage's Launch Live Console opens `/admin/dashboard` (or the admin login when signed out). The Website Agent section explains the company website widget/API integration and shows actual agent actions. It does not require customers to use an AgentForge portal.
 
-Users & Access includes a read-only company customer directory. Configure the company Firebase connection in Agent Settings, then enter a collection in Users & Access. The demo uses `demo_customers`, containing only the four fictional customer profiles, with `tenantId`, `name`, `email`, and `isActive`. Profiles are tenant-filtered; passwords and login tokens are not copied. This directory does not implement company single sign-on. AgentForge identities remain the authenticated IDs used by this prototype's API. Run `node --use-system-ca scripts/setup-customer-directory.cjs` to prepare the directory and `node --use-system-ca scripts/verify-admin-demo.cjs` to check the admin flows.
+Users & Access displays existing customer identities, including the prepared demo accounts, and supports enabling/disabling access. External company login database integration is deferred until after the hackathon. Run `node --use-system-ca scripts/verify-admin-demo.cjs` to check the admin flows.
 
 Escalations now show the customer, original request, review rule, timestamps, and optional manager decision note. Filter Pending/Approved/Rejected to inspect the history. Approval records a decision only; no financial payment is executed.
 

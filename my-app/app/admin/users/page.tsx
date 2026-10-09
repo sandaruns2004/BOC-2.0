@@ -18,10 +18,6 @@ export default function AdminUsers() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
-  const [customerCollection, setCustomerCollection] = useState('');
-  const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
-  const [connectionError, setConnectionError] = useState('');
-  const [connecting, setConnecting] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -33,24 +29,14 @@ export default function AdminUsers() {
       if (res.ok) {
         const data = await res.json();
         setUsers(data.users);
-        setConnectedUsers(data.connectedUsers || []);
-        setCustomerCollection(data.customerCollection || '');
-        setConnectionError(data.connectionError || '');
       } else {
-        setConnectionError((await res.json()).error || 'Unable to load users.');
+        setError((await res.json()).error || 'Unable to load users.');
       }
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  }
-
-  async function connectDirectory(e: React.FormEvent) {
-    e.preventDefault(); setConnecting(true); setConnectionError('');
-    try { const res = await fetch('/api/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'connectDirectory', collectionName: customerCollection.trim() }) }); const data = await res.json(); if (!res.ok) throw new Error(data.error); await fetchUsers(); }
-    catch (e) { setConnectionError(e instanceof Error ? e.message : 'Unable to connect customer directory.'); }
-    finally { setConnecting(false); }
   }
 
   async function handleCreate(e: React.FormEvent) {
@@ -112,14 +98,8 @@ export default function AdminUsers() {
         </button>
       </div>
 
-      <section className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-6 mb-6">
-        <h2 className="font-semibold text-title-md">Company customer database</h2><p className="text-sm text-on-surface-variant mt-2">Read customer profiles from the Firebase project connected in Agent Settings. Enter its customer or login-profile collection below. Every record must contain your company’s tenantId, plus name and email. Passwords and authentication tokens are never imported.</p>
-        <form className="flex flex-wrap gap-3 items-end mt-4" onSubmit={connectDirectory}><div><label className="block text-sm mb-1" htmlFor="customer-collection">Customer collection</label><input id="customer-collection" className="border rounded-lg p-2 bg-surface" placeholder="customers" value={customerCollection} onChange={e => setCustomerCollection(e.target.value)} required pattern="[a-zA-Z0-9_-]{1,80}" /></div><button disabled={connecting} className="px-4 py-2 bg-primary text-on-primary rounded-lg">{connecting ? 'Reading…' : 'Connect & refresh'}</button><a className="text-primary underline text-sm" href="/admin/settings">Database settings</a></form>
-        {connectionError && <p role="alert" className="text-error mt-3">{connectionError}</p>}
-        <p className="text-xs text-on-surface-variant mt-3">This is a read-only directory, up to 100 profiles per refresh. Your company login remains the source of authentication; this demo does not add single sign-on. Customer IDs supplied to the enterprise API must also match an AgentForge identity below.</p>
-        {connectedUsers.length > 0 ? <div className="overflow-x-auto mt-4"><table className="w-full text-sm text-left"><thead><tr><th className="p-2">Customer</th><th className="p-2">Email</th><th className="p-2">Company customer ID</th><th className="p-2">Status</th></tr></thead><tbody>{connectedUsers.map(customer => <tr key={customer.id} className="border-t"><td className="p-2">{customer.name}</td><td className="p-2">{customer.email}</td><td className="p-2">{customer.id}</td><td className="p-2">{customer.isActive ? 'Active' : 'Disabled'}</td></tr>)}</tbody></table></div> : customerCollection && !connectionError ? <p className="text-sm mt-3">No customer profiles loaded. Click Connect & refresh and check that records contain the matching tenantId.</p> : null}
-      </section>
-      <h2 className="font-semibold mb-3">AgentForge customer identities</h2>
+      <p className="text-sm text-on-surface-variant mb-6">Prepared demo customers use the existing customer database. Company login integration is planned after the hackathon.</p>
+      {error && !showModal && <p role="alert" className="text-error mb-4">{error}</p>}
       <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 overflow-hidden shadow-sm">
         <table className="w-full text-left">
           <thead className="bg-surface-container-low border-b border-outline-variant/20">
