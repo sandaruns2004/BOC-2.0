@@ -20,24 +20,35 @@ export default function AdminUsers() {
   const [toast, setToast] = useState('');
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  async function fetchUsers() {
-    try {
-      const res = await fetch('/api/admin/users');
-      if (res.ok) {
+    const controller = new AbortController();
+    let fetching = false;
+    async function refreshUsers(initial = false) {
+      if (fetching || controller.signal.aborted) return;
+      fetching = true;
+      try {
+        const res = await fetch('/api/admin/users', { cache: 'no-store', signal: controller.signal });
         const data = await res.json();
-        setUsers(data.users);
-      } else {
-        setError((await res.json()).error || 'Unable to load users.');
+        if (controller.signal.aborted) return;
+        if (res.ok) setUsers(data.users);
+        else if (initial) setError(data.error || 'Unable to load users.');
+      } catch {
+        if (initial && !controller.signal.aborted) setError('Unable to load users. Please refresh the page.');
+      } finally {
+        fetching = false;
+        if (!controller.signal.aborted) setLoading(false);
       }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
     }
-  }
+    function refreshVisible() { if (!document.hidden) void refreshUsers(); }
+    void refreshUsers(true);
+    const interval = window.setInterval(refreshVisible, 10000);
+    window.addEventListener('focus', refreshVisible);
+    document.addEventListener('visibilitychange', refreshVisible);
+    return () => {
+      controller.abort(); window.clearInterval(interval);
+      window.removeEventListener('focus', refreshVisible);
+      document.removeEventListener('visibilitychange', refreshVisible);
+    };
+  }, []);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -60,7 +71,7 @@ export default function AdminUsers() {
         const data = await res.json();
         setError(data.error || 'Failed to create user');
       }
-    } catch (e) {
+    } catch {
       setError('An error occurred');
     } finally {
       setSubmitting(false);
@@ -98,7 +109,7 @@ export default function AdminUsers() {
         </button>
       </div>
 
-      <p className="text-sm text-on-surface-variant mb-6">Prepared demo customers use the existing customer database. Company login integration is planned after the hackathon.</p>
+      <p className="text-sm text-on-surface-variant mb-6">Customers are loaded from your company’s database. This list updates automatically every 10 seconds and when you return to this page.</p>
       {error && !showModal && <p role="alert" className="text-error mb-4">{error}</p>}
       <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 overflow-hidden shadow-sm">
         <table className="w-full text-left">

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, getDocFromServer, doc, setDoc, query, where } from 'firebase/firestore';
+import { collection, getDocsFromServer, getDocFromServer, doc, setDoc, query, where } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
 
@@ -13,13 +13,13 @@ export async function GET() {
 
   try {
     const q = query(collection(db, 'users'), where('tenantId', '==', session.tenantId));
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocsFromServer(q);
     const users = snapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name, email: doc.data().email, isActive: doc.data().isActive, createdAt: doc.data().createdAt, isDemo: doc.data().isDemo === true, source: 'AgentForge' }));
-    users.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    users.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-    return NextResponse.json({ users });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ users }, { headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unable to load users.' }, { status: 500 });
   }
 }
 
@@ -53,11 +53,11 @@ export async function POST(req: Request) {
     };
 
     await setDoc(doc(db, 'users', userId), userData);
-    const { passwordHash: _, ...safeUserData } = userData;
+    const safeUserData = { email, name, tenantId: session.tenantId, isActive: true, createdAt: userData.createdAt, lastLogin: null };
 
     return NextResponse.json({ success: true, user: { id: userId, ...safeUserData } });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unable to create user.' }, { status: 500 });
   }
 }
 
@@ -78,7 +78,7 @@ export async function PATCH(req: Request) {
     await setDoc(doc(db, 'users', userId), { isActive }, { merge: true });
 
     return NextResponse.json({ success: true, isActive });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unable to update user.' }, { status: 500 });
   }
 }
