@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/app/components/AuthProvider';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function AdminAnalytics() {
-  const { user } = useAuth();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadAnalytics() {
@@ -16,9 +15,9 @@ export default function AdminAnalytics() {
         if (res.ok) {
           const json = await res.json();
           setData(json.timeline || []);
-        }
+        } else { setError('Unable to load recorded chats. Please refresh the page.'); }
       } catch (err) {
-        console.error(err);
+        setError('Unable to load recorded chats. Please refresh the page.');
       } finally {
         setLoading(false);
       }
@@ -31,17 +30,13 @@ export default function AdminAnalytics() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-headline-lg font-bold text-on-surface">Analytics</h1>
-          <p className="text-on-surface-variant font-body-md mt-1">Tenant usage, agent interactions, and API costs.</p>
+          <p className="text-on-surface-variant font-body-md mt-1">Recorded chats over the last seven days.</p>
         </div>
-        <select className="px-4 py-2 bg-surface-container-low border border-outline-variant/30 text-on-surface rounded-lg focus:outline-none focus:border-primary">
-          <option>Last 7 Days</option>
-          <option>Last 30 Days</option>
-          <option>This Month</option>
-        </select>
       </div>
 
+      {error && <p role="alert" className="text-error mb-4">{error}</p>}
       <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm p-6 mb-8 h-96 flex flex-col relative overflow-hidden">
-        <h2 className="text-title-md font-semibold text-on-surface mb-6">Token Usage & Chats Over Time</h2>
+        <h2 className="text-title-md font-semibold text-on-surface mb-6">Customer chats</h2>
         
         {loading ? (
           <div className="flex-1 flex justify-center items-center">
@@ -64,8 +59,7 @@ export default function AdminAnalytics() {
                   contentStyle={{ backgroundColor: 'var(--surface-container-highest)', border: '1px solid rgba(128,128,128,0.2)', borderRadius: '8px' }}
                   itemStyle={{ color: 'var(--on-surface)' }}
                 />
-                <Area type="monotone" dataKey="tokens" name="Total Tokens" stroke="#4f46e5" strokeWidth={2} fillOpacity={1} fill="url(#colorTokens)" />
-                <Area type="monotone" dataKey="chats" name="Chat Queries" stroke="#10b981" strokeWidth={2} fill="transparent" />
+                <Area type="monotone" dataKey="chats" name="Recorded chats" stroke="#4f46e5" strokeWidth={2} fillOpacity={1} fill="url(#colorTokens)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -76,7 +70,7 @@ export default function AdminAnalytics() {
             </div>
             <h2 className="text-headline-sm font-semibold text-on-surface mb-2">Insufficient Data</h2>
             <p className="text-on-surface-variant text-sm max-w-sm">
-              AgentForge requires at least 24 hours of sustained usage before telemetry charts can be rendered.
+              Chats will appear here after customers use the assistant.
             </p>
           </div>
         )}

@@ -26,8 +26,8 @@ export async function GET() {
     let failedActions = 0;
 
     actions.forEach(action => {
-      if (action.agentType === 'email') totalEmails++;
-      if (action.agentType === 'report') totalReports++;
+      if (action.agentType === 'email' && action.status === 'success') totalEmails++;
+      if (action.agentType === 'report' && action.status === 'success') totalReports++;
       if (action.status === 'success') successfulActions++;
       if (action.status === 'error') failedActions++;
     });

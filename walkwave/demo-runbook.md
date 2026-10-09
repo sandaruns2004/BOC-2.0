@@ -43,6 +43,8 @@ The two pages share a cookie within one browser profile. Selecting a customer ch
 
 Open `/admin/dashboard` directly (or `/admin/login` when signed out). The homepage console CTA and Tech Stack section have been removed. The Website Agent section explains the company website widget/API integration and shows actual agent actions. It does not require customers to use an AgentForge portal.
 
+The public site has been shortened to the working support features and company examples. Navigation now shows Overview, Integrations, Guide, and Admin login. Documentation and privacy text describe the current prototype; sample pricing, service-status claims, latency figures, and placeholder GitHub buttons have been removed. Analytics shows recorded chats for the last seven days, not model token consumption. The former pricing URL only notes that plans are outside this prototype.
+
 Users & Access displays existing customer identities, including the prepared demo accounts, and supports enabling/disabling access. External company login database integration is deferred until after the hackathon. Run `node --use-system-ca scripts/verify-admin-demo.cjs` to check the admin flows.
 
 Escalations now show the customer, original request, review rule, timestamps, and optional manager decision note. Filter Pending/Approved/Rejected to inspect the history. Approval records a decision only; no financial payment is executed.

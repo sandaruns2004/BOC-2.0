@@ -46,7 +46,7 @@ export default function AdminDashboard() {
           <div className="text-headline-md font-bold text-on-surface">{stats.totalDocs} Docs</div>
         </div>
         <div className="p-6 rounded-2xl bg-surface-container-lowest shadow-sm border border-outline-variant/20">
-          <div className="text-[12px] font-label-caps text-on-surface-variant uppercase mb-2">Token Usage</div>
+          <div className="text-[12px] font-label-caps text-on-surface-variant uppercase mb-2">Recorded Chats</div>
           <div className="text-headline-md font-bold text-on-surface">{stats.tokenUsage}</div>
         </div>
         <div className="p-6 rounded-2xl bg-surface-container-lowest shadow-sm border border-outline-variant/20">

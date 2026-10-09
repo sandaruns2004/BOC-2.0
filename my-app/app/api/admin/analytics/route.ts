@@ -1,68 +1,20 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-
+import { collection, query, where, getDocsFromServer } from 'firebase/firestore';
 export async function GET() {
+  const session = await getSession();
+  if (session?.role !== 'admin' || !session.tenantId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   try {
-    const session = await getSession();
-    if (!session || session.role !== 'admin') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const records = await getDocsFromServer(query(collection(db, 'chat_history'), where('tenantId', '==', session.tenantId)));
+    const dateFormat = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Colombo', year: 'numeric', month: 'short', day: 'numeric' });
+    const timeline = Array.from({ length: 7 }, (_, index) => ({ date: dateFormat.format(new Date(Date.now() - (6 - index) * 86400000)), chats: 0 }));
+    const buckets = new Map(timeline.map(entry => [entry.date, entry]));
+    for (const record of records.docs) {
+      const createdAt = record.data().createdAt;
+      const date = typeof createdAt === 'string' ? new Date(createdAt) : createdAt?.toDate?.();
+      if (date && !Number.isNaN(date.getTime())) { const bucket = buckets.get(dateFormat.format(date)); if (bucket) bucket.chats += 1; }
     }
-    
-    const tenantId = session.tenantId;
-
-    // Fetch real token usage to anchor today's data
-    const keysQ = query(collection(db, 'api_keys'), where('tenantId', '==', tenantId));
-    const keysSnap = await getDocs(keysQ);
-    let apiUsage = 0;
-    keysSnap.forEach(doc => { apiUsage += (doc.data().usageCount || 0); });
-    
-    const chatQ = query(collection(db, 'chat_history'), where('tenantId', '==', tenantId));
-    const chatSnap = await getDocs(chatQ);
-
-    // Initialize 7-day timeline with 0s
-    const timeline: { date: string, tokens: number, chats: number }[] = [];
-    const now = new Date();
-    
-    // Create an object to quickly map date strings to their index in the timeline
-    const dateMap: Record<string, number> = {};
-
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      timeline.push({
-        date: dateStr,
-        tokens: 0,
-        chats: 0
-      });
-      dateMap[dateStr] = 6 - i;
-    }
-
-    // Bucket real chat history by date
-    chatSnap.forEach(doc => {
-      const data = doc.data();
-      if (data.createdAt) {
-        const d = new Date(data.createdAt);
-        const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        if (dateMap[dateStr] !== undefined) {
-          const idx = dateMap[dateStr];
-          timeline[idx].chats += 1;
-          timeline[idx].tokens += 1; // 1 token per chat interaction placeholder
-        }
-      }
-    });
-
-    // Add API key usage (which lacks historical timestamps) entirely to today's token bucket
-    const todayStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    if (dateMap[todayStr] !== undefined) {
-      timeline[dateMap[todayStr]].tokens += apiUsage;
-    }
-
     return NextResponse.json({ timeline });
-  } catch (error: any) {
-    console.error('Error fetching analytics:', error);
-    return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 });
-  }
+  } catch { return NextResponse.json({ error: 'Unable to load recorded chats.' }, { status: 500 }); }
 }

@@ -85,7 +85,7 @@ export default function AdminSettingsPage() {
     <div className="p-8 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-headline-lg font-bold text-on-surface">Tenant Settings</h1>
-        <p className="text-on-surface-variant font-body-md mt-1">Configure your AI Agents and Database access.</p>
+        <p className="text-on-surface-variant font-body-md mt-1">Connect the company database used for customer order lookup.</p>
       </div>
 
       {loading ? (
@@ -96,28 +96,14 @@ export default function AdminSettingsPage() {
         <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm p-6">
           <h2 className="text-title-md font-semibold text-on-surface mb-4 flex items-center gap-2">
             <span className="material-symbols-outlined text-primary">database</span>
-            Database Agent Configuration
+            Company Firebase connection
           </h2>
           <p className="text-sm text-on-surface-variant mb-6">
-            Provide the AI with access to your tenant-isolated Firebase collections. Define what data exists so the agent knows how to answer queries.
+            The prototype reads customer-owned orders from demo_orders. It checks both company and customer identity.
           </p>
 
           <form onSubmit={handleSave} className="space-y-6">
-            <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">
-                Allowed Collections (comma-separated)
-              </label>
-              <input
-                type="text"
-                value={allowedCollections}
-                onChange={e => setAllowedCollections(e.target.value)}
-                placeholder="e.g., sales, inventory, customers"
-                className="w-full px-4 py-2 bg-surface border border-outline-variant/50 rounded-lg focus:border-primary focus:outline-none text-on-surface"
-              />
-              <p className="text-xs text-on-surface-variant mt-1">
-                The agent will only be able to query these collections.
-              </p>
-            </div>
+
 
             <div>
               <label className="block text-sm font-semibold text-on-surface mb-2">
@@ -134,17 +120,7 @@ export default function AdminSettingsPage() {
               </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">
-                Data Schema & Description
-              </label>
-              <textarea
-                value={dataSchemaDescription}
-                onChange={e => setDataSchemaDescription(e.target.value)}
-                placeholder="Describe the collections. E.g., The 'sales' collection contains documents with 'amount' and 'date'. The 'customers' collection contains 'name' and 'email'."
-                className="w-full h-32 px-4 py-3 bg-surface border border-outline-variant/50 rounded-lg focus:border-primary focus:outline-none text-on-surface resize-none"
-              />
-            </div>
+
 
             <div className="flex items-center gap-4">
               <button

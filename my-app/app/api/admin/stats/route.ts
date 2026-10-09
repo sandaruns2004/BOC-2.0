@@ -22,18 +22,11 @@ export async function GET() {
     const docsSnap = await getCountFromServer(docsQ);
     const totalDocs = docsSnap.data().count;
 
-    // 3. Token Usage Approximation (API keys + Chat history invocations)
-    const keysQ = query(collection(db, 'api_keys'), where('tenantId', '==', tenantId));
-    const keysSnap = await getDocs(keysQ);
-    let totalUsage = 0;
-    keysSnap.forEach(doc => {
-      totalUsage += (doc.data().usageCount || 0);
-    });
-    
+    // Recorded customer chats.
     const chatQ = query(collection(db, 'chat_history'), where('tenantId', '==', tenantId));
     const chatSnap = await getCountFromServer(chatQ);
     
-    const tokenUsage = totalUsage + chatSnap.data().count;
+    const tokenUsage = chatSnap.data().count;
 
     // 4. Escalations
     const escQ = query(collection(db, 'escalations'), where('tenantId', '==', tenantId));

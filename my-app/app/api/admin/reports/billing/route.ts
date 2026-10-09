@@ -18,7 +18,7 @@ export async function GET() {
     const chatQ = query(collection(db, 'chat_history'), where('tenantId', '==', tenantId));
     const chatSnap = await getDocs(chatQ);
 
-    let csvContent = 'Date,Type,Description,Tokens Consumed\n';
+    let csvContent = 'Date,Type,Description,Recorded Requests\n';
     
     // In a real app we would iterate through actual timestamped usage logs.
     // Here we aggregate the totals from keys and chats.
@@ -30,12 +30,12 @@ export async function GET() {
     });
 
     let totalChatTokens = chatSnap.docs.length;
-    csvContent += `${now},Chat UI,End User Web Portal,${totalChatTokens}\n`;
+    csvContent += `${now},Chat UI,Saved customer chats,${totalChatTokens}\n`;
 
     return new Response(csvContent, {
       headers: {
         'Content-Type': 'text/csv',
-        'Content-Disposition': `attachment; filename="billing_report_${tenantId}.csv"`
+        'Content-Disposition': `attachment; filename="usage_report_${tenantId}.csv"`
       }
     });
   } catch (error: any) {
