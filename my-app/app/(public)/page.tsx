@@ -45,10 +45,7 @@ export default function AgentForgeAIAgentPlatform() {
 <span className="material-symbols-outlined text-[18px]">account_tree</span>
 <span className="">Explore Architecture</span>
 </a>
-<a className="inline-flex items-center gap-space-xs px-6 py-3 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-label-ui font-medium shadow-sm hover:bg-surface-container-low hover:text-primary transition-all" href="#demo">
-<span className="material-symbols-outlined text-[18px]">play_circle</span>
-<span className="">Inspect Live Demo</span>
-</a>
+
 <a className="inline-flex items-center gap-space-xs px-5 py-3 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-label-ui text-label-ui transition-all" href="https://github.com" rel="noreferrer" target="_blank">
 <span className="material-symbols-outlined text-[18px]">terminal</span>
 <span className="">View on GitHub</span>
@@ -842,9 +839,7 @@ export default function AgentForgeAIAgentPlatform() {
 <div className="font-label-ui text-label-ui font-semibold">Ready for Enterprise Scale?</div>
 <div className="text-[12px] opacity-90">Auto-scales smoothly from 1 to 10,000 tenants without re-architecture.</div>
 </div>
-<a className="px-4 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-label-ui text-[12px] font-semibold hover:bg-surface-container-low transition-all" href="#demo">
-                Test Pilot
-              </a>
+
 </div>
 </div>
 </div>

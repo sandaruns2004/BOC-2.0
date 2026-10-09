@@ -12,7 +12,7 @@ From `my-app`, run `npm run demo:dev`. This uses Node's system certificate store
 - Nova enterprise interface: http://localhost:3000/nova
 - Company administration: http://localhost:3000/admin/login
 
-The existing `/demo` link now redirects to Walkwave.
+The `/demo` page and its navigation links have been removed. Open the company URLs above directly.
 
 ## Prepared data
 

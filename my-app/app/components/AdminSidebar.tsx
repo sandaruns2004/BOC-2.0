@@ -30,7 +30,6 @@ const ADMIN_NAV = [
     group: 'Public Site',
     items: [
       { label: 'Architecture',       href: '/architecture', icon: 'account_tree',     desc: '5-Layer engine diagram'     },
-      { label: 'Live Demo',          href: '/demo',         icon: 'chat',             desc: 'Try the agent'              },
     ],
   },
 ];

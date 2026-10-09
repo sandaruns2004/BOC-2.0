@@ -18,7 +18,7 @@ export default function AgentForgePricingandEconomics() {
 </div>
 <div className="flex items-center gap-2">
 <a href="/architecture" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all"><span className="material-symbols-outlined text-[12px]">account_tree</span>Architecture</a>
-<a href="/demo" className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all"><span className="material-symbols-outlined text-[12px]">play_circle</span>Live Demo</a>
+
 </div>
 </div>
 </section>
@@ -83,9 +83,7 @@ export default function AgentForgePricingandEconomics() {
 </div>
 </div>
 </div>
-<a className="w-full text-center py-3 px-4 rounded-lg bg-surface-container font-label-ui text-label-ui text-primary font-medium hover:bg-surface-container-high transition-all" href="/demo">
-            Deploy 10-Tenant Pilot
-          </a>
+
 </div>
 
 <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-xl relative flex flex-col justify-between -mt-2 lg:-mt-4 relative overflow-hidden">
