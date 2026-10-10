@@ -16,6 +16,8 @@
     "demo:widget-site": "node --use-system-ca scripts/widget-test-site.cjs"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.93",
+    "@ai-sdk/openai": "^4.0.91",
     "@aws-sdk/client-cloudwatch-logs": "^3.1141.0",
     "@aws-sdk/client-dynamodb": "^3.1141.0",
     "@aws-sdk/client-sqs": "^3.1141.0",
@@ -23,6 +25,7 @@
     "@google/generative-ai": "^0.24.1",
     "@pinecone-database/pinecone": "^9.0.0",
     "@types/uuid": "^10.0.0",
+    "ai": "^7.0.137",
     "bcryptjs": "^3.0.3",
     "firebase": "^12.19.0",
     "jose": "^6.2.12",
@@ -33,7 +36,8 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "^3.10.1",
-    "uuid": "^14.0.2"
+    "uuid": "^14.0.2",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

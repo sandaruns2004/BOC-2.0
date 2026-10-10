@@ -58,7 +58,7 @@ export default function OpsReports() {
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-on-surface-variant">Gemini 1.5 Pro Token Limits</span>
+                <span className="text-on-surface-variant">LLM Token Limits</span>
                 <span className="font-code-base font-medium">45%</span>
               </div>
               <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
