@@ -1,5 +1,4 @@
 const { Pinecone } = require('@pinecone-database/pinecone');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -15,7 +14,7 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const { embedText, embeddingModelId } = require('./ai-embed.cjs');
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
 const indexName = process.env.PINECONE_INDEX_NAME || 'agentforge';
 
@@ -40,11 +39,8 @@ async function seedKnowledgeBase() {
 
   for (const doc of documents) {
     console.log(`\nVectorizing: ${doc.title}...`);
-    const model = genAI.getGenerativeModel({ model: 'gemini-embedding-2' });
-    const result = await model.embedContent(doc.content);
-    
-    // Slice to 768 to match Pinecone schema
-    const vector = result.embedding.values.slice(0, 768);
+    // 768 dimensions to match Pinecone schema
+    const vector = await embedText(doc.content);
 
     const id = crypto.createHash('md5').update(doc.title).digest('hex');
 
@@ -56,7 +52,8 @@ async function seedKnowledgeBase() {
         metadata: {
           tenantId: 'acme_corp',
           title: doc.title,
-          content: doc.content
+          content: doc.content,
+          embeddingModel: embeddingModelId
         }
       }]
     });

@@ -1,7 +1,7 @@
 import { Pinecone } from '@pinecone-database/pinecone';
 import { collection, doc, getDocsFromServer, query, setDoc, where } from 'firebase/firestore';
 import { db } from './firebase';
-import { embedText } from './rag';
+import { embedText, embeddingModelId } from './ai';
 
 export async function extractDocument(file: File) {
   if (!file.size || file.size > 4 * 1024 * 1024) throw new Error('Upload a non-empty PDF or TXT smaller than 4 MB.');
@@ -43,7 +43,7 @@ export async function indexDocument(input: { id: string; tenantId: string; admin
   for (let i = 0; i < chunks.length; i++) {
     const values = await embedText(chunks[i]);
     if (!values.length) throw new Error('Embedding failed. The document has not been marked indexed.');
-    records.push({ id: `${input.id}_chunk_${i}`, values, metadata: { tenantId: input.tenantId, docId: input.id, title: input.title, content: chunks[i] } });
+    records.push({ id: `${input.id}_chunk_${i}`, values, metadata: { tenantId: input.tenantId, docId: input.id, title: input.title, content: chunks[i], embeddingModel: embeddingModelId } });
   }
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch });
   await pc.index(process.env.PINECONE_INDEX_NAME).upsert({ records });
@@ -61,7 +61,7 @@ export async function retrieveKnowledge(tenantId: string, message: string) {
       const vector = await embedText(message);
       if (!vector.length) throw new Error('Embedding unavailable.');
       const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch });
-      const result = await pc.index(process.env.PINECONE_INDEX_NAME).query({ vector, topK: 5, includeMetadata: true, filter: { tenantId: { $eq: tenantId } } });
+      const result = await pc.index(process.env.PINECONE_INDEX_NAME).query({ vector, topK: 5, includeMetadata: true, filter: { tenantId: { $eq: tenantId }, embeddingModel: { $eq: embeddingModelId } } });
       // Orphan vectors never override the company's current indexed documents.
       const matches = result.matches.filter(m => typeof m.metadata?.docId === 'string' && documents.has(m.metadata.docId));
       if (matches.length) return { text: matches.map(m => String(m.metadata?.content || '')).join('\n\n'), sources: [...new Set(matches.map(m => String(m.metadata?.title || documents.get(String(m.metadata?.docId))?.title || 'Company policy')))] };
