@@ -38,7 +38,12 @@ async function run() {
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch });
   const output = path.join(process.cwd(), 'public', 'demo'); fs.mkdirSync(output, { recursive: true });
   for (const c of companies) {
-    await setDoc(doc(db, 'tenant_settings', c.tenant), { companyName: c.name, databaseConfig: { ...(settings.data()?.databaseConfig || {}), allowedCollections: 'demo_orders', dataSchemaDescription: 'Customer-owned orders: orderId, productName, customerId, tenantId, shippingStatus, trackingNumber, estimatedDelivery.', ...(externalConfig ? { firebaseConfig: externalConfig } : {}) } }, { merge: true });
+    const companySettingsRef = doc(db, 'tenant_settings', c.tenant);
+    const databaseConfig = (await getDocFromServer(companySettingsRef)).data()?.databaseConfig || {};
+    const configuredCollections = databaseConfig.allowedCollections;
+    const collectionNames = Array.isArray(configuredCollections) ? configuredCollections : String(configuredCollections ?? '').split(/[,\n]/);
+    const allowedCollections = [...new Set([...collectionNames.map(name => name.trim()).filter(Boolean), 'demo_orders'])].join(', ');
+    await setDoc(companySettingsRef, { companyName: c.name, databaseConfig: { ...databaseConfig, allowedCollections, dataSchemaDescription: databaseConfig.dataSchemaDescription ?? 'Customer-owned orders: orderId, productName, customerId, tenantId, shippingStatus, trackingNumber, estimatedDelivery.', ...(!databaseConfig.firebaseConfig && externalConfig ? { firebaseConfig: externalConfig } : {}) } }, { merge: true });
     for (const [id, name] of c.customers) {
       const userRef = doc(db, 'users', id);
       if (!(await getDocFromServer(userRef)).exists()) await setDoc(userRef, { tenantId: c.tenant, name, email: `${name.toLowerCase()}@${c.id}.example`, role: 'user', isActive: true, isDemo: true, passwordHash: await bcrypt.hash(crypto.randomBytes(24).toString('hex'), 10), createdAt: new Date().toISOString() });
