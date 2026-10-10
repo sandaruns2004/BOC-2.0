@@ -6,13 +6,13 @@ const { loadEnvConfig } = require('@next/env');
 loadEnvConfig(process.cwd());
 const { initializeApp } = require('firebase/app');
 const { getFirestore, doc, getDocFromServer, setDoc } = require('firebase/firestore');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { embedText, embeddingModelId, requiredKey } = require('./ai-embed.cjs');
 const { Pinecone } = require('@pinecone-database/pinecone');
 const { jsPDF } = require('jspdf');
 const bcrypt = require('bcryptjs');
 
 async function run() {
-  for (const name of ['GEMINI_API_KEY', 'PINECONE_API_KEY', 'PINECONE_INDEX_NAME', 'NEXT_PUBLIC_FIREBASE_PROJECT_ID']) if (!process.env[name]) throw new Error(`${name} is missing.`);
+  for (const name of [requiredKey(), 'PINECONE_API_KEY', 'PINECONE_INDEX_NAME', 'NEXT_PUBLIC_FIREBASE_PROJECT_ID']) if (!process.env[name]) throw new Error(`${name} is missing.`);
   const db = getFirestore(initializeApp({ apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY, projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID, appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID }));
   const settings = await getDocFromServer(doc(db, 'tenant_settings', 'tnt_sample01'));
   const externalConfig = settings.data()?.databaseConfig?.firebaseConfig;
@@ -35,7 +35,6 @@ async function run() {
     { id: 'walkwave', name: 'Walkwave', tenant: 'tnt_sample01', customers: [['walkwave_jane', 'Jane'], ['walkwave_bob', 'Bob']], policy: fs.readFileSync(path.resolve('..', 'walkwave', 'policies.md'), 'utf8') },
     { id: 'nova', name: 'Nova Electronics', tenant: 'tnt_nova_demo', customers: [['nova_alice', 'Alice'], ['nova_sam', 'Sam']], policy: '# Nova Electronics policies\nNova Electronics is a fictional Sri Lankan technology retailer. All prices are LKR. We sell laptops, wireless headphones, and desk accessories. Delivery costs LKR 450 and normally takes 3-5 business days after dispatch. Eligible unused items in their original packaging can be returned within 14 calendar days of delivery. Faulty items require support review. Refund requests over LKR 50,000 require manager approval. No payments are executed in this demo. Customers can access only their own orders. Shipping updates may be emailed only on request to the verified account address. Never invent tracking details. Support is available Monday-Friday, 9am-5pm Sri Lanka time.' },
   ];
-  const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch });
   const output = path.join(process.cwd(), 'public', 'demo'); fs.mkdirSync(output, { recursive: true });
   for (const c of companies) {
@@ -55,8 +54,7 @@ async function run() {
     const id = `demo_${c.id}_policy`; const records = [];
     for (let i = 0; i < c.policy.length; i += 1100) {
       const content = c.policy.slice(i, i + 1300);
-      const embedded = await ai.getGenerativeModel({ model: 'gemini-embedding-2' }).embedContent(content);
-      records.push({ id: `${id}_chunk_${records.length}`, values: embedded.embedding.values.slice(0, 768), metadata: { tenantId: c.tenant, docId: id, title: `${c.name} policies`, content } });
+      records.push({ id: `${id}_chunk_${records.length}`, values: await embedText(content), metadata: { tenantId: c.tenant, docId: id, title: `${c.name} policies`, content, embeddingModel: embeddingModelId } });
     }
     await pc.index(process.env.PINECONE_INDEX_NAME).upsert({ records });
     await setDoc(doc(db, 'documents', id), { tenantId: c.tenant, adminId: 'demo_setup', title: `${c.name} policies`, filename: `${c.name}_Policies.txt`, status: 'indexed', chunkCount: records.length, fileSize: Buffer.byteLength(c.policy), text: c.policy, createdAt: new Date().toISOString() });

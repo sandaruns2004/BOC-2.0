@@ -1,4 +1,3 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,15 +12,14 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const { embedText, embeddingModelId } = require('./ai-embed.cjs');
 
 async function testEmbedding() {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-embedding-2' });
-    const result = await model.embedContent("Hello world");
-    console.log("Vector type:", typeof result.embedding?.values);
-    console.log("Vector length:", result.embedding?.values?.length);
-    console.log("First few values:", result.embedding?.values?.slice(0, 5));
+    const values = await embedText("Hello world");
+    console.log("Model:", embeddingModelId);
+    console.log("Vector length:", values.length);
+    console.log("First few values:", values.slice(0, 5));
   } catch(e) {
     console.error("error:", e.message);
   }

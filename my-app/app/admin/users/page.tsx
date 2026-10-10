@@ -8,7 +8,10 @@ interface User {
   email: string;
   isActive: boolean;
   createdAt: string;
+  source?: string;
+  externalCustomerId?: string;
 }
+interface SyncState { enabled: boolean; status: string; lastSyncedAt?: string; importedCount?: number; error?: string }
 
 export default function AdminUsers() {
   const [users, setUsers] = useState<User[]>([]);
@@ -18,6 +21,8 @@ export default function AdminUsers() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
+  const [sync, setSync] = useState<SyncState>();
+  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -29,7 +34,7 @@ export default function AdminUsers() {
         const res = await fetch('/api/admin/users', { cache: 'no-store', signal: controller.signal });
         const data = await res.json();
         if (controller.signal.aborted) return;
-        if (res.ok) setUsers(data.users);
+        if (res.ok) { setUsers(data.users); setSync(data.sync); }
         else if (initial) setError(data.error || 'Unable to load users.');
       } catch {
         if (initial && !controller.signal.aborted) setError('Unable to load users. Please refresh the page.');
@@ -49,6 +54,21 @@ export default function AdminUsers() {
       document.removeEventListener('visibilitychange', refreshVisible);
     };
   }, []);
+
+  async function syncNow() {
+    setSyncing(true);
+    try {
+      const response = await fetch('/api/admin/customer-sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'sync' }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      const usersResponse = await fetch('/api/admin/users', { cache: 'no-store' });
+      const data = await usersResponse.json();
+      if (!usersResponse.ok) throw new Error(data.error);
+      setUsers(data.users); setSync(data.sync);
+      setError('');
+    } catch (e) { setError(e instanceof Error ? e.message : 'Unable to sync customers.'); }
+    finally { setSyncing(false); }
+  }
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -86,7 +106,8 @@ export default function AdminUsers() {
         body: JSON.stringify({ userId, isActive: !currentStatus })
       });
       if (res.ok) {
-        setUsers(users.map(u => u.id === userId ? { ...u, isActive: !currentStatus } : u));
+        const data = await res.json();
+        setUsers(current => current.map(u => u.id === userId ? { ...u, isActive: data.isActive } : u));
       }
     } catch (e) {
       console.error(e);
@@ -109,37 +130,42 @@ export default function AdminUsers() {
         </button>
       </div>
 
-      <p className="text-sm text-on-surface-variant mb-6">Customers are loaded from your company’s database. This list updates automatically every 10 seconds and when you return to this page.</p>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3"><div className="text-sm text-on-surface-variant">
+        <p>{sync?.enabled ? 'Company customer sync is enabled. Source changes are checked about every 30 seconds while this page is open.' : 'Showing AgentForge customer records. Enable Customer database sync in Company Settings to import client users.'}</p>
+        {sync?.enabled && sync.lastSyncedAt && <p className="mt-1">Last synced: {new Date(sync.lastSyncedAt).toLocaleString()} · {sync.importedCount ?? 0} company customers</p>}
+        {sync?.enabled && sync.status === 'syncing' && <p role="status" className="mt-1">Importing company customers…</p>}
+        {sync?.error && <p role="alert" className="mt-1 text-error">{sync.error}</p>}
+      </div><button type="button" disabled={!sync?.enabled || syncing} onClick={() => void syncNow()} className="rounded-lg border border-outline-variant/50 px-4 py-2 text-sm font-semibold disabled:opacity-50">{syncing ? 'Syncing…' : 'Sync now'}</button></div>
       {error && !showModal && <p role="alert" className="text-error mb-4">{error}</p>}
-      <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 overflow-hidden shadow-sm">
+      <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 overflow-x-auto shadow-sm">
         <table className="w-full text-left">
           <thead className="bg-surface-container-low border-b border-outline-variant/20">
             <tr>
-              <th className="px-6 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Name</th>
-              <th className="px-6 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Email</th>
-              <th className="px-6 py-4 text-xs font-label-caps uppercase text-on-surface-variant">User ID</th>
-              <th className="px-6 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Status</th>
-              <th className="px-6 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Created</th>
-              <th className="px-6 py-4 text-xs font-label-caps uppercase text-on-surface-variant text-right">Actions</th>
+              <th className="px-4 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Name</th>
+              <th className="px-4 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Email</th>
+              <th className="px-4 py-4 text-xs font-label-caps uppercase text-on-surface-variant">User ID</th>
+              <th className="px-4 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Status</th>
+              <th className="px-4 py-4 text-xs font-label-caps uppercase text-on-surface-variant">Created</th>
+              <th className="px-4 py-4 text-xs font-label-caps uppercase text-on-surface-variant text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-outline-variant/10">
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-on-surface-variant">
+                <td colSpan={6} className="px-6 py-8 text-center text-on-surface-variant">
                   <span className="material-symbols-outlined animate-spin text-[24px]">progress_activity</span>
                 </td>
               </tr>
             ) : users.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-on-surface-variant">No end users found in your tenant.</td>
+                <td colSpan={6} className="px-6 py-8 text-center text-on-surface-variant">No end users found in your tenant.</td>
               </tr>
             ) : (
               users.map(user => (
                 <tr key={user.id} className="hover:bg-surface-container-low/50 transition-colors">
-                  <td className="px-6 py-4 font-semibold text-on-surface">{user.name}</td>
-                  <td className="px-6 py-4 text-sm text-on-surface-variant">{user.email}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4 font-semibold text-on-surface">{user.name}<div className="mt-1 text-xs font-normal text-on-surface-variant">{user.source || 'AgentForge'}</div></td>
+                  <td className="px-4 py-4 text-sm text-on-surface-variant">{user.email}</td>
+                  <td className="px-4 py-4">
                     <div className="flex items-center gap-2">
                       <code className="bg-primary/10 text-primary text-[12px] px-2 py-1 rounded font-code-base">{user.id.substring(0, 12)}...</code>
                       <button 
@@ -154,16 +180,17 @@ export default function AdminUsers() {
                         <span className="material-symbols-outlined text-[16px]">content_copy</span>
                       </button>
                     </div>
+                    {user.externalCustomerId && <div className="mt-2 text-xs text-on-surface-variant">Client ID: <span className="font-mono">{user.externalCustomerId}</span></div>}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${user.isActive ? 'bg-primary-container text-on-primary-container' : 'bg-error-container text-error'}`}>
                       {user.isActive ? 'Active' : 'Disabled'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-on-surface-variant">
+                  <td className="px-4 py-4 text-sm text-on-surface-variant">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-4 py-4 text-right">
                     <button
                       onClick={() => toggleUserStatus(user.id, user.isActive)}
                       className={`${user.isActive ? 'text-error hover:text-error/80' : 'text-primary hover:text-primary/80'} font-medium text-sm`}

@@ -1,26 +1,12 @@
 import { Pinecone } from '@pinecone-database/pinecone';
-import { GoogleGenerativeAI, FunctionDeclaration, SchemaType } from '@google/generative-ai';
+import { generateText as generateWithModel, isStepCount, tool, type ToolSet } from 'ai';
+import { z } from 'zod';
+import { chatModel, embeddingModelId } from './ai';
 import * as ToolImplementations from './tools';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-
-const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
-  let timer: ReturnType<typeof setTimeout>;
-  return Promise.race([promise, new Promise<T>((_, reject) => { timer = setTimeout(() => reject(new Error('AI response timed out. Please try again.')), ms); })]).finally(() => clearTimeout(timer));
-};
+export { embedText } from './ai';
 
 const pc = process.env.PINECONE_API_KEY ? new Pinecone({ apiKey: process.env.PINECONE_API_KEY, fetchApi: fetch }) : null;
-
-export async function embedText(text: string): Promise<number[]> {
-  try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-embedding-2' });
-    const result = await model.embedContent(text);
-    return result.embedding.values.slice(0, 768);
-  } catch (e) {
-    console.error('[RAG] Failed to embed text:', e);
-    return [];
-  }
-}
 
 export async function searchVectors(queryVector: number[], tenantId: string) {
   if (!pc || !process.env.PINECONE_INDEX_NAME) {
@@ -34,9 +20,9 @@ export async function searchVectors(queryVector: number[], tenantId: string) {
       vector: queryVector,
       topK: 5,
       includeMetadata: true,
-      filter: { tenantId: { $eq: tenantId } }
+      filter: { tenantId: { $eq: tenantId }, embeddingModel: { $eq: embeddingModelId } }
     });
-    
+
     return queryResponse.matches || [];
   } catch (e) {
     console.error('[RAG] Failed to search vectors:', e);
@@ -44,96 +30,66 @@ export async function searchVectors(queryVector: number[], tenantId: string) {
   }
 }
 
-// Define the tools schema
-const sendEmailDeclaration: FunctionDeclaration = {
-  name: "sendEmail",
-  description: "Drafts and sends an email to a specific recipient.",
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {
-      to: { type: SchemaType.STRING, description: "The email address of the recipient." },
-      subject: { type: SchemaType.STRING, description: "The subject of the email." },
-      body: { type: SchemaType.STRING, description: "The body content of the email." }
-    },
-    required: ["to", "subject", "body"]
-  }
-};
+const TOOL_NAMES = ['sendEmail', 'generateReport', 'escalateToHuman', 'checkSystemStatus', 'queryDatabase'] as const;
+const MAX_TOOL_ROUNDS = 5;
 
-const generateReportDeclaration: FunctionDeclaration = {
-  name: "generateReport",
-  description: "Generates a PDF report on a specific topic based on details provided and returns a download link.",
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {
-      topic: { type: SchemaType.STRING, description: "The title or topic of the report." },
-      details: { type: SchemaType.STRING, description: "The full content and details to include in the report." }
-    },
-    required: ["topic", "details"]
-  }
-};
-
-const escalateToHumanDeclaration: FunctionDeclaration = {
-  name: "escalateToHuman",
-  description: "Escalates the current issue to a human operator when the AI cannot resolve it.",
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {
-      reason: { type: SchemaType.STRING, description: "The reason for the escalation." },
-      urgency: { type: SchemaType.STRING, description: "The urgency level: low, medium, or high." }
-    },
-    required: ["reason", "urgency"]
-  }
-};
-
-const checkSystemStatusDeclaration: FunctionDeclaration = {
-  name: "checkSystemStatus",
-  description: "Checks the overall system status, uptime, and latency.",
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {} // No parameters needed
-  }
-};
-
-const queryDatabaseDeclaration: FunctionDeclaration = {
-  name: "queryDatabase",
-  description: "Queries the tenant-specific Firebase database to retrieve data records.",
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {
-      collectionName: { type: SchemaType.STRING, description: "The name of the database collection to query (e.g., sales, inventory)." },
-      searchQuery: { type: SchemaType.STRING, description: "A natural language query for logging." }
-    },
-    required: ["collectionName", "searchQuery"]
-  }
-};
-
-const tools = [{
-  functionDeclarations: [sendEmailDeclaration, generateReportDeclaration, escalateToHumanDeclaration, checkSystemStatusDeclaration, queryDatabaseDeclaration]
-}];
+function buildTools(tenantId: string, userId: string | undefined, track: (name: string) => void): ToolSet {
+  const blocked = { success: false, error: 'Use the explicit email or report workflow to authorize this action.' };
+  return {
+    sendEmail: tool({
+      description: 'Drafts and sends an email to a specific recipient.',
+      inputSchema: z.object({
+        to: z.string().describe('The email address of the recipient.'),
+        subject: z.string().describe('The subject of the email.'),
+        body: z.string().describe('The body content of the email.'),
+      }),
+      execute: async () => { track('sendEmail'); return blocked; },
+    }),
+    generateReport: tool({
+      description: 'Generates a PDF report on a specific topic based on details provided and returns a download link.',
+      inputSchema: z.object({
+        topic: z.string().describe('The title or topic of the report.'),
+        details: z.string().describe('The full content and details to include in the report.'),
+      }),
+      execute: async () => { track('generateReport'); return blocked; },
+    }),
+    escalateToHuman: tool({
+      description: 'Escalates the current issue to a human operator when the AI cannot resolve it.',
+      inputSchema: z.object({
+        reason: z.string().describe('The reason for the escalation.'),
+        urgency: z.string().describe('The urgency level: low, medium, or high.'),
+      }),
+      execute: async ({ reason }) => { track('escalateToHuman'); return ToolImplementations.escalateToHuman({ tenantId, userId, reason, urgency: 'high' }); },
+    }),
+    checkSystemStatus: tool({
+      description: 'Checks the overall system status, uptime, and latency.',
+      inputSchema: z.object({}),
+      execute: async () => { track('checkSystemStatus'); return ToolImplementations.checkSystemStatus(); },
+    }),
+    queryDatabase: tool({
+      description: "Reads the signed-in customer's orders from the company's configured and allowed order collection. Other collections cannot be queried.",
+      inputSchema: z.object({
+        collectionName: z.string().describe("The company's configured customer order collection (demo_orders by default)."),
+        searchQuery: z.string().describe('A natural language query for logging.'),
+      }),
+      execute: async ({ collectionName, searchQuery }) => { track('queryDatabase'); return ToolImplementations.queryDatabase({ tenantId, userId: userId || '', collectionName, searchQuery }); },
+    }),
+  };
+}
 
 export async function generateText(prompt: string, tenantId?: string, userId?: string, onAgentUsed?: (agent: string) => void, options: { systemInstruction?: string; allowedTools?: string[] } = {}): Promise<{ text: string; agentsUsed: string[] }> {
-  const declarations = tools[0].functionDeclarations.filter(t => !options.allowedTools || options.allowedTools.includes(t.name));
-  const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-flash-lite-latest', ...(declarations.length ? { tools: [{ functionDeclarations: declarations }] } : {}), systemInstruction: options.systemInstruction || 'You are a company assistant. Never invent operational data or claim an action succeeded when its tool failed.' });
-  const chat = model.startChat();
-  let result = await withTimeout(chat.sendMessage(prompt), 20000);
   const agentsUsed: string[] = [];
-  for (let round = 0; round < 5; round++) {
-    const calls = result.response.functionCalls();
-    if (!calls?.length) return { text: result.response.text(), agentsUsed };
-    const responses = [];
-    for (const call of calls) {
-      if (!declarations.some(d => d.name === call.name)) throw new Error('Requested tool is not allowed.');
-      let response: unknown;
-      const args = call.args as Record<string, unknown>;
-      if (call.name === 'queryDatabase') response = await ToolImplementations.queryDatabase({ tenantId: tenantId || '', userId: userId || '', collectionName: String(args.collectionName || ''), searchQuery: String(args.searchQuery || '') });
-      else if (call.name === 'escalateToHuman') response = await ToolImplementations.escalateToHuman({ tenantId: tenantId || '', userId, reason: String(args.reason || ''), urgency: 'high' });
-      else if (call.name === 'checkSystemStatus') response = await ToolImplementations.checkSystemStatus();
-      else response = { success: false, error: 'Use the explicit email or report workflow to authorize this action.' };
-      if (!agentsUsed.includes(call.name)) { agentsUsed.push(call.name); onAgentUsed?.(call.name); }
-      responses.push({ functionResponse: { name: call.name, response: response as object } });
-    }
-    // Do not retry the entire conversation after a tool action: that could duplicate emails or tickets.
-    result = await withTimeout(chat.sendMessage(responses), 20000);
-  }
-  throw new Error('The assistant reached its action limit. Please ask a simpler question.');
+  const track = (name: string) => { if (!agentsUsed.includes(name)) { agentsUsed.push(name); onAgentUsed?.(name); } };
+  const allTools = buildTools(tenantId || '', userId, track);
+  const tools = Object.fromEntries(TOOL_NAMES.filter(name => !options.allowedTools || options.allowedTools.includes(name)).map(name => [name, allTools[name]]));
+  const result = await generateWithModel({
+    model: chatModel(),
+    instructions: options.systemInstruction || 'You are a company assistant. Never invent operational data or claim an action succeeded when its tool failed.',
+    prompt,
+    ...(Object.keys(tools).length ? { tools, stopWhen: isStepCount(MAX_TOOL_ROUNDS + 1) } : {}),
+    // Retries cover failed model calls only; tool actions are never re-run, so emails or tickets cannot duplicate.
+    timeout: { stepMs: 20000 },
+  });
+  if (result.finishReason === 'tool-calls') throw new Error('The assistant reached its action limit. Please ask a simpler question.');
+  return { text: result.text, agentsUsed };
 }

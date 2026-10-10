@@ -60,11 +60,20 @@ service cloud.firestore {
   }
 }
 
-## Step 7: Get Your API Key
+## Step 7: Configure the AI Provider
 
-1. Go to https://aistudio.google.com/app/apikey
-2. Click "Create API key"
-3. Copy it into .env.local as GEMINI_API_KEY
+The chat and embedding models are switchable with environment variables (see lib/ai.ts):
+
+  AI_CHAT_MODEL=openai:gpt-5.4-mini                 # default; or google:gemini-flash-lite-latest
+  AI_EMBEDDING_MODEL=openai:text-embedding-3-small  # default; or google:gemini-embedding-2
+
+Add the key for each provider you use to .env.local:
+
+- OpenAI: create a key at https://platform.openai.com/api-keys and set OPENAI_API_KEY
+- Gemini: create a key at https://aistudio.google.com/app/apikey and set GEMINI_API_KEY
+
+Changing AI_EMBEDDING_MODEL requires re-indexing documents (npm run demo:setup, or
+re-upload them in the admin portal). Until then, chat falls back to the stored document text.
 
 ## Step 8: Restart the Dev Server
 

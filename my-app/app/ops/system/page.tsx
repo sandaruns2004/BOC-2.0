@@ -22,7 +22,7 @@ export default function OpsSystem() {
           {[
             { name: 'API Gateway Ingress', status: 'Operational', latency: '4ms', uptime: '99.99%' },
             { name: 'Cloud Run Orchestrator', status: 'Operational', latency: '12ms', uptime: '100%' },
-            { name: 'Vertex AI Gemini 1.5 Pro', status: 'Operational', latency: '340ms', uptime: '99.95%' },
+            { name: 'LLM Provider (OpenAI / Gemini)', status: 'Operational', latency: '340ms', uptime: '99.95%' },
             { name: 'Pinecone Vector DB', status: 'Operational', latency: '38ms', uptime: '100%' },
             { name: 'Firestore Config DB', status: 'Operational', latency: '8ms', uptime: '99.99%' },
             { name: 'AWS DynamoDB Audit Sink', status: 'Operational', latency: 'async', uptime: '100%' },

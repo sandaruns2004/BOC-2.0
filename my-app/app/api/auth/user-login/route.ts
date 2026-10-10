@@ -22,6 +22,9 @@ export async function POST(req: Request) {
     const userDoc = snapshot.docs[0];
     const user = userDoc.data();
 
+    // Imported customers authenticate with their company's own login system.
+    if (user.source === 'Company database' || typeof user.passwordHash !== 'string') return NextResponse.json({ error: 'Use your company website to sign in.' }, { status: 401 });
+
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
