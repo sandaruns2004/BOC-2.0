@@ -67,9 +67,9 @@ function buildTools(tenantId: string, userId: string | undefined, track: (name: 
       execute: async () => { track('checkSystemStatus'); return ToolImplementations.checkSystemStatus(); },
     }),
     queryDatabase: tool({
-      description: 'Queries the tenant-specific Firebase database to retrieve data records.',
+      description: "Reads the signed-in customer's orders from the company's configured and allowed order collection. Other collections cannot be queried.",
       inputSchema: z.object({
-        collectionName: z.string().describe('The name of the database collection to query (e.g., sales, inventory).'),
+        collectionName: z.string().describe("The company's configured customer order collection (demo_orders by default)."),
         searchQuery: z.string().describe('A natural language query for logging.'),
       }),
       execute: async ({ collectionName, searchQuery }) => { track('queryDatabase'); return ToolImplementations.queryDatabase({ tenantId, userId: userId || '', collectionName, searchQuery }); },

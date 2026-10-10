@@ -2,6 +2,7 @@ import { doc, getDocFromServer, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { getSession } from '@/lib/session';
 import { customerSyncSettings, syncCompanyCustomers, validateCustomerSync } from '@/lib/customer-sync';
+import { assertCollectionAllowed } from '@/lib/database-access';
 
 export const maxDuration = 60;
 async function adminTenant() {
@@ -27,6 +28,7 @@ export async function POST(req: Request) {
     if (body.action !== 'sync') {
       const config = validateCustomerSync(body.config);
       const { settings } = await customerSyncSettings(tenantId);
+      if (config.enabled) assertCollectionAllowed(settings?.databaseConfig, config.collection);
       if (config.enabled && !settings?.databaseConfig?.firebaseConfig?.projectId) return Response.json({ error: 'Save the company Firebase connection first.' }, { status: 400 });
       if (config.enabled && settings?.databaseConfig?.firebaseConfig?.projectId === process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID && config.collection === 'users') return Response.json({ error: 'Choose a separate client customer collection. AgentForge users cannot be their own sync source.' }, { status: 400 });
       if (config.enabled && settings?.databaseConfig?.firebaseConfig?.projectId === process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID && !config.tenantField) return Response.json({ error: 'A company filter is required for the platform Firebase project.' }, { status: 400 });
