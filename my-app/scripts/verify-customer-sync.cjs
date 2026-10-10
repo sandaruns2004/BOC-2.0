@@ -24,7 +24,7 @@ async function run() {
     target = getFirestore(initializeApp(firebase, 'client-sync-check-' + id));
     await Promise.all([
       setDoc(doc(db, 'business_admins', adminId), { tenantId: tenant, name: 'Sync verification', email: id + '@sync-check.example', passwordHash: await bcrypt.hash(password, 10), isActive: true }),
-      setDoc(doc(db, 'tenant_settings', tenant), { companyName: 'Sync test', databaseConfig: { firebaseConfig: firebase } }),
+      setDoc(doc(db, 'tenant_settings', tenant), { companyName: 'Sync test', databaseConfig: { firebaseConfig: firebase, allowedCollections: `demo_orders, ${sourceCollection}` } }),
       setDoc(doc(db, 'api_keys', keyId), { tenantId: tenant, key: apiKey, isActive: true }),
       // A matching raw ID in another tenant must never be overwritten.
       setDoc(doc(db, 'users', clientId), { tenantId: 'other_sync_tenant_' + id, name: 'Other tenant customer', isActive: false }),

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import WidgetSettings from './WidgetSettings';
 import CustomerSyncSettings from './CustomerSyncSettings';
-import { parseAllowedCollections } from '@/lib/database-access';
+import { validateDatabaseConfig } from '@/lib/database-access';
 
 export default function AdminSettingsPage() {
   const [allowedCollections, setAllowedCollections] = useState('demo_orders');
@@ -49,45 +49,35 @@ export default function AdminSettingsPage() {
     setMessage('');
 
     let parsedConfig = null;
-    let normalizedCollections: string;
-    try { normalizedCollections = parseAllowedCollections(allowedCollections).join(', '); }
-    catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Invalid collection names.');
-      setSaving(false);
-      return;
-    }
     if (firebaseConfig.trim()) {
       try {
-        // Automatically add quotes to keys if the user pasted a raw JS object instead of strict JSON
-        // Using a safer regex that only targets words followed by a colon and preceded by { or ,
-        const sanitizedConfig = firebaseConfig
-          .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
-          .replace(/'/g, '"');
-        parsedConfig = JSON.parse(sanitizedConfig);
+        parsedConfig = JSON.parse(firebaseConfig);
       } catch (e) {
         console.error("JSON Parse error", e);
-        setMessage('Invalid JSON in Firebase Config.');
+        setMessage('Invalid Firebase JSON. Use double quotes around keys and text values.');
         setSaving(false);
         return;
       }
     }
 
+    let databaseConfig;
+    try { databaseConfig = validateDatabaseConfig({ allowedCollections, ordersCollection, dataSchemaDescription, firebaseConfig: parsedConfig }); }
+    catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Invalid database configuration.');
+      setSaving(false);
+      return;
+    }
     try {
       const res = await fetch('/api/admin/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          databaseConfig: {
-            allowedCollections: normalizedCollections,
-            ordersCollection,
-            dataSchemaDescription,
-            firebaseConfig: parsedConfig
-          }
-        })
+        body: JSON.stringify({ databaseConfig })
       });
 
       if (res.ok) {
-        setAllowedCollections(normalizedCollections);
+        setAllowedCollections(databaseConfig.allowedCollections);
+        setDataSchemaDescription(databaseConfig.dataSchemaDescription);
+        setFirebaseConfig(databaseConfig.firebaseConfig ? JSON.stringify(databaseConfig.firebaseConfig, null, 2) : '');
         setMessage('Settings saved successfully!');
         setTimeout(() => setMessage(''), 3000);
       } else {
@@ -125,8 +115,7 @@ export default function AdminSettingsPage() {
           </p>
 
           <form onSubmit={handleSave} className="space-y-6">
-
-
+            <fieldset disabled={saving || loadFailed} className="space-y-6 disabled:opacity-60">
             <div>
               <label htmlFor="firebase-config" className="block text-sm font-semibold text-on-surface mb-2">
                 External Firebase Config (JSON)
@@ -186,6 +175,7 @@ export default function AdminSettingsPage() {
                 </span>
               )}
             </div>
+            </fieldset>
           </form>
         </div>
       )}
