@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { collection, doc, getDocFromServer, getDocsFromServer, limit, query, runTransaction, where, writeBatch, type DocumentData } from 'firebase/firestore';
 import { db } from './firebase';
 import { externalCompanyDatabase } from './company-database';
+import { assertCollectionAllowed } from './database-access';
 
 export interface CustomerSyncConfig {
   enabled: boolean;
@@ -36,6 +37,7 @@ export async function syncCompanyCustomers(tenantId: string, force = false) {
   const { settings, config } = await customerSyncSettings(tenantId);
   const stateRef = doc(db, 'customer_sync_state', tenantId);
   if (!config.enabled) return { enabled: false, status: 'disabled' };
+  assertCollectionAllowed(settings?.databaseConfig, config.collection);
   const firebase = settings?.databaseConfig?.firebaseConfig;
   if (!firebase?.projectId || !firebase?.apiKey) throw new Error('Save the company Firebase connection before enabling customer sync.');
   if (firebase.projectId === process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID && config.collection === 'users') throw new Error('Choose a separate client customer collection. AgentForge users cannot be their own sync source.');

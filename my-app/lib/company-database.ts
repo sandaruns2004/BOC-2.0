@@ -11,6 +11,10 @@ export function externalCompanyDatabase(tenantId: string, config: FirebaseOption
 }
 
 export async function companyDatabase(tenantId: string) {
-  const config = (await getDocFromServer(doc(db, 'tenant_settings', tenantId))).data()?.databaseConfig?.firebaseConfig;
-  return config ? externalCompanyDatabase(tenantId, config) : db;
+  return (await companyDatabaseConnection(tenantId)).database;
+}
+
+export async function companyDatabaseConnection(tenantId: string) {
+  const config = (await getDocFromServer(doc(db, 'tenant_settings', tenantId))).data()?.databaseConfig;
+  return { database: config?.firebaseConfig ? externalCompanyDatabase(tenantId, config.firebaseConfig) : db, config };
 }

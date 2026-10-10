@@ -96,11 +96,11 @@ const checkSystemStatusDeclaration: FunctionDeclaration = {
 
 const queryDatabaseDeclaration: FunctionDeclaration = {
   name: "queryDatabase",
-  description: "Queries the tenant-specific Firebase database to retrieve data records.",
+  description: "Reads the signed-in customer's orders from the company's configured and allowed order collection. Other collections cannot be queried.",
   parameters: {
     type: SchemaType.OBJECT,
     properties: {
-      collectionName: { type: SchemaType.STRING, description: "The name of the database collection to query (e.g., sales, inventory)." },
+      collectionName: { type: SchemaType.STRING, description: "The company's configured customer order collection (demo_orders by default)." },
       searchQuery: { type: SchemaType.STRING, description: "A natural language query for logging." }
     },
     required: ["collectionName", "searchQuery"]

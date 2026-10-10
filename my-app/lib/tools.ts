@@ -1,6 +1,7 @@
 import { db } from './firebase';
 import { collection, addDoc, query, where, getDocsFromServer, doc, getDocFromServer, limit, runTransaction } from 'firebase/firestore';
-import { companyDatabase } from './company-database';
+import { companyDatabaseConnection } from './company-database';
+import { assertCollectionAllowed, orderCollection } from './database-access';
 export { companyDatabase } from './company-database';
 import { jsPDF } from 'jspdf';
 import nodemailer from 'nodemailer';
@@ -62,7 +63,8 @@ export async function generateReport({ tenantId, userId, topic, details }: { ten
       message: `Report generated successfully. You can download it here: ${downloadUrl}`,
       downloadUrl 
     };
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unable to generate the report.';
     console.error(`[Tool: generateReport] Error:`, error);
     try {
       await addDoc(collection(db, 'agent_actions'), {
@@ -71,11 +73,11 @@ export async function generateReport({ tenantId, userId, topic, details }: { ten
         agentType: 'report',
         actionDetails: { topic },
         status: 'error',
-        error: error.message,
+        error: message,
         createdAt: new Date().toISOString()
       });
-    } catch (logErr) {}
-    return { success: false, error: error.message };
+    } catch { /* preserve the original report failure */ }
+    return { success: false, error: message };
   }
 }
 
@@ -84,27 +86,30 @@ export interface CustomerOrder {
   estimatedDelivery: string | null; currency: string; totalAmount: number;
 }
 
-export async function getCustomerOrders(tenantId: string, userId: string, orderId?: string): Promise<CustomerOrder[]> {
+export async function getCustomerOrders(tenantId: string, userId: string, orderId?: string, requestedCollection?: string): Promise<CustomerOrder[]> {
   if (!tenantId || !userId || userId === 'unknown') throw new Error('Sign in to access your orders.');
-  const target = await companyDatabase(tenantId);
+  const { database: target, config } = await companyDatabaseConnection(tenantId);
+  const collectionName = orderCollection(config);
+  assertCollectionAllowed(config, collectionName);
+  if (requestedCollection && requestedCollection !== collectionName) throw new Error('Only the configured customer order collection is available to this assistant.');
   const user = (await getDocFromServer(doc(db, 'users', userId))).data();
   if (!user || user.tenantId !== tenantId || user.isActive !== true) throw new Error('Customer is not authorized for this company.');
   if (user.externalCustomerId && user.externalProjectId !== target.app.options.projectId) throw new Error('The customer database connection changed. Sync customers again before checking orders.');
   const customerId = typeof user.externalCustomerId === 'string' ? user.externalCustomerId : userId;
   const conditions = [where('tenantId', '==', tenantId), where('customerId', '==', customerId)];
   if (orderId) conditions.push(where('orderId', '==', orderId));
-  const result = await getDocsFromServer(query(collection(target, 'demo_orders'), ...conditions, limit(10)));
+  const result = await getDocsFromServer(query(collection(target, collectionName), ...conditions, limit(10)));
   const orders = result.docs.map(d => {
     const o = d.data();
     return { orderId: String(o.orderId), productName: String(o.productName), shippingStatus: String(o.shippingStatus), trackingNumber: o.trackingNumber || null, estimatedDelivery: o.estimatedDelivery || null, currency: String(o.currency || 'LKR'), totalAmount: Number(o.totalAmount || 0) };
   });
-  await addDoc(collection(db, 'agent_actions'), { tenantId, userId, agentType: 'database', actionDetails: { collectionName: 'demo_orders', resultCount: orders.length }, status: 'success', createdAt: new Date().toISOString() });
+  await addDoc(collection(db, 'agent_actions'), { tenantId, userId, agentType: 'database', actionDetails: { collectionName, resultCount: orders.length }, status: 'success', createdAt: new Date().toISOString() });
   return orders;
 }
 
 export async function queryDatabase({ tenantId, userId, collectionName, searchQuery }: { tenantId: string; userId: string; collectionName: string; searchQuery: string }) {
-  if (collectionName !== 'demo_orders') return { success: false, error: 'Only customer-owned demo orders are available to this assistant.' };
-  try { return { success: true, data: await getCustomerOrders(tenantId, userId, searchQuery.match(/(?:WW|NV)-\d{4}/i)?.[0].toUpperCase()) }; }
+  if (!collectionName) return { success: false, error: 'An order collection name is required.' };
+  try { return { success: true, data: await getCustomerOrders(tenantId, userId, searchQuery.match(/(?:WW|NV)-\d{4}/i)?.[0].toUpperCase(), collectionName) }; }
   catch { return { success: false, error: 'Unable to retrieve your orders.' }; }
 }
 

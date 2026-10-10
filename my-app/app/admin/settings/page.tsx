@@ -3,14 +3,18 @@
 import { useState, useEffect } from 'react';
 import WidgetSettings from './WidgetSettings';
 import CustomerSyncSettings from './CustomerSyncSettings';
+import { parseAllowedCollections } from '@/lib/database-access';
 
 export default function AdminSettingsPage() {
-  const [allowedCollections, setAllowedCollections] = useState('');
+  const [allowedCollections, setAllowedCollections] = useState('demo_orders');
+  const [ordersCollection, setOrdersCollection] = useState('demo_orders');
   const [dataSchemaDescription, setDataSchemaDescription] = useState('');
   const [firebaseConfig, setFirebaseConfig] = useState('');
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [loadFailed, setLoadFailed] = useState(false);
+  const collectionNames = allowedCollections.split(/[,\n]/).map(name => name.trim()).filter(Boolean);
 
   useEffect(() => {
     async function loadSettings() {
@@ -19,15 +23,19 @@ export default function AdminSettingsPage() {
         if (res.ok) {
           const data = await res.json();
           if (data.databaseConfig) {
-            setAllowedCollections(data.databaseConfig.allowedCollections || '');
+            const allowed = data.databaseConfig.allowedCollections ?? 'demo_orders';
+            setAllowedCollections(Array.isArray(allowed) ? allowed.join(', ') : allowed);
+            setOrdersCollection(data.databaseConfig.ordersCollection || 'demo_orders');
             setDataSchemaDescription(data.databaseConfig.dataSchemaDescription || '');
             if (data.databaseConfig.firebaseConfig) {
               setFirebaseConfig(JSON.stringify(data.databaseConfig.firebaseConfig, null, 2));
             }
           }
-        }
+        } else { throw new Error('Unable to load settings.'); }
       } catch (err) {
         console.error(err);
+        setLoadFailed(true);
+        setMessage('Unable to load settings. Reload this page before saving.');
       } finally {
         setLoading(false);
       }
@@ -41,6 +49,13 @@ export default function AdminSettingsPage() {
     setMessage('');
 
     let parsedConfig = null;
+    let normalizedCollections: string;
+    try { normalizedCollections = parseAllowedCollections(allowedCollections).join(', '); }
+    catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Invalid collection names.');
+      setSaving(false);
+      return;
+    }
     if (firebaseConfig.trim()) {
       try {
         // Automatically add quotes to keys if the user pasted a raw JS object instead of strict JSON
@@ -63,7 +78,8 @@ export default function AdminSettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           databaseConfig: {
-            allowedCollections,
+            allowedCollections: normalizedCollections,
+            ordersCollection,
             dataSchemaDescription,
             firebaseConfig: parsedConfig
           }
@@ -71,12 +87,14 @@ export default function AdminSettingsPage() {
       });
 
       if (res.ok) {
+        setAllowedCollections(normalizedCollections);
         setMessage('Settings saved successfully!');
         setTimeout(() => setMessage(''), 3000);
       } else {
-        setMessage('Failed to save settings.');
+        const data = await res.json();
+        setMessage(data.error || 'Failed to save settings.');
       }
-    } catch (err) {
+    } catch {
       setMessage('An error occurred.');
     } finally {
       setSaving(false);
@@ -103,17 +121,18 @@ export default function AdminSettingsPage() {
             Company Firebase connection
           </h2>
           <p className="text-sm text-on-surface-variant mb-6">
-            The prototype reads customer-owned orders from demo_orders. It checks both company and customer identity.
+            Connect your company Firestore database and choose which collections the system may read. Order lookups check both company and customer identity.
           </p>
 
           <form onSubmit={handleSave} className="space-y-6">
 
 
             <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">
+              <label htmlFor="firebase-config" className="block text-sm font-semibold text-on-surface mb-2">
                 External Firebase Config (JSON)
               </label>
               <textarea
+                id="firebase-config"
                 value={firebaseConfig}
                 onChange={e => setFirebaseConfig(e.target.value)}
                 placeholder={'{\n  "apiKey": "...",\n  "projectId": "..."\n}'}
@@ -123,13 +142,30 @@ export default function AdminSettingsPage() {
                 If provided, the Database Agent will connect to this external Firebase project instead of the platform database.
               </p>
             </div>
-
-
-
+            <div>
+              <label htmlFor="allowed-collections" className="block text-sm font-semibold text-on-surface mb-2">Allowed collections</label>
+              <textarea id="allowed-collections" value={allowedCollections} onChange={e => setAllowedCollections(e.target.value)} placeholder={'demo_orders, customers'} className="w-full h-24 px-4 py-3 bg-surface border border-outline-variant/50 rounded-lg focus:border-primary focus:outline-none text-on-surface font-mono text-sm" aria-describedby="collection-access-help" />
+              <p id="collection-access-help" className="text-xs text-on-surface-variant mt-1">Enter exact top-level collection names separated by commas or new lines. Order lookups and customer sync cannot read unlisted collections. An empty list blocks all company collection reads. Include the source collection configured in Customer sync below.</p>
+              <div className="mt-3 rounded-lg bg-surface p-3 text-sm" aria-live="polite">
+                <p className="font-semibold text-on-surface">Allowed: {collectionNames.length ? [...new Set(collectionNames)].join(', ') : 'None'}</p>
+                <p className="text-on-surface-variant mt-1">Blocked: every other company collection. This controls company data reads; platform account records and action logs are managed separately.</p>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="orders-collection" className="block text-sm font-semibold text-on-surface mb-2">Customer order collection</label>
+              <input id="orders-collection" value={ordersCollection} onChange={e => setOrdersCollection(e.target.value)} required pattern="[a-zA-Z0-9_-]{1,100}" className="w-full px-4 py-3 bg-surface border border-outline-variant/50 rounded-lg focus:border-primary focus:outline-none text-on-surface font-mono text-sm" />
+              <p className="text-xs text-on-surface-variant mt-1">Must appear in Allowed collections to enable order lookups. Records need tenantId and customerId fields, plus orderId, productName, shippingStatus, trackingNumber, estimatedDelivery, totalAmount and currency. Other allowed collections are available only through supported integrations such as customer sync.</p>
+              {!collectionNames.includes(ordersCollection) && <p className="text-xs text-error mt-2">Order lookups are blocked because this collection is not in the allowed list.</p>}
+            </div>
+            <div>
+              <label htmlFor="collection-schema" className="block text-sm font-semibold text-on-surface mb-2">Collection and field notes (optional)</label>
+              <textarea id="collection-schema" value={dataSchemaDescription} onChange={e => setDataSchemaDescription(e.target.value)} maxLength={5000} placeholder="Describe each collection, its purpose and available fields." className="w-full h-24 px-4 py-3 bg-surface border border-outline-variant/50 rounded-lg focus:border-primary focus:outline-none text-on-surface text-sm" />
+              <p className="text-xs text-on-surface-variant mt-1">Documentation for your admins. These notes do not grant access or change field mappings.</p>
+            </div>
             <div className="flex items-center gap-4">
               <button
                 type="submit"
-                disabled={saving}
+                disabled={saving || loadFailed}
                 className="px-6 py-2 bg-primary text-on-primary rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
               >
                 {saving ? (
@@ -145,7 +181,7 @@ export default function AdminSettingsPage() {
                 )}
               </button>
               {message && (
-                <span className={`text-sm ${message.includes('successfully') ? 'text-green-600' : 'text-error'}`}>
+                <span role="status" className={`text-sm ${message.includes('successfully') ? 'text-green-600' : 'text-error'}`}>
                   {message}
                 </span>
               )}
