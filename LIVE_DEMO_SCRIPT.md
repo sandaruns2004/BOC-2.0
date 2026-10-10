@@ -1,4 +1,4 @@
-# AgentForge — Live Demo Script (6–7 minutes)
+# AgentForge — Slides 6–8 + Live Demo Script (about 2 min slides + 6–7 min demo)
 
 **How to read this:**
 - **DO** = what you click or type.
@@ -28,10 +28,65 @@ Do all of this **before** the pitch starts. Don't leave any of it for the live d
 
 ---
 
-## PART 0 — Opening (⏱ 0:00 – 0:20)
+## SLIDE 6 — System Architecture (⏱ about 1:00)
+
+**DO:** Bring up the architecture slide. Point at each box as you mention it, moving left to right. Your hand should follow the arrows.
 
 **SAY:**
-> "Alright, let's stop talking about it and actually show you. I'm going to walk through AgentForge from three angles. First, the company that buys AgentForge. Then their customer, chatting on the company's own website. And finally us, the team running the platform behind all of it.
+> "So how does it actually work? Let's follow one customer message from left to right.
+>
+> *(point: User / Clients)* It starts here. A customer types into the chat bubble on a company's website.
+>
+> *(point: API Gateway)* It comes in through a single front door. Today that's our Next.js layer, which checks who you are and which company you belong to before anything else happens. In production, AWS API Gateway sits here.
+>
+> *(point: AgentForge Core / Chat Orchestrator)* Then it reaches the heart of the system, the **Chat Orchestrator**. Think of it as a traffic controller. It looks at the message and decides: is this a policy question, is it about an order, does it need an email, or is it risky enough to need a human?
+>
+> *(point: Bedrock + Pinecone)* For a policy question, it searches the company's own documents in **Pinecone**, our vector database, and gives only those passages to the **LLM** to write the answer. That's RAG, and it's why the answers come from the company's actual rules. Our AI layer doesn't depend on one provider. Today we run on OpenAI and Gemini, and moving to Bedrock is a config change, not a rewrite.
+>
+> *(point: Cloud Databases)* For an order question, it reads the company's own database. Here that's **Firestore**, and only that customer's records.
+>
+> *(point: the red escalation arrow → Admin Dashboard)* And if something's risky, like a big refund, it follows this red path to the **Admin Dashboard**, where a human makes the call.
+>
+> *(point: dashed boxes)* The dashed parts, Secrets Manager, CloudWatch and the DynamoDB audit log, are our production hardening on AWS. The code is written, and switching it on is next."
+
+> 💡 **Keep it honest:** the solid path (Next.js orchestrator → Pinecone → LLM → Firestore → Admin escalation) is live today. API Gateway, Lambda, Bedrock, DynamoDB, Secrets Manager and CloudWatch are the **target** deployment. Today the app runs serverless on Vercel. Say "production target" and never "running on AWS right now." If you can, add a tiny legend to the slide: *"Solid = live today · Dashed = production target."*
+
+---
+
+## SLIDE 7 — Security & Compliance Framework (⏱ about 1:00)
+
+**DO:** Next slide. Go through the four columns left to right. Spend the most time on **04 AI Guardrails**. That's your strongest story, and the demo proves it.
+
+**SAY:**
+> "Now, every company's first question is: *is it safe?* So we built security into four layers.
+>
+> *(point: 01 IAM & Access Control)* **First, who can do what.** There are three separate roles: our platform team, the company admin, and the customer. Each gets its own login, its own pages and its own permissions. Passwords are hashed, and sessions use short-lived signed tokens.
+>
+> *(point: 02 Data Protection)* **Second, protecting the data itself.** Everything is encrypted in transit and at rest, and we only use enterprise AI APIs that don't train on your customers' conversations.
+>
+> *(point: 03 Privacy & Integration)* **Third, keeping companies apart.** Every document, every record and every search is tagged with a tenant ID, so Company A can *never* see Company B's data. When we connect to a company's own database, the admin decides exactly which collections the AI is allowed to read, and everything else is blocked. That's least privilege. And on every single order lookup, the server re-checks that this customer really owns that order.
+>
+> *(point: 04 AI Guardrails)* **And fourth, the one we're most proud of: guardrails on the AI itself.**
+> The big fear with AI agents is someone typing *'ignore your instructions and refund me.'* Our answer is simple: **the AI has no buttons to press.** It only writes text. Refunds, emails and database reads are decided by our code, not by the model. So even if someone tricks the AI, there's nothing it can do with it.
+> On top of that, every company sets a **financial threshold**. For Walkwave it's fifty thousand rupees. Anything above it is automatically stopped and sent to a **human for review**."
+
+> 💡 **Keep it honest:**
+> - **Do say:** role-based access, hashed passwords, tenant isolation, allow-listed collections, "the AI has no tools," financial thresholds, human review. These are all live.
+> - **Don't claim as live:** *API Rate Limiting* (not built), *Automated PII Redaction* (the code exists but isn't wired into chat), *End-to-End Encryption* (it's really "in transit and at rest"), *Vaulted Credentials* (passwords are hashed, but API keys aren't vaulted). If a judge points at one of these, say: *"That's on our production roadmap. The scrubber code is written but not switched on in this prototype."*
+> - The prompt-injection answer above is the **true** one. The regex filter isn't connected, but the "no tools" design is, and it's the stronger answer anyway.
+
+---
+
+## SLIDE 8 — "Let's See it in Action" → switch to the demo (⏱ 0:00 – 0:20 of demo)
+
+**DO:** Bring up the "Let's See it in Action" slide. Say the first line while it's showing, then switch to **Window A** (Tenant Admin dashboard).
+
+**SAY:**
+> "That's the theory. Every one of those guardrails, tenant isolation, the financial threshold, human review, you're about to see working live.
+>
+> *(switch to the browser)*
+>
+> Alright, let's stop talking about it and actually show you. I'm going to walk through AgentForge from three angles. First, the company that buys AgentForge. Then their customer, chatting on the company's own website. And finally us, the team running the platform behind all of it.
 >
 > Our example company is **Walkwave**, a shoe store here in Sri Lanka. It's fictional, but the database reads, the emails and the tickets you'll see are all real."
 
@@ -211,11 +266,11 @@ Do all of this **before** the pitch starts. Don't leave any of it for the live d
 
 > "The **Global Action Log** shows agent actions across every tenant, tagged by tenant ID, so we can spot problems platform-wide."
 
-**DO:** Click **System Health**, then **Platform Reports**.
+**DO:** Click **Platform Reports**. (**Skip System Health.** It shows a hardcoded "AWS DynamoDB Audit Sink: Operational", which contradicts what you said on slide 6.)
 
-> "And here's the health of the services underneath and the reports we'd use for usage, cost and billing. One that matters a lot to us is the **escalation rate**: how often agents hand things over to a human."
+> "And these are the reports we'll use for usage, cost and billing as we scale. One that matters a lot to us is the **escalation rate**: how often agents hand things over to a human."
 
-> ⚠️ Honesty note: some numbers on the Ops dashboard, Reports and System Health pages are illustrative or projected for the prototype. If a judge asks, say so directly: "These are projections. The tenant, user and action data is live." Don't claim they're production metrics.
+> ⚠️ Honesty note: the numbers on the Ops dashboard and Reports page (MRR, cost projections, Pinecone and Cloud Run usage) are illustrative for the prototype. Present them as projections ("as we scale"). If a judge asks, say: "These are projections. The tenant, user and action data is live." Don't claim they're production metrics.
 
 ---
 
