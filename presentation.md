@@ -60,46 +60,210 @@ Based on the "Beauty of Cloud 2.0 (Finalists Guidelines)" document and your proj
 
 ### Slide 4: Cloud Solution Architecture 
 **Slide Content:**
-*   *(Visual: Insert your detailed 5-layer safety pipeline & architecture diagram here)*
+*   *(Visual: Cloud Solution Architecture Diagram)*
+
+```mermaid
+graph TD
+    %% Actors placed at top
+    subgraph Users [" "]
+        direction LR
+        USER["👤 End User"]
+        ADMIN["🛡️ Business Admin"]
+    end
+    
+    %% Core System
+    subgraph AgentForge["AgentForge Platform"]
+        API["Gateway (Next.js)"]
+        
+        %% Horizontal Engine Flow limits height
+        subgraph Core["🧠 AI Engine"]
+            direction LR
+            GUARD["Safety Guardrails"]
+            RAG["Knowledge Base (RAG)"]
+            LLM["Gemini LLM"]
+            
+            GUARD -->|"If Safe"| RAG
+            RAG --> LLM
+        end
+        
+        %% Execution & Logging
+        subgraph Operations [" "]
+            direction LR
+            QUEUE["⏳ Human Approval Queue"]
+            TOOLS["⚙️ Tool Executor"]
+            AUDIT["📝 Audit Trail"]
+        end
+    end
+
+    %% Flow Connections
+    USER -->|"Chat Request"| API
+    API --> GUARD
+    
+    LLM --> TOOLS
+    GUARD -->|"If High-Risk"| QUEUE
+    
+    QUEUE -.->|"Approve/Reject"| ADMIN
+    
+    %% Observability
+    GUARD -.->|"Logs"| AUDIT
+    LLM -.->|"Logs"| AUDIT
+    TOOLS -.->|"Logs"| AUDIT
+    
+    %% Styling
+    classDef actor fill:#f8fafc,stroke:#cbd5e1,stroke-width:2px;
+    classDef system fill:#f0f9ff,stroke:#0284c7,stroke-width:2px;
+    classDef engine fill:#e0f2fe,stroke:#0369a1,stroke-width:2px;
+    classDef queue fill:#fef2f2,stroke:#ef4444,stroke-width:2px;
+    classDef audit fill:#fefce8,stroke:#ca8a04,stroke-width:2px;
+    classDef invisible fill:none,stroke:none;
+    
+    class USER,ADMIN actor;
+    class API,TOOLS system;
+    class GUARD,RAG,LLM engine;
+    class QUEUE queue;
+    class AUDIT audit;
+    class Users,Operations invisible;
+```
+
+*   *(Visual: AWS Cloud Infrastructure Topology Diagram)*
+
+```mermaid
+graph TD
+    subgraph AWS ["☁️ Amazon Web Services (us-east-1)"]
+        
+        %% External Load Balancing
+        GLB["🌐 AWS API Gateway\n(WAF & SSL)"]
+        
+        %% Serverless Compute
+        subgraph Serverless ["⚡ Serverless Compute Layer"]
+            direction LR
+            RUN["AWS Lambda\n(Agent API)"]
+            FUNCTIONS["AWS Lambda\n(Async Tasks)"]
+        end
+        
+        %% AI Services
+        subgraph Vertex ["🧠 AI & Knowledge Base"]
+            direction LR
+            GEMINI["Gemini 1.5 Pro/Flash\n(LLM Inference)"]
+            VDB["Pinecone Vector DB\n(Tenant KB)"]
+        end
+        
+        %% Data & Storage
+        subgraph Persistence ["💾 Data & Storage Layer"]
+            direction LR
+            FS["Amazon DynamoDB\n(State & Config DB)"]
+            BQ["Amazon S3\n(Analytics & Audit)"]
+        end
+        
+        %% Messaging & Security
+        subgraph Security ["🛡️ Security & Messaging"]
+            direction LR
+            PUBSUB["Amazon SQS\n(Escalation Queue)"]
+            SM["AWS Secrets Manager\n(API Keys)"]
+            IAM["AWS IAM\n(Role Access)"]
+        end
+
+    end
+
+    %% Client entry
+    CLIENT["Client (Web/API)"] -->|"HTTPS"| GLB
+    
+    %% Load Balancer to Compute
+    GLB --> RUN
+    
+    %% Compute to AI
+    RUN -->|"API Call"| GEMINI
+    RUN -->|"Similarity Search"| VDB
+    
+    %% Compute to Data
+    RUN -->|"Read/Write State"| FS
+    RUN -->|"Write Trace"| BQ
+    
+    %% Compute to Sec/Messaging
+    RUN -->|"Publish Event"| PUBSUB
+    RUN -->|"Fetch Keys"| SM
+    
+    %% Async Processing
+    PUBSUB -.->|"Trigger"| FUNCTIONS
+    FUNCTIONS -.->|"Update"| FS
+    
+    %% Styling (AWS Colors)
+    classDef client fill:#f8fafc,stroke:#94a3b8,stroke-width:2px;
+    classDef aws fill:#ffffff,stroke:#ff9900,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef lb fill:#fef3c7,stroke:#f59e0b,stroke-width:2px;
+    classDef compute fill:#ffedd5,stroke:#f97316,stroke-width:2px;
+    classDef ai fill:#e6f4ea,stroke:#1e8e3e,stroke-width:2px;
+    classDef data fill:#ede9fe,stroke:#8b5cf6,stroke-width:2px;
+    classDef sec fill:#fce7f3,stroke:#ec4899,stroke-width:2px;
+
+    class CLIENT client;
+    class AWS aws;
+    class GLB lb;
+    class RUN,FUNCTIONS compute;
+    class GEMINI,VDB ai;
+    class FS,BQ data;
+    class PUBSUB,SM,IAM sec;
+```
 *   **Frontend:** Vercel (React/Next.js)
-*   **Backend & Cloud Functions:** Google Cloud Platform (GCP)
-*   **Data Isolation:** 100% GCP Physical Isolation via strict multi-tenant metadata filtering.
-*   **LLM Engine:** Secure function calling pipeline.
+*   **Backend & Architecture:** Amazon Web Services (AWS)
+*   **Data Isolation:** 100% AWS Physical Isolation via strict multi-tenant metadata filtering.
+*   **LLM Engine:** Secure Gemini function calling pipeline.
 
 **Presenter Script (Minute 3:00 - 4:30):**
 > "This brings us to our Cloud Architecture. 
 > 
-> *(Point to diagram)* As you can see, we built a 5-layer safety pipeline. Our front end is hosted on Vercel for fast, edge-network delivery. Our backend operations and cloud functions are powered by Google Cloud Platform. 
+> *(Point to diagram)* As you can see, we built a 5-layer safety pipeline. Our front end is hosted on Vercel for fast, edge-network delivery. Our backend operations, databases, and message queues are entirely powered by Amazon Web Services (AWS). 
 > 
-> The most critical piece of this architecture is our approach to data isolation. We ensure 100% GCP Physical Isolation between tenants. Under the hood, our vector databases use strict tenant ID metadata filtering, guaranteeing that one company's agent can never hallucinate its way into another company's proprietary data. We use strict LLM function calling to restrict the AI to only the tools it is explicitly authorized to use."
+> The most critical piece of this architecture is our approach to data isolation. We ensure strict AWS Physical Isolation between tenants. Under the hood, our Pinecone vector databases use strict tenant ID metadata filtering, guaranteeing that one company's agent can never hallucinate its way into another company's proprietary data. We use strict Gemini function calling to restrict the AI to only the tools it is explicitly authorized to use."
 
 ### Slide 5: Security & Compliance Framework
 **Slide Content:**
-*   **Identity & Access Management (IAM):** Strict Role-Based Access (Admin vs. User).
-*   **Data Protection:** Encrypted data at rest and in transit.
-*   **The Guardrail System:** Financial thresholds trigger automatic AI suspension.
-*   **Human-in-the-Loop:** Mandatory manual approval for escalated API calls.
+*   *(Visual: Security & Compliance Pillars Diagram)*
+
+**1. IAM & Access Control**
+*   Role-Based Access (Admin/User)
+*   API Rate Limiting (DoS Defense)
+*   Vaulted Tenant Credentials (AWS Secrets Manager)
+
+**2. Data Protection**
+*   Encryption at Rest & Transit (TLS 1.3)
+*   Automated PII Redaction
+*   No Model Training on Corporate Data
+
+**3. Privacy & Integration Controls**
+*   Vector DB Metadata Isolation (Prevents cross-tenant bleed)
+*   Zero-Trust DB Access (Locked to backend session IDs)
+*   Least-Privilege Scopes (Strict read-only external database access)
+
+**4. AI Guardrails**
+*   Prompt Injection Defense
+*   Human-in-the-Loop Review
+*   Financial Action Thresholds
 
 **Presenter Script (Minute 4:30 - 5:30):**
-> "Security is built into the DNA of AgentForge. 
+> "Security cannot be an afterthought in enterprise software, which is why we built AgentForge on a comprehensive security framework.
 > 
-> We implement strict Identity and Access Management—separating Business Admins from end-users and platform operators. All data is encrypted at rest and in transit. 
+> First, our **Identity and Access Management** enforces strict role-based access, and our gateway uses **API Rate Limiting** to prevent malicious denial-of-wallet attacks. When connecting to external tenant databases, we never expose API keys to the LLM; they are securely vaulted in **AWS Secrets Manager**.
 > 
-> But our flagship compliance feature is the Guardrail System. We don't rely on system prompts to tell the AI to 'be careful.' We use hardcoded logic. If a financial threshold is met, the AI's execution pipeline is structurally suspended, and the request is routed to a secure escalation queue for human review."
+> Second, for **Data Protection**, all data travels over encrypted TLS 1.3. We employ an automated PII Scrubber that redacts sensitive information before it reaches the LLM. Furthermore, because we use RAG, we guarantee **No Model Training**—proprietary corporate data is never used to train global AI models.
+> 
+> Third, we ensure absolute **Privacy** through Vector DB metadata filtering, guaranteeing one tenant's data never bleeds into another's. To solve the biggest enterprise fear—rogue database access—we employ **Zero-Trust Tool Execution** and **Least-Privilege Scopes**. The AI can only execute read-only queries that are strictly locked to the authenticated user's session ID.
+> 
+> Finally, our **AI Guardrails** employ active Prompt Injection Defense and hardcoded Financial Thresholds. If an action is too risky, the AI pauses and escalates to our **Human-in-the-Loop** review queue."
 
-### Slide 6: Scalability, Reliability & Cost Strategy
+### Slide 6: Scalability, Cost & Multi-Model Strategy
 **Slide Content:**
-*   **Elasticity:** Serverless architecture scales automatically with traffic.
-*   **Cost Management:** Pay-as-you-go model minimizes idle resource waste.
-*   **API Optimization:** Caching frequent queries to reduce LLM token costs.
-*   **High Availability:** GCP redundancy ensures 99.9% uptime for enterprise clients.
+*   **FinOps & Semantic Caching:** RAG limits context to relevant chunks only, reducing token waste by 98%.
+*   **Smart Multi-Model Routing:** Simple tasks route to Gemini Flash; complex reasoning routes to Gemini 1.5 Pro.
+*   **Elasticity:** AWS Lambda serverless architecture scales automatically with traffic.
+*   **High Availability:** AWS Multi-AZ redundancy ensures 99.9% uptime for enterprise clients.
 
 **Presenter Script (Minute 5:30 - 6:30):**
-> "To ensure AgentForge is enterprise-ready, we designed for scalability and cost-efficiency. 
+> "To ensure AgentForge is enterprise-ready, we had to solve the biggest problem with Generative AI: Cost. 
 > 
-> By utilizing a serverless architecture, our platform elastically scales during traffic spikes without requiring manual provisioning. We utilize a pay-as-you-go model which keeps budget utilization incredibly efficient. 
+> We implemented strict **FinOps and Semantic Caching**. Instead of blindly sending a 10,000-word chat history for every prompt, our RAG system injects only the top 5 most relevant chunks. This reduces our token usage by 98%.
 > 
-> To manage the high costs typically associated with LLMs, we've implemented smart API optimization, caching frequent queries to drastically reduce our token spend, while maintaining high availability across GCP's redundant networks."
+> We also built a **Smart Multi-Model Router**. We don't use our most expensive LLM for every simple task. If a user asks for a simple policy lookup, we route it to Gemini Flash, which is incredibly fast and cheap. If they need complex multi-step reasoning, we route it to Gemini 1.5 Pro. This 'right-tool-for-the-job' approach, paired with AWS Serverless scaling, makes AgentForge budget-efficient and highly scalable."
 
 ### Slide 7: Implementation Roadmap
 **Slide Content:**
